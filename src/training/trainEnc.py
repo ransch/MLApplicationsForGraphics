@@ -2,12 +2,13 @@ import datetime
 import winsound
 
 import math
+import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
 from src import hyperparameters as hyperparams
-from src.networks.encoder import Encoder
 from src.frogsDataset import FrogsDataset as Dataset
+from src.networks.encoder import Encoder
 from src.training.trainAux import *
 from src.training.trainEncAux import *
 from src.utils import L1L2Criterion

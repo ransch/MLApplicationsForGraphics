@@ -84,6 +84,9 @@ def main():
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
 
+    gen.load_state_dict(torch.load(settings.p / 'models/glo-total/gen.pt'))
+    embed.load_state_dict(torch.load(settings.p / 'models/glo-total/latent.pt'))
+
     dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=False)
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.genAdamLr, betas=hyperparams.genAdamBetas)
     embedOptim = optim.Adam(embed.parameters(), lr=hyperparams.embedAdamLr, betas=hyperparams.embedAdamBetas)

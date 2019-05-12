@@ -19,10 +19,10 @@ frogsallStart = 1
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = p / 'models/glo-total/gen.pt'
-gloLatentPath = p / 'models/glo-total/latent.pt'
-gloVisPath = p / 'models/glo-total/glo.jpg'
-gloProgressPath = p / 'models/glo-total/progress'
+gloGenPath = p / 'models/glo-total/gen2.pt'
+gloLatentPath = p / 'models/glo-total/latent2.pt'
+gloVisPath = p / 'models/glo-total/glo2.jpg'
+gloProgressPath = p / 'models/glo-total/progress2'
 
 encModelPath = p / 'models/arch/enc2.pt'
 encVisPath = p / 'models/enc/enc.jpg'
@@ -31,6 +31,10 @@ archEncPath = p / 'models/arch/enc3.pt'
 archGenPath = p / 'models/arch/gen3.pt'
 archVisPath = p / 'models/arch/arch3.jpg'
 archProgressPath = p / 'models/arch/progress3'
+
+interPath = p / 'models/arch/arch3-inter'
+
+featuresPath = p / 'models/arch/arch3-features'
 
 
 def sysAsserts():
@@ -67,4 +71,10 @@ def archFilesAsserts():
 def interFilesAsserts():
     assert archEncPath.is_file()
     assert archGenPath.is_file()
-    assert archVisPath.is_file()
+    assert interPath.is_dir()
+
+
+def featuresFilesAsserts():
+    assert archEncPath.is_file()
+    assert archGenPath.is_file()
+    assert featuresPath.is_dir()

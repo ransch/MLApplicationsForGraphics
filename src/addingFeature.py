@@ -8,26 +8,28 @@ from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
 from src.networks.generator import Generator
 
-ind = 2021
-inda = 2802
-indb = 2803
+ind = 1238
+inda = 1779
+indb = 1780
 
 
 def showImages(images):
+    figpath = settings.featuresPath / f'{ind}+{indb}-{inda}.jpg'
+    assert not figpath.is_file()
     grid = vutils.make_grid(images.cpu())
     plt.imshow(grid.numpy().transpose((1, 2, 0)))
-    plt.show()
+    plt.savefig(figpath, dpi=600)
 
 
 def main():
     settings.sysAsserts()
-    settings.interFilesAsserts()
+    settings.featuresFilesAsserts()
     dataset = Dataset(settings.frogs3000, settings.frogs3000Start)
 
     enc = Encoder().to(settings.device)
     gen = Generator().to(settings.device)
-    enc.load_state_dict(torch.load(settings.encModelPath))
-    gen.load_state_dict(torch.load(settings.gloGenPath))
+    enc.load_state_dict(torch.load(settings.archEncPath))
+    gen.load_state_dict(torch.load(settings.archGenPath))
     enc.eval()
     gen.eval()
 
