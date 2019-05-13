@@ -129,8 +129,8 @@ def totalLossSubset(enc, gen, embed, dloader, dsize, encCriterion, genCriterion)
 def main():
     settings.sysAsserts()
     settings.archFilesAsserts()
-    datasetSubset = Dataset(settings.frogs1000, settings.frogs1000Start)
-    datasetMain = Dataset(settings.frogs3000, settings.frogs3000Start)
+    datasetSubset = Dataset(settings.frogs, settings.frogs1000)
+    datasetMain = Dataset(settings.frogs, settings.frogs3000)
     dsizeSubset = len(datasetSubset)
     dsizeMain = len(datasetMain)
 

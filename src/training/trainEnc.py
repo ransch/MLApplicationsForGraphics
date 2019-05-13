@@ -74,7 +74,7 @@ def totalLoss(embed, enc, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.encFilesAsserts()
-    dataset = Dataset(settings.frogs1000, settings.frogs1000Start)
+    dataset = Dataset(settings.frogs, settings.frogs1000)
     dsize = len(dataset)
 
     enc = Encoder().to(settings.device)

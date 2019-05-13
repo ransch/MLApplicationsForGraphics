@@ -78,14 +78,14 @@ def totalLoss(gen, embed, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
-    dataset = Dataset(settings.frogsall, settings.frogsallStart)
+    dataset = Dataset(settings.frogs, settings.frogs1000)
     dsize = len(dataset)
 
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
 
-    gen.load_state_dict(torch.load(settings.p / 'models/glo-total/gen.pt'))
-    embed.load_state_dict(torch.load(settings.p / 'models/glo-total/latent.pt'))
+    # gen.load_state_dict(torch.load(settings.p / 'models/glo-total/gen.pt'))
+    # embed.load_state_dict(torch.load(settings.p / 'models/glo-total/latent.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=False)
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.genAdamLr, betas=hyperparams.genAdamBetas)

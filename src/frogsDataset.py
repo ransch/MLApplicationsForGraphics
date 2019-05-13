@@ -6,21 +6,18 @@ from skimage.color import rgba2rgb
 from torch.utils.data import Dataset
 from torchvision import transforms
 
+
 class FrogsDataset(Dataset):
-    def __init__(self, root, start_ind):
+    def __init__(self, root, indices):
         self.root = root
-        self.start_ind = start_ind
+        self.indices = indices
         self.trans = transforms.ToTensor()
 
     def __len__(self):
-        ret = 0
-        for file in os.listdir(self.root):
-            if file.endswith(".png"):
-                ret += 1
-        return ret
+        return len(self.indices)
 
     def __getitem__(self, idx):
-        filename = f'frog-{idx + self.start_ind}.png'
+        filename = f'frog-{self.indices[idx]}.png'
         filepath = os.path.join(self.root, filename)
         img = rgba2rgb(skimage.io.imread(filepath))
         img = self.trans(img)
