@@ -5,35 +5,36 @@ import torch
 
 device = torch.device('cuda:0')
 
-p = Path('C:/work/MLApplicationsForGraphics') # folders
+p = Path(__file__).resolve().parent.parent
 
-models = 'no_git/models'
+localModels = p / 'no_git/models'
+matureModels = p / 'models'
 
 frogs = p / 'frogs-64'
-frogs1000 = list(range(1,1001))
-frogs3000 = list(range(1001,4001))
-frogs5000 = list(range(1001,6001))
-frogs6000 = frogs1000+frogs5000
+frogs1000 = list(range(1, 1001))
+frogs3000 = list(range(1001, 4001))
+frogs5000 = list(range(1001, 6001))
+frogs6000 = frogs1000 + frogs5000
 
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = p / models / 'glo-total/gen2test.pt'
-gloLatentPath = p / models / 'glo-total/latent2test.pt'
-gloVisPath = p / models / 'glo-total/glo2test.jpg'
-gloProgressPath = p / models / 'glo-total/progress2test'
+gloGenPath = localModels / 'arch/gen.pt'
+gloLatentPath = matureModels / 'glo/latent.pt'
+gloVisPath = localModels / 'glo/glo.jpg'
+gloProgressPath = localModels / 'glo/progress'
 
-encModelPath = p / models / 'arch/enc2.pt'
-encVisPath = p / models / 'enc/enc.jpg'
+encModelPath = localModels / 'arch/enc.pt'
+encVisPath = localModels / 'enc/enc.jpg'
 
-archEncPath = p / models / 'arch/enc3.pt'
-archGenPath = p / models / 'arch/gen3.pt'
-archVisPath = p / models / 'arch/arch3.jpg'
-archProgressPath = p / models / 'arch/progress3'
+archEncPath = localModels / 'arch/enc2.pt'
+archGenPath = localModels / 'arch/gen2.pt'
+archVisPath = localModels / 'arch/arch2.jpg'
+archProgressPath = localModels / 'arch/progress2'
 
-interPath = p / models / 'arch/arch3-inter'
+interPath = localModels / 'arch/arch3-inter'
 
-featuresPath = p / models / 'arch/arch3-features'
+featuresPath = localModels / 'arch/arch3-features'
 
 
 def sysAsserts():

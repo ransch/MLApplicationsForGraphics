@@ -6,13 +6,13 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from src.networks.encoder import Encoder
 from src.frogsDataset import FrogsDataset as Dataset
+from src.networks.encoder import Encoder
 from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainArchAux import *
 from src.training.trainAux import *
-from src.utils import L1L2Criterion
+from src.utils import L1L2PertCriterion
 
 
 def setMode(epoch, ratio, enc, gen):
@@ -148,7 +148,10 @@ def main():
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.archGenAdamLr, betas=hyperparams.archGenAdamBetas)
     percLoss = VGGDistance(hyperparams.archPercLossAlpha, hyperparams.archPercLossBeta, hyperparams.archLossPowAlpha,
                            hyperparams.archLossPowBeta).to(settings.device)
-    l1l2Loss = L1L2Criterion(hyperparams.archL1L2LossAlpha, hyperparams.archL1L2LossBeta)
+    l1l2Loss = L1L2PertCriterion(hyperparams.archL1L2LossAlpha, hyperparams.archL1L2LossBeta,
+                                 hyperparams.archL1L2PertMean, hyperparams.archL1L2PertStd,
+                                 hyperparams.archL1L2PertAlpha, hyperparams.archL1L2PertBeta,
+                                 hyperparams.archL1L2PertGamma)
 
     totalParams = sum(p.numel() for p in enc.parameters() if p.requires_grad) + \
                   sum(p.numel() for p in gen.parameters() if p.requires_grad)

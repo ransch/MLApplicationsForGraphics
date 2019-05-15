@@ -16,19 +16,34 @@ class Flatten(nn.Module):
         return x.view(x.size(0), -1)
 
 
-class L1L2Criterion(nn.Module):
-    def __init__(self, alpha, beta):
-        super(L1L2Criterion, self).__init__()
+class L1L2PertCriterion(nn.Module):
+    def __init__(self, alpha, beta, pertmean=0, pertstd=0, pertalpha=0, pertbeta=0, pertgamma=0):
+        super(L1L2PertCriterion, self).__init__()
         self.alpha = alpha
         self.beta = beta
+        self.pertmean = pertmean
+        self.pertstd = pertstd
+        self.pertalpha = pertalpha
+        self.pertbeta = pertbeta
+        self.pertgamma = pertgamma
 
-    def forward(self, x, y):
+    @staticmethod
+    def l1l2(x, y, alpha, beta):
         assert len(x.shape) == 2 and x.shape == y.shape
         sub = x - y
         sub.abs_()
         l1 = torch.sum(sub, 1)
-        l = l1.mean().unsqueeze_(0).mul_(self.alpha)
+        l = l1.mean().unsqueeze_(0).mul_(alpha)
         sub.pow_(2)
         l2 = torch.sum(sub, 1).sqrt_()
-        l.add_(l2.mean().mul_(self.beta))
+        l.add_(l2.mean().mul_(beta))
+        return l
+
+    def forward(self, x, y):
+        l = self.l1l2(x, y, self.alpha, self.beta)
+
+        if self.pertgamma > 0:
+            y.add_(torch.empty_like(y).normal_(mean=self.pertmean, std=self.pertstd))
+            l.add_(self.l1l2(x, y, self.pertalpha, self.pertbeta).mul_(self.pertgamma))
+
         return l
