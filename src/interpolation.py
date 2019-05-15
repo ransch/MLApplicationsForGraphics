@@ -14,11 +14,12 @@ num = 20
 
 
 def genImages(images):
-    figpath = settings.interPath / f'{inda}-{indb}.jpg'
-    assert not figpath.is_file()
+    # figpath = settings.interPath / f'{inda}-{indb}.jpg'
+    # assert not figpath.is_file()
     grid = vutils.make_grid(images.cpu())
     plt.imshow(grid.numpy().transpose((1, 2, 0)))
-    plt.savefig(figpath, dpi=600)
+    # plt.savefig(figpath, dpi=600)
+    plt.show()
 
 
 def main():

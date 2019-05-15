@@ -40,9 +40,9 @@ archSubsetLossPow = 3
 # gloEpochsNum = 500
 # gloBatchSize = 35
 # gloEvalEvery = 20
-gloEpochsNum = 50
+gloEpochsNum = 2
 gloBatchSize = 75
-gloEvalEvery = 10
+gloEvalEvery = 1
 
 encEpochsNum = 500
 encBatchSize = 35

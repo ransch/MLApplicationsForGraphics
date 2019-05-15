@@ -5,36 +5,35 @@ import torch
 
 device = torch.device('cuda:0')
 
-p = Path('C:/Users/97250/PycharmProjects/MLApplicationsForGraphics')
+p = Path('C:/work/MLApplicationsForGraphics') # folders
 
-frogs1000 = p / 'frogs-64/1000'
-frogs3000 = p / 'frogs-64/3000'
-frogs6796 = p / 'frogs-64/rest'
-frogsall = p / 'frogs-64/all'
-frogs1000Start = 1
-frogs3000Start = 1001
-frogs6796Start = 1001
-frogsallStart = 1
+models = 'no_git/models'
+
+frogs = p / 'frogs-64'
+frogs1000 = list(range(1,1001))
+frogs3000 = list(range(1001,4001))
+frogs5000 = list(range(1001,6001))
+frogs6000 = frogs1000+frogs5000
 
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = p / 'models/glo-total/gen2.pt'
-gloLatentPath = p / 'models/glo-total/latent2.pt'
-gloVisPath = p / 'models/glo-total/glo2.jpg'
-gloProgressPath = p / 'models/glo-total/progress2'
+gloGenPath = p / models / 'glo-total/gen2test.pt'
+gloLatentPath = p / models / 'glo-total/latent2test.pt'
+gloVisPath = p / models / 'glo-total/glo2test.jpg'
+gloProgressPath = p / models / 'glo-total/progress2test'
 
-encModelPath = p / 'models/arch/enc2.pt'
-encVisPath = p / 'models/enc/enc.jpg'
+encModelPath = p / models / 'arch/enc2.pt'
+encVisPath = p / models / 'enc/enc.jpg'
 
-archEncPath = p / 'models/arch/enc3.pt'
-archGenPath = p / 'models/arch/gen3.pt'
-archVisPath = p / 'models/arch/arch3.jpg'
-archProgressPath = p / 'models/arch/progress3'
+archEncPath = p / models / 'arch/enc3.pt'
+archGenPath = p / models / 'arch/gen3.pt'
+archVisPath = p / models / 'arch/arch3.jpg'
+archProgressPath = p / models / 'arch/progress3'
 
-interPath = p / 'models/arch/arch3-inter'
+interPath = p / models / 'arch/arch3-inter'
 
-featuresPath = p / 'models/arch/arch3-features'
+featuresPath = p / models / 'arch/arch3-features'
 
 
 def sysAsserts():
