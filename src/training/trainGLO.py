@@ -4,6 +4,7 @@ import winsound
 import math
 import torch.nn as nn
 import torch.optim as optim
+from scipy.fftpack import dst
 from torch.utils.data import DataLoader
 
 from src.frogsDataset import FrogsDataset as Dataset
@@ -11,6 +12,8 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
+
+import subprocess as sp
 
 
 def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum, evalEvery, epochCallback,
@@ -55,8 +58,15 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
             gen.train()
             embed.train()
 
+
         printevery = sofar
     endCallback(str(settings.gloVisPath), epochsNum, evalEvery, time.time() - start_time)
+    ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
+    p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/" ],
+                 # COPY SOURCE DEST
+                )
+    p.wait()
+    ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
 
 
 def totalLoss(gen, embed, dloader, dsize, criterion):
@@ -78,7 +88,8 @@ def totalLoss(gen, embed, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
-    dataset = Dataset(settings.frogs, settings.frogs1000)
+    # dataset = Dataset(settings.frogs, settings.frogs1000) # Yuval Edit
+    dataset = Dataset(settings.frogs, settings.frogs1000)  # Yuval Edit TODO: change to 6k frogs
     dsize = len(dataset)
 
     gen = Generator().to(settings.device)
@@ -103,11 +114,11 @@ def main():
               hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback,
               betterCallback,
               endCallback)
-        winsound.Beep(640, 1000)
+        #winsound.Beep(640, 1000) # Yuval Edit
 
     except:
         print('An error occurred :(')
-        winsound.Beep(420, 1000)
+        #winsound.Beep(420, 1000) # Yuval Edit
 
 
 if __name__ == '__main__':
