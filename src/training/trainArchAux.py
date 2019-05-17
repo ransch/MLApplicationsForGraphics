@@ -10,13 +10,15 @@ from src import hyperparameters as hyperparams, settings
 _encLosses = []
 _genLosses = []
 _archLosses = []
+_weightLosses = []
 
 
-def archLossCallback(encLoss, genLoss, archLoss):
-    print(f'Training loss: {round(archLoss, 2)}')
+def archLossCallback(encLoss, genLoss, archLoss, weightedLoss):
+    print(f'Training loss: {round(weightedLoss, 2)}')
     _encLosses.append(encLoss)
     _genLosses.append(genLoss)
     _archLosses.append(archLoss)
+    _weightLosses.append(weightedLoss)
 
 
 def betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset):
@@ -49,7 +51,8 @@ def archEndCallback(figpath, epochs, evalEvery, elapsed_time):
     plt.plot(range(1, epochs + 1, evalEvery), _encLosses, '--o')
     plt.plot(range(1, epochs + 1, evalEvery), _genLosses, '--o')
     plt.plot(range(1, epochs + 1, evalEvery), _archLosses, '--o')
-    plt.legend(['Encoder loss', 'Generator loss', 'Arch loss'])
+    plt.plot(range(1, epochs + 1, evalEvery), _weightLosses, '--o')
+    plt.legend(['Encoder loss', 'Generator loss', 'Arch loss', 'Weighted loss'])
     plt.title('Learning Curve')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')

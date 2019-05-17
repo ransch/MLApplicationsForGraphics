@@ -48,7 +48,7 @@ class VGGDistance(nn.Module):
         x_ = x.clone()
 
         for i in range(3):
-            x_[:, i, :, :].sub_(_mean[i]).div_(_std[1])
+            x_[:, i, :, :].sub_(_mean[i]).div_(_std[i])
 
         return x_
 

@@ -53,16 +53,19 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
 
             if mode == 0:
                 encOptim.zero_grad()
-                loss = encCriterion(embed(subsetInds), enc(subsetImages)).pow_(hyperparams.archSubsetLossPow).mul_(
-                    hyperparams.archSubsetLossBeta)
             else:
                 genOptim.zero_grad()
-                loss = genCriterion(subsetImages,
-                                    gen(enc(subsetImages).view(len(subsetImages), hyperparams.latentDim, 1, 1))).pow_(
-                    hyperparams.archSubsetLossPow).mul_(hyperparams.archSubsetLossGamma)
+
+            loss = genCriterion(subsetImages,
+                                gen(enc(subsetImages).view(len(subsetImages), hyperparams.latentDim, 1, 1))).pow_(
+                hyperparams.archSubsetLossPow).mul_(hyperparams.archSubsetLossGamma)
+
+            if mode == 0:
+                loss.add_(encCriterion(embed(subsetInds), enc(subsetImages)).pow_(hyperparams.archSubsetLossPow).mul_(
+                    hyperparams.archSubsetLossBeta))
 
             loss.add_(archCriterion(images, gen(enc(images).view(len(images), hyperparams.latentDim, 1, 1))).pow_(
-                hyperparams.archMainLossPow).mul_(hyperparams.archSubsetLossAlpha))
+                hyperparams.archMainLossPow).mul_(hyperparams.archLossAlpha))
             loss.backward()
             if mode == 0:
                 encOptim.step()
@@ -80,13 +83,19 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
             enc.eval()
             gen.eval()
             evalEveryCallback()
-            total_loss, processed1 = totalLossMain(enc, gen, dloaderMain, dsizeMain, archCriterion)
+            total_loss_arch, processed1 = totalLossMain(enc, gen, dloaderMain, dsizeMain, archCriterion)
             total_loss_enc, total_loss_gen, processed2 = totalLossSubset(enc, gen, embed, dloaderSubset, dsizeSubset,
                                                                          encCriterion, genCriterion)
+
+            weighted_loss = (total_loss_arch ** hyperparams.archMainLossPow) * hyperparams.archLossAlpha + \
+                            (total_loss_gen ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossGamma
+            if mode == 0:
+                weighted_loss += (total_loss_enc ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossBeta
             sofar += processed1 + processed2
-            lossCallback(total_loss_enc, total_loss_gen, total_loss)
-            if total_loss < best_loss:
-                best_loss = total_loss
+
+            lossCallback(total_loss_enc, total_loss_gen, total_loss_arch, weighted_loss)
+            if weighted_loss < best_loss:
+                best_loss = weighted_loss
                 betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset)
 
         printevery = sofar
