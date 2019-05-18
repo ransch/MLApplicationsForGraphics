@@ -8,24 +8,24 @@ from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
 from src.networks.generator import Generator
 
-ind = 1238
-inda = 1779
-indb = 1780
+ind = 2087
+inda = 2144
+indb = 2162
 
 
 def showImages(images):
-    # figpath = settings.featuresPath / f'{ind}+{indb}-{inda}.jpg'
-    # assert not figpath.is_file()
+    figpath = settings.featuresPath / f'{ind}+{indb}-{inda}.jpg'
+    assert not figpath.is_file()
     grid = vutils.make_grid(images.cpu())
     plt.imshow(grid.numpy().transpose((1, 2, 0)))
-    # plt.savefig(figpath, dpi=600)
-    plt.show()
+    plt.savefig(figpath, dpi=600)
+    # plt.show()
 
 
 def main():
     settings.sysAsserts()
     settings.featuresFilesAsserts()
-    dataset = Dataset(settings.frogs3000, settings.frogs3000Start)
+    dataset = Dataset(settings.frogs, settings.frogs3000)
 
     enc = Encoder().to(settings.device)
     gen = Generator().to(settings.device)
@@ -35,9 +35,9 @@ def main():
     gen.eval()
 
     with torch.no_grad():
-        img = dataset[ind - settings.frogs3000Start]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-        imga = dataset[inda - settings.frogs3000Start]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-        imgb = dataset[indb - settings.frogs3000Start]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+        img = dataset[ind - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+        imga = dataset[inda - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+        imgb = dataset[indb - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
         latent = enc(img)[0]
         latenta = enc(imga)[0]
         latentb = enc(imgb)[0]
