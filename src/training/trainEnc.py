@@ -11,7 +11,7 @@ from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
 from src.training.trainAux import *
 from src.training.trainEncAux import *
-from src.utils import L1L2PertCriterion, saveHyperParams
+from src.utils import L1L2Criterion, saveHyperParams
 
 
 def train(embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,
@@ -83,7 +83,7 @@ def main():
 
     dloader = DataLoader(dataset, batch_size=hyperparams.encBatchSize, shuffle=False)
     optimizer = optim.Adam(enc.parameters(), lr=hyperparams.encAdamLr, betas=hyperparams.encAdamBetas)
-    criterion = L1L2PertCriterion(hyperparams.encLossAlpha, hyperparams.encLossBeta)
+    criterion = L1L2Criterion(hyperparams.encLossAlpha, hyperparams.encLossBeta)
 
     print(str(datetime.datetime.now()))
     print(f'Training {sum(p.numel() for p in embed.parameters() if p.requires_grad)} parameters')

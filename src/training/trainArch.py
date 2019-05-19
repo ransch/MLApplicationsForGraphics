@@ -12,7 +12,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainArchAux import *
 from src.training.trainAux import *
-from src.utils import L1L2PertCriterion, saveHyperParams
+from src.utils import L1L2Criterion, saveHyperParams, addNoise
 
 
 def setMode(epoch, ratio, enc, gen):
@@ -56,16 +56,24 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
             else:
                 genOptim.zero_grad()
 
-            loss = genCriterion(subsetImages,
+            loss = genCriterion(subsetImages, # loss2 on page
                                 gen(enc(subsetImages).view(len(subsetImages), hyperparams.latentDim, 1, 1))).pow_(
                 hyperparams.archSubsetLossPow).mul_(hyperparams.archSubsetLossGamma)
 
-            if mode == 0:
+            if mode == 0: # when training encoder (adding loss1 on page)
                 loss.add_(encCriterion(embed(subsetInds), enc(subsetImages)).pow_(hyperparams.archSubsetLossPow).mul_(
                     hyperparams.archSubsetLossBeta))
 
-            loss.add_(archCriterion(images, gen(enc(images).view(len(images), hyperparams.latentDim, 1, 1))).pow_(
+            latVec = enc(images).view(len(images), hyperparams.latentDim, 1, 1) # encoded images
+            synthImages = gen(latVec) # decoder(encoder(x))
+            loss.add_(archCriterion(images, synthImages).pow_( # adding loss3 on page
                 hyperparams.archMainLossPow).mul_(hyperparams.archLossAlpha))
+
+            addNoise(latVec, hyperparams.archPertMean, hyperparams.archPertStd)
+            synthNoisedImages = gen(latVec)
+            loss.add_(archCriterion(synthImages, synthNoisedImages).pow_(
+                hyperparams.archPertPow).mul_(hyperparams.archPertCoeff))
+
             loss.backward()
             if mode == 0:
                 encOptim.step()
@@ -88,9 +96,8 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
                                                                          encCriterion, genCriterion)
 
             weighted_loss = (total_loss_arch ** hyperparams.archMainLossPow) * hyperparams.archLossAlpha + \
-                            (total_loss_gen ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossGamma
-            if mode == 0:
-                weighted_loss += (total_loss_enc ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossBeta
+                            (total_loss_gen ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossGamma + (
+                                        total_loss_enc ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossBeta
             sofar += processed1 + processed2
 
             lossCallback(total_loss_enc, total_loss_gen, total_loss_arch, weighted_loss)
@@ -157,10 +164,7 @@ def main():
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.archGenAdamLr, betas=hyperparams.archGenAdamBetas)
     percLoss = VGGDistance(hyperparams.archPercLossAlpha, hyperparams.archPercLossBeta, hyperparams.archLossPowAlpha,
                            hyperparams.archLossPowBeta).to(settings.device)
-    l1l2Loss = L1L2PertCriterion(hyperparams.archL1L2LossAlpha, hyperparams.archL1L2LossBeta,
-                                 hyperparams.archL1L2PertMean, hyperparams.archL1L2PertStd,
-                                 hyperparams.archL1L2PertAlpha, hyperparams.archL1L2PertBeta,
-                                 hyperparams.archL1L2PertGamma)
+    l1l2Loss = L1L2Criterion(hyperparams.archL1L2LossAlpha, hyperparams.archL1L2LossBeta)
 
     totalParams = sum(p.numel() for p in enc.parameters() if p.requires_grad) + \
                   sum(p.numel() for p in gen.parameters() if p.requires_grad)

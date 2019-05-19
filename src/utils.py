@@ -20,9 +20,9 @@ class Flatten(nn.Module):
         return x.view(x.size(0), -1)
 
 
-class L1L2PertCriterion(nn.Module):
+class L1L2Criterion(nn.Module):
     def __init__(self, alpha, beta):
-        super(L1L2PertCriterion, self).__init__()
+        super(L1L2Criterion, self).__init__()
         self.alpha = alpha
         self.beta = beta
 
@@ -46,3 +46,6 @@ class L1L2PertCriterion(nn.Module):
 
 def saveHyperParams(dest_path):
     shutil.copy(settings.p / 'src' / 'hyperparameters.py', dest_path)
+
+def addNoise(x, mean, std):
+    x.add_(torch.empty_like(x).normal_(mean=mean, std=std))

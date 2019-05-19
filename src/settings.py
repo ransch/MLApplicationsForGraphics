@@ -20,7 +20,7 @@ printevery = 1000
 samplesLen = 5
 
 gloGenPath = localModels / 'arch/gen2.pt'
-gloLatentPath = matureModels / 'glo/latent.pt'
+gloLatentPath = localModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
