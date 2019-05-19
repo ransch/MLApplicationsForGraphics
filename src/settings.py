@@ -19,7 +19,7 @@ frogs6000 = frogs1000 + frogs5000
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'arch/gen2.pt'
+gloGenPath = localModels / 'glo/gen.pt'
 gloLatentPath = localModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'

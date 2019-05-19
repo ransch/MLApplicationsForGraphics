@@ -95,8 +95,10 @@ def main():
 
         saveHyperParams(settings.encHyperPath)
 
-    except:
+
+    except Exception as e:
         print('An error occurred :(')
+        print(e)
         winsound.Beep(420, 1000)
 
 

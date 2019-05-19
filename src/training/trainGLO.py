@@ -63,10 +63,10 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
         printevery = sofar
     endCallback(str(settings.gloVisPath), epochsNum, evalEvery, time.time() - start_time)
     ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
-    p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/"],
-                 # COPY SOURCE DEST
-                )
-    p.wait()
+    # p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/"],
+    #              # COPY SOURCE DEST
+    #             )
+    # p.wait()
     ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
 
 
@@ -118,11 +118,11 @@ def main():
         #winsound.Beep(640, 1000) # Yuval Edit
         saveHyperParams(settings.gloHyperPath)
 
-    except:
+    except Exception as e:
         print('An error occurred :(')
+        print(e)
         #winsound.Beep(420, 1000) # Yuval Edit
 
 
 if __name__ == '__main__':
     main()
-

@@ -178,8 +178,9 @@ def main():
         winsound.Beep(640, 1000)
         saveHyperParams(settings.archHyperPath)
 
-    except:
+    except Exception as e:
         print('An error occurred :(')
+        print(e)
         winsound.Beep(420, 1000)
 
 
