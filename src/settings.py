@@ -23,14 +23,17 @@ gloGenPath = localModels / 'arch/gen2.pt'
 gloLatentPath = matureModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
+gloHyperPath = localModels / 'glo/hyperparams.py'
 
 encModelPath = localModels / 'arch/enc2.pt'
 encVisPath = localModels / 'enc/enc.jpg'
+encHyperPath = localModels / 'enc/hyperparams.py'
 
 archEncPath = localModels / 'arch/enc3.pt'
 archGenPath = localModels / 'arch/gen3.pt'
 archVisPath = localModels / 'arch/arch3.jpg'
 archProgressPath = localModels / 'arch/progress3'
+archHyperPath = localModels / 'arch/hyperparams.py'
 
 interPath = localModels / 'arch/arch3-inter'
 
@@ -47,6 +50,7 @@ def gloFilesAsserts():
     assert not gloGenPath.is_file()
     assert not gloLatentPath.is_file()
     assert not gloVisPath.is_file()
+    assert not gloHyperPath.is_file()
     assert gloProgressPath.is_dir()
     assert len(os.listdir(gloProgressPath)) == 0
 
@@ -55,12 +59,14 @@ def encFilesAsserts():
     assert not encModelPath.is_file()
     assert not encVisPath.is_file()
     assert gloLatentPath.is_file()
+    assert not encHyperPath.is_file()
 
 
 def archFilesAsserts():
     assert not archEncPath.is_file()
     assert not archGenPath.is_file()
     assert not archVisPath.is_file()
+    assert not archHyperPath.is_file()
     assert archProgressPath.is_dir()
     assert len(os.listdir(archProgressPath)) == 0
     assert gloGenPath.is_file()

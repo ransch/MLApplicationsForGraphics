@@ -1,5 +1,9 @@
+import shutil
+
 import torch
 import torch.nn as nn
+
+from src import settings
 
 
 def weights_init(m):
@@ -17,15 +21,10 @@ class Flatten(nn.Module):
 
 
 class L1L2PertCriterion(nn.Module):
-    def __init__(self, alpha, beta, pertmean=0, pertstd=0, pertalpha=0, pertbeta=0, pertgamma=0):
+    def __init__(self, alpha, beta):
         super(L1L2PertCriterion, self).__init__()
         self.alpha = alpha
         self.beta = beta
-        self.pertmean = pertmean
-        self.pertstd = pertstd
-        self.pertalpha = pertalpha
-        self.pertbeta = pertbeta
-        self.pertgamma = pertgamma
 
     @staticmethod
     def l1l2(x, y, alpha, beta):
@@ -42,8 +41,8 @@ class L1L2PertCriterion(nn.Module):
     def forward(self, x, y):
         l = self.l1l2(x, y, self.alpha, self.beta)
 
-        if self.pertgamma > 0:
-            y.add_(torch.empty_like(y).normal_(mean=self.pertmean, std=self.pertstd))
-            l.add_(self.l1l2(x, y, self.pertalpha, self.pertbeta).mul_(self.pertgamma))
-
         return l
+
+
+def saveHyperParams(dest_path):
+    shutil.copy(settings.p / 'src' / 'hyperparameters.py', dest_path)

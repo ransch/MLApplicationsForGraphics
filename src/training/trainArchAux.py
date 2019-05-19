@@ -5,7 +5,8 @@ import torch
 from matplotlib import pyplot as plt
 from torchvision.utils import save_image
 
-from src import hyperparameters as hyperparams, settings
+from src import hyperparameters as hyperparams
+from src import settings
 
 _encLosses = []
 _genLosses = []

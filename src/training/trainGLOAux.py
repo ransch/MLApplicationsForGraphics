@@ -3,7 +3,8 @@ import os
 import torch
 from torchvision.utils import save_image
 
-from src import hyperparameters as hyperparams, settings
+from src import hyperparameters as hyperparams
+from src import settings
 
 
 def betterCallback(epoch, gen, embed, dloader):

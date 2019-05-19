@@ -1,7 +1,7 @@
 import datetime
+import math
 import winsound
 
-import math
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -12,7 +12,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainArchAux import *
 from src.training.trainAux import *
-from src.utils import L1L2PertCriterion
+from src.utils import L1L2PertCriterion, saveHyperParams
 
 
 def setMode(epoch, ratio, enc, gen):
@@ -172,6 +172,8 @@ def main():
               encOptim, genOptim, hyperparams.archEpochsNum, hyperparams.archRatio, hyperparams.archEvalEvery,
               epochCallback, progressCallback, evalEveryCallback, archLossCallback, betterCallback, archEndCallback)
         winsound.Beep(640, 1000)
+        saveHyperParams(settings.archHyperPath)
+
     except:
         print('An error occurred :(')
         winsound.Beep(420, 1000)

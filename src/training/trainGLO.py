@@ -12,6 +12,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
+from src.utils import saveHyperParams
 
 import subprocess as sp
 
@@ -62,7 +63,7 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
         printevery = sofar
     endCallback(str(settings.gloVisPath), epochsNum, evalEvery, time.time() - start_time)
     ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
-    p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/" ],
+    p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/"],
                  # COPY SOURCE DEST
                 )
     p.wait()
@@ -115,6 +116,7 @@ def main():
               betterCallback,
               endCallback)
         #winsound.Beep(640, 1000) # Yuval Edit
+        saveHyperParams(settings.gloHyperPath)
 
     except:
         print('An error occurred :(')
@@ -123,3 +125,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
