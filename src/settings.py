@@ -19,25 +19,24 @@ frogs6000 = frogs1000 + frogs5000
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo/gen.pt'
-gloLatentPath = localModels / 'glo/latent.pt'
+gloGenPath = matureModels / 'arch/gen6.pt'
+gloLatentPath = matureModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
 
-encModelPath = localModels / 'arch/enc2.pt'
+encModelPath = matureModels / 'arch/enc6.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 
-archEncPath = localModels / 'arch/enc3.pt'
-archGenPath = localModels / 'arch/gen3.pt'
-archVisPath = localModels / 'arch/arch3.jpg'
-archProgressPath = localModels / 'arch/progress3'
+archEncPath = localModels / 'arch/enc.pt'
+archGenPath = localModels / 'arch/gen.pt'
+archVisPath = localModels / 'arch/arch.jpg'
+archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 
-interPath = localModels / 'arch/arch3-inter'
-
-featuresPath = localModels / 'arch/arch3-features'
+interPath = localModels / 'arch/arch-inter'
+featuresPath = localModels / 'arch/arch-features'
 
 
 def sysAsserts():

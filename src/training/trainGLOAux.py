@@ -21,7 +21,7 @@ def betterCallback(epoch, gen, embed, dloader):
 
         for i in range(settings.samplesLen):
             ind = inds[i]
-            fake = gen(embed(ind).view(1, hyperparams.latentDim, 1, 1)) # TODO
+            fake = gen(embed(ind).view(1, hyperparams.latentDim, 1, 1))  # TODO
             filename = f'epoch-{epoch}-ind-{ind.item()}.png'
             filepath = os.path.join(settings.gloProgressPath, filename)
             save_image(fake[0], filepath)

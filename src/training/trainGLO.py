@@ -1,10 +1,8 @@
 import datetime
-import winsound
 
 import math
 import torch.nn as nn
 import torch.optim as optim
-from scipy.fftpack import dst
 from torch.utils.data import DataLoader
 
 from src.frogsDataset import FrogsDataset as Dataset
@@ -13,8 +11,6 @@ from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
 from src.utils import saveHyperParams
-
-import subprocess as sp
 
 
 def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum, evalEvery, epochCallback,
@@ -58,7 +54,6 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
                 betterCallback(epoch, gen, embed, dloader)
             gen.train()
             embed.train()
-
 
         printevery = sofar
     endCallback(str(settings.gloVisPath), epochsNum, evalEvery, time.time() - start_time)
@@ -115,13 +110,13 @@ def main():
               hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback,
               betterCallback,
               endCallback)
-        #winsound.Beep(640, 1000) # Yuval Edit
+        # winsound.Beep(640, 1000) # Yuval Edit
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        #winsound.Beep(420, 1000) # Yuval Edit
+        # winsound.Beep(420, 1000) # Yuval Edit
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import datetime
-import math
 import winsound
 
+import math
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -56,21 +56,21 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
             else:
                 genOptim.zero_grad()
 
-            loss = genCriterion(subsetImages, # loss2 on page
+            loss = genCriterion(subsetImages,  # loss2 on page
                                 gen(enc(subsetImages).view(len(subsetImages), hyperparams.latentDim, 1, 1))).pow_(
                 hyperparams.archSubsetLossPow).mul_(hyperparams.archSubsetLossGamma)
 
-            if mode == 0: # when training encoder (adding loss1 on page)
+            if mode == 0:  # when training encoder (adding loss1 on page)
                 loss.add_(encCriterion(embed(subsetInds), enc(subsetImages)).pow_(hyperparams.archSubsetLossPow).mul_(
                     hyperparams.archSubsetLossBeta))
 
-            latVec = enc(images).view(len(images), hyperparams.latentDim, 1, 1) # encoded images
-            synthImages = gen(latVec) # decoder(encoder(x))
-            loss.add_(archCriterion(images, synthImages).pow_( # adding loss3 on page
+            latVec = enc(images).view(len(images), hyperparams.latentDim, 1, 1)  # encoded images
+            synthImages = gen(latVec)  # decoder(encoder(x))
+            loss.add_(archCriterion(images, synthImages).pow_(  # adding loss3 on page
                 hyperparams.archMainLossPow).mul_(hyperparams.archLossAlpha))
 
-            addNoise(latVec, hyperparams.archPertMean, hyperparams.archPertStd)
-            synthNoisedImages = gen(latVec)
+            noisedLatVec = addNoise(latVec, hyperparams.archPertMean, hyperparams.archPertStd)
+            synthNoisedImages = gen(noisedLatVec)
             loss.add_(archCriterion(synthImages, synthNoisedImages).pow_(
                 hyperparams.archPertPow).mul_(hyperparams.archPertCoeff))
 
@@ -97,7 +97,7 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
 
             weighted_loss = (total_loss_arch ** hyperparams.archMainLossPow) * hyperparams.archLossAlpha + \
                             (total_loss_gen ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossGamma + (
-                                        total_loss_enc ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossBeta
+                                    total_loss_enc ** hyperparams.archSubsetLossPow) * hyperparams.archSubsetLossBeta
             sofar += processed1 + processed2
 
             lossCallback(total_loss_enc, total_loss_gen, total_loss_arch, weighted_loss)

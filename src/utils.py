@@ -47,5 +47,6 @@ class L1L2Criterion(nn.Module):
 def saveHyperParams(dest_path):
     shutil.copy(settings.p / 'src' / 'hyperparameters.py', dest_path)
 
+
 def addNoise(x, mean, std):
-    x.add_(torch.empty_like(x).normal_(mean=mean, std=std))
+    return x.add(torch.empty_like(x).normal_(mean=mean, std=std))

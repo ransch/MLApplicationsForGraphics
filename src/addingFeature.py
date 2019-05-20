@@ -8,12 +8,10 @@ from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
 from src.networks.generator import Generator
 
-ind = 2087
-inda = 2144
-indb = 2162
+inds = [(2087, 2144, 2162), (1238, 1779, 1780)]
 
 
-def showImages(images):
+def genImages(images, ind, inda, indb):
     figpath = settings.featuresPath / f'{ind}+{indb}-{inda}.jpg'
     assert not figpath.is_file()
     grid = vutils.make_grid(images.cpu())
@@ -35,19 +33,20 @@ def main():
     gen.eval()
 
     with torch.no_grad():
-        img = dataset[ind - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-        imga = dataset[inda - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-        imgb = dataset[indb - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-        latent = enc(img)[0]
-        latenta = enc(imga)[0]
-        latentb = enc(imgb)[0]
-        delta = latentb - latenta
+        for ind, inda, indb in inds:
+            img = dataset[ind - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+            imga = dataset[inda - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+            imgb = dataset[indb - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+            latent = enc(img)[0]
+            latenta = enc(imga)[0]
+            latentb = enc(imgb)[0]
+            delta = latentb - latenta
 
-        vectors = [latent, latent + delta]
-        batch = torch.stack(vectors)
-        images = gen(batch.view(len(batch), hyperparams.latentDim, 1, 1))
+            vectors = [latent, latent + delta]
+            batch = torch.stack(vectors)
+            images = gen(batch.view(len(batch), hyperparams.latentDim, 1, 1))
 
-        showImages(images)
+            genImages(images, ind, inda, indb)
 
 
 if __name__ == '__main__':

@@ -53,7 +53,7 @@ def archEndCallback(figpath, epochs, evalEvery, elapsed_time):
     plt.plot(range(1, epochs + 1, evalEvery), _genLosses, '--o')
     plt.plot(range(1, epochs + 1, evalEvery), _archLosses, '--o')
     # plt.plot(range(1, epochs + 1, evalEvery), _weightLosses, '--o')
-    plt.legend(['Encoder loss', 'Generator loss', 'Arch loss'])# , 'Weighted loss'])
+    plt.legend(['Encoder loss', 'Generator loss', 'Arch loss'])  # , 'Weighted loss'])
     plt.title('Learning Curve')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
