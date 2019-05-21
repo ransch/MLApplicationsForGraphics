@@ -1,0 +1,3 @@
+Create_models.sh - run before starting to train GLO
+bashPythonPath.sh - run before running anything. fixing the pypath on the server
+saveToStorage.sh - saves the "model" folder to a new folder on the /CloudStorage

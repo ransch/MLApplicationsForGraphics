@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import torch
 import torchvision.utils as vutils
-
+import torch.nn as nn
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
@@ -27,14 +27,14 @@ def main():
     dataset = Dataset(settings.frogs, settings.frogs3000)
 
     gen = Generator().to(settings.device)
-    enc = Encoder().to(settings.device)
-    # embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
+    # enc = Encoder().to(settings.device)
+    embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
     gen.load_state_dict(torch.load(settings.archGenPath))
-    enc.load_state_dict(torch.load(settings.archEncPath))
-    # embed.load_state_dict(torch.load(settings.gloLatentPath))
+    # enc.load_state_dict(torch.load(settings.archEncPath))
+    embed.load_state_dict(torch.load(settings.gloLatentPath))
     gen.eval()
-    enc.eval()
-    # embed.eval()
+    # enc.eval()
+    embed.eval()
 
     with torch.no_grad():
         for inda, indb in inds:
