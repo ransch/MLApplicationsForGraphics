@@ -84,8 +84,7 @@ def totalLoss(gen, embed, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
-    # dataset = Dataset(settings.frogs, settings.frogs1000) # Yuval Edit
-    dataset = Dataset(settings.frogs, settings.frogs1000)  # Yuval Edit TODO: change to 6k frogs
+    dataset = Dataset(settings.frogs, settings.frogs6000)
     dsize = len(dataset)
 
     gen = Generator().to(settings.device)

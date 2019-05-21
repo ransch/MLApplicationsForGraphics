@@ -15,6 +15,7 @@ frogs1000 = list(range(1, 1001))
 frogs3000 = list(range(1001, 4001))
 frogs5000 = list(range(1001, 6001))
 frogs6000 = frogs1000 + frogs5000
+testFrogs1000 = list(range(6001, 7001))
 
 printevery = 1000
 samplesLen = 5

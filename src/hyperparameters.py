@@ -46,9 +46,9 @@ archSubsetLossGamma = 1
 archMainLossPow = 1.2
 archSubsetLossPow = 1
 
-gloEpochsNum = 21
+gloEpochsNum = 2001
 gloBatchSize = 35
-gloEvalEvery = 5
+gloEvalEvery = 100
 
 encEpochsNum = 500
 encBatchSize = 35
