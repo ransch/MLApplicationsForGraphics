@@ -20,7 +20,7 @@ testFrogs1000 = list(range(6001, 7001))
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'arch/gen.pt'
+gloGenPath = localModels / 'glo/gen.pt'
 gloLatentPath = localModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
