@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm -R -f models
-mkdir -p models/glo/progress
+rm -R -f ../no_git/models
+mkdir -p ../no_git/models/glo/progress
