@@ -10,7 +10,7 @@ from src import settings
 class _netVGGFeatures(nn.Module):
     def __init__(self):
         super(_netVGGFeatures, self).__init__()
-        self.vggnet = models.vgg16(pretrained=True).cuda()
+        self.vggnet = models.vgg16(pretrained=True).to(settings.device)
         self.vggnet.eval()
         self.layer_ids = [2, 7, 12, 21, 30]
 

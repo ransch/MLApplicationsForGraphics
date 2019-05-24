@@ -59,3 +59,6 @@ archSubsetBatchSize = 35
 archMainBatchSize = 75
 archEvalEvery = 4
 archRatio = (0, 1)
+
+clusteringPCADim = 2
+clusteringCnt = 128
