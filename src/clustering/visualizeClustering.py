@@ -1,11 +1,9 @@
 import pickle
 
 import matplotlib.pyplot as plt
-import torch
+from sklearn.manifold import TSNE
 
-from src import hyperparameters as hyperparams
 from src import settings
-from src.clustering import pca
 
 
 def load(pcaPath, clusteringPath, representativesPath):
@@ -55,10 +53,11 @@ def main():
     lowDimMat, buckets, representatives = load(settings.pcaPath, settings.clusteringPath, settings.representativesPath)
 
     if lowDimMat.shape[1] > 2:
-        lowDimMat = torch.from_numpy(lowDimMat)
-        encMat = pca.PCA(lowDimMat, hyperparams.clusteringPCADim)
-        lowDimMat = pca.encodeMat(lowDimMat, encMat)
-        lowDimMat = lowDimMat.cpu().numpy()
+        lowDimMat = TSNE(n_components=2).fit_transform(lowDimMat)
+        # lowDimMat = torch.from_numpy(lowDimMat)
+        # encMat = pca.PCA(lowDimMat, hyperparams.clusteringPCADim)
+        # lowDimMat = pca.encodeMat(lowDimMat, encMat)
+        # lowDimMat = lowDimMat.cpu().numpy()
 
     vis(lowDimMat, buckets, representatives)
 
