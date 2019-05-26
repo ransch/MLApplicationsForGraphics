@@ -40,9 +40,9 @@ interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
-clusteringPath = p / 'clustering/128.pkl'
-representativesPath = p / 'clustering/128repr.pkl'
-pcaPath = p / 'clustering/pca.pkl'
+clusteringPath = p / 'clustering/dim20/128.pkl'
+representativesPath = p / 'clustering/dim20/128repr.pkl'
+pcaPath = p / 'clustering/dim20/pca.pkl'
 
 
 def sysAsserts():

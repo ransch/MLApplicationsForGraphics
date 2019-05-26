@@ -41,6 +41,10 @@ def PCA(X, dim):
     return res
 
 
+def encodeMat(mat, encMat):
+    return mat @ encMat.t()
+
+
 def main():
     settings.sysAsserts()
     settings.pcaAsserts()
@@ -49,7 +53,7 @@ def main():
 
     X = dataMatrix(dloader)
     encMat = PCA(X, hyperparams.clusteringPCADim)
-    lowDimMat = X @ encMat.t()
+    lowDimMat = encodeMat(X, encMat)
     lowDimMat = lowDimMat.cpu().numpy()
 
     with open(settings.pcaPath, 'wb') as f:
