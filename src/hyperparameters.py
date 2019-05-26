@@ -61,4 +61,4 @@ archEvalEvery = 4
 archRatio = (0, 1)
 
 clusteringPCADim = 2
-clusteringCnt = 128
+clusteringNum = 128
