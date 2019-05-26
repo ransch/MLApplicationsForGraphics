@@ -41,6 +41,7 @@ featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/128.pkl'
+representativesPath = p / 'clustering/128repr.pkl'
 pcaPath = p / 'clustering/pca.pkl'
 
 
@@ -108,6 +109,12 @@ def featuresFilesAsserts():
     assert archGenPath.is_file()
 
 
+def pcaAsserts():
+    if not pcaPath.parent.is_dir():
+        os.makedirs(pcaPath.parent)
+    assert not pcaPath.is_file()
+
+
 def clusteringAsserts():
     if not clusteringPath.parent.is_dir():
         os.makedirs(clusteringPath.parent)
@@ -115,7 +122,9 @@ def clusteringAsserts():
     assert pcaPath.is_file()
 
 
-def pcaAsserts():
-    if not pcaPath.parent.is_dir():
-        os.makedirs(pcaPath.parent)
-    assert not pcaPath.is_file()
+def representativesAsserts():
+    if not representativesPath.parent.is_dir():
+        os.makedirs(representativesPath.parent)
+    assert not representativesPath.is_file()
+    assert clusteringPath.is_file()
+    assert pcaPath.is_file()

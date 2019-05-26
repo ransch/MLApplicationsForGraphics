@@ -3,7 +3,6 @@ import pickle
 import matplotlib.pyplot as plt
 
 from src import settings
-from src.clustering.cluster import extractRepresentatives
 
 with open(settings.pcaPath, 'rb') as f:
     pcklr = pickle.Unpickler(f)
@@ -13,7 +12,9 @@ with open(settings.clusteringPath, 'rb') as f:
     pcklr = pickle.Unpickler(f)
     buckets, centroids = pcklr.load()
 
-representatives = extractRepresentatives(lowDimMat, buckets, centroids, 2)
+with open(settings.representativesPath, 'rb') as f:
+    pcklr = pickle.Unpickler(f)
+    representatives = pcklr.load()
 
 labels = []
 
