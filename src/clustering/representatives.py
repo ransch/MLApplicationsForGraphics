@@ -6,23 +6,22 @@ from sklearn.neighbors import NearestNeighbors
 from src import settings
 
 
-def extractRepresentatives(matrix, buckets, centroids, reprNum):
-    res = {}
+def extractRepresentatives(samples, buckets, centroids, reprNum):
+    res = {} #  {clusterNum : [representetives] }
+    assert samples.ndim == 2
 
-    for i in range(len(buckets.keys())):
-        if len(buckets[i]) <= 4:
+    for i in range(len(buckets.keys())): # iterate buckets
+        if len(buckets[i]) <= reprNum:
             res[i] = buckets[i].copy()
             continue
 
-        slicedLst = []
-        for j in buckets[i]:
-            slicedLst.append(matrix[j])
+        sliced = samples[buckets[i],:] # sliced = samples from bucket #(i)
+        neighAlg = NearestNeighbors(n_neighbors=reprNum)
+        neighAlg.fit(sliced)
 
-        sliced = np.vstack(slicedLst)
-        kneighAlg = NearestNeighbors(n_neighbors=reprNum)
-        kneighAlg.fit(sliced)
-        kneighInds = np.squeeze(kneighAlg.kneighbors(np.expand_dims(centroids[i], axis=0))[1], axis=0)
-        res[i] = [buckets[i][j] for j in kneighInds]
+        centerOfBucket = np.expand_dims(centroids[i], axis=0)
+        neighInds = np.squeeze(neighAlg.kneighbors(centerOfBucket, return_distance=False), axis=0) # returns the indices in buckets[i] that correspondes to the k-nearest
+        res[i] = [buckets[i][j] for j in neighInds] # buckets[i][j] = the index of the sample in "samples"
 
     with open(settings.representativesPath, 'wb') as f:
         pcklr = pickle.Pickler(f)

@@ -8,7 +8,7 @@ from src import settings
 
 def createBuckets(numClusters, labels):
     '''
-    returns: dict of (ind, [list of indices of pictures in this cluster])
+    returns: dict of (cluster_ind, [list of indices of pictures in this cluster])
     '''
 
     samplesLen = len(labels)
