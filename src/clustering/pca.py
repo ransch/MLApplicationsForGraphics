@@ -2,56 +2,53 @@ import pickle
 
 import torch
 import torch.nn as nn
-import torchvision.models as models
-from torch.utils.data import DataLoader
+import torchvision.models as torchModels
 
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
 
 
-def dataMatrix(dloader):
+def dataMatrix(dataset):
     features = []
-    resnet = models.resnet50(pretrained=True).to(settings.device)
+    resnet = torchModels.resnet50(pretrained=True).to(settings.device)
     resnet.fc = nn.Identity()
     resnet.eval()
 
-    for batch in dloader:
-        with torch.no_grad():
-            images = batch['image'].to(settings.device).type(torch.float32)
-            features.append(resnet(images))
+    for i in range(len(dataset)):
+        image = dataset[i]['image'].to(settings.device).type(torch.float32)
+        features.append(resnet(image.unsqueeze_(0)))
     return torch.cat(features)
 
 
-def PCA(X, dim):
-    samples = X.shape[0]
+def PCA(X, reducedDim):
+    samples_len = X.shape[0]
     origDim = X.shape[1]
-    assert samples > origDim
+    assert samples_len > origDim
 
     with torch.no_grad():
         A = X.t() @ X
         eig, V = torch.symeig(A, eigenvectors=True)
-        _, inds = torch.topk(eig, dim, largest=True, sorted=True)
+        _, inds = torch.topk(eig, k=reducedDim, largest=True, sorted=True)  # biggest to smallest
         topVecs = []
         for ind in inds:
-            topVecs.append(V[:, ind])
+            topVecs.append(V[ind])
 
-    res = torch.stack(topVecs, dim=0)
-    assert res.shape == (dim, origDim)
-    return res
+    resMat = torch.stack(topVecs, dim=0)  # W matrix (from book)
+    assert resMat.shape == (reducedDim, origDim)  # (n*d)
+    return resMat
 
 
 def encodeMat(mat, encMat):
-    return mat @ encMat.t()
+    return mat @ encMat.t()  # checked!
 
 
 def main():
     settings.sysAsserts()
     settings.pcaAsserts()
     dataset = Dataset(settings.frogs, settings.frogs6000)
-    dloader = DataLoader(dataset, batch_size=settings.clusteringBatchSize, shuffle=False)
 
-    X = dataMatrix(dloader)
+    X = dataMatrix(dataset)
     encMat = PCA(X, hyperparams.clusteringPCADim)
     lowDimMat = encodeMat(X, encMat)
     lowDimMat = lowDimMat.cpu().numpy()

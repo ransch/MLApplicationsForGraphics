@@ -7,10 +7,17 @@ from src import settings
 
 
 def createBuckets(numClusters, labels):
-    res = {i: [] for i in range(numClusters)}
-    for i in range(len(labels)):
-        res[labels[i]].append(i)
-    return res
+    '''
+    returns: dict of (ind, [list of indices of pictures in this cluster])
+    '''
+
+    samplesLen = len(labels)
+    res_dict = {i: [] for i in range(numClusters)}
+    # Iterate Samples and add the index of the sample to its corresponding cluster
+    for sampleIndex in range(samplesLen):
+        sampleLabel = labels[sampleIndex]
+        res_dict[sampleLabel].append(sampleIndex)
+    return res_dict
 
 
 def main():
