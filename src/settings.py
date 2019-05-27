@@ -40,8 +40,8 @@ interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
-clusteringPath = p / 'clustering/dim2-128/128.pkl'
-representativesPath = p / 'clustering/dim2-128/128repr.pkl'
+clusteringPath = p / 'clustering/dim50-128/128.pkl'
+representativesPath = p / 'clustering/dim50-128/128repr.pkl'
 pcaPath = p / 'clustering/pca-dim2.pkl'
 
 
