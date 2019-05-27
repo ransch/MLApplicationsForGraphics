@@ -49,7 +49,8 @@ def vis(lowDimMat, buckets, representatives):
 
     plt.scatter(x, y, c=labels, alpha=0.75, marker='o')
     plt.scatter(reprX, reprY, c="red", alpha=0.75, marker='X')
-    plt.show()
+    # plt.show()
+    plt.savefig(settings.localModels / 'repr-dim2-128.jpg', dpi=600)
 
 
 def lowDim(method, mat):
