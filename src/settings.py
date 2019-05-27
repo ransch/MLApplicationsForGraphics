@@ -39,9 +39,9 @@ archHyperPath = localModels / 'arch/hyperparams.py'
 interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
 
-clusteringPath = p / 'clustering/dim20-50/128.pkl'
-representativesPath = p / 'clustering/dim20-50/128repr.pkl'
-pcaPath = p / 'clustering/dim20/pcatestttttt.pkl'
+clusteringPath = p / 'clustering/dim2-128/128.pkl'
+representativesPath = p / 'clustering/dim2-128/128repr.pkl'
+pcaPath = p / 'clustering/pca-dim2.pkl'
 
 
 def sysAsserts():
