@@ -50,8 +50,8 @@ def vis(lowDimMat, buckets, representatives):
     plt.scatter(x, y, c=labels, alpha=0.75, marker='o')
     plt.scatter(reprX, reprY, c="red", alpha=0.75, marker='X')
     # plt.show()
-    print(settings.localModels / 'repr-dim2-128.jpg')
-    plt.savefig(settings.localModels / 'repr-dim2-128.jpg', dpi=600)
+    print(settings.localModels / 'repr-dim2-128-tsne.jpg')
+    plt.savefig(settings.localModels / 'repr-dim2-128-tsne.jpg', dpi=600)
 
 
 def lowDim(method, mat):
@@ -68,7 +68,7 @@ def main():
     lowDimMat, buckets, representatives = load(settings.pcaPath, settings.clusteringPath, settings.representativesPath)
 
     if lowDimMat.shape[1] > 2:
-        lowDimMat = lowDim('pca', lowDimMat)
+        lowDimMat = lowDim('tsne', lowDimMat)
 
     vis(lowDimMat, buckets, representatives)
 
