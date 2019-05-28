@@ -56,7 +56,7 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
             embed.train()
 
         printevery = sofar
-    endCallback(str(settings.gloVisPath), epochsNum, evalEvery, time.time() - start_time)
+    endCallback(str(settings.gloVisPath), settings.gloTrainingTimePath, epochsNum, evalEvery, time.time() - start_time)
     ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
     # p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/"],
     #              # COPY SOURCE DEST

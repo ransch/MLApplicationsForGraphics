@@ -1,9 +1,9 @@
 import pickle
 
 import torch
-import torch.nn as nn
 import torchvision.models as torchModels
 from torch.utils.data import DataLoader
+
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
@@ -21,7 +21,7 @@ def dataMatrix(dloader):
             indices = batch['ind'].to(settings.device).type(torch.float32).squeeze_(1)
             for ind in indices:
                 assert ind == last_ind
-                last_ind+=1
+                last_ind += 1
             images = batch['image'].to(settings.device).type(torch.float32)
             features.append(resnet(images))
     return torch.cat(features)

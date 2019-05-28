@@ -7,6 +7,7 @@ from torchvision.utils import save_image
 
 from src import hyperparameters as hyperparams
 from src import settings
+from src.training.trainAux import printLogTrainingTime
 
 _encLosses = []
 _genLosses = []
@@ -47,8 +48,8 @@ def betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset):
 
 def archEndCallback(figpath, epochs, evalEvery, elapsed_time):
     elapsed_time = time.gmtime(elapsed_time)
-    print(f'Training finished in {elapsed_time.tm_mday - 1} days, '
-          f'{elapsed_time.tm_hour} hours, {elapsed_time.tm_min} minutes')
+    printLogTrainingTime(elapsed_time, settings.archTrainingTimePath)
+
     plt.plot(range(1, epochs + 1, evalEvery), _encLosses, '--o')
     plt.plot(range(1, epochs + 1, evalEvery), _genLosses, '--o')
     plt.plot(range(1, epochs + 1, evalEvery), _archLosses, '--o')

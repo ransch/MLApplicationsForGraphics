@@ -53,7 +53,7 @@ def train(embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, ep
             enc.train()
 
         printevery = sofar
-    endCallback(str(settings.encVisPath), epochsNum, evalEvery, time.time() - start_time)
+    endCallback(str(settings.encVisPath), settings.encTrainingTimePath, epochsNum, evalEvery, time.time() - start_time)
 
 
 def totalLoss(embed, enc, dloader, dsize, criterion):

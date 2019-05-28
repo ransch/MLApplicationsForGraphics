@@ -2,7 +2,6 @@ import pickle
 
 import matplotlib.pyplot as plt
 import torch
-from sklearn.manifold import TSNE
 
 from src import hyperparameters as hyperparams
 from src import settings
@@ -48,10 +47,10 @@ def vis(lowDimMat, buckets, representatives):
     reprY = reprMat[:, 1]
 
     plt.scatter(x, y, c=labels, alpha=0.75, marker='o')
-    plt.scatter(reprX, reprY, c="red", alpha=0.75, marker='X')
+    plt.scatter(reprX, reprY, c='red', alpha=0.75, marker='X')
+    assert not settings.clusteringVisPath.is_file()
+    plt.savefig(settings.clusteringVisPath, dpi=600)
     # plt.show()
-    print(settings.localModels / 'repr-dim50-128-tsne.jpg')
-    plt.savefig(settings.localModels / 'repr-dim50-128-tsne.jpg', dpi=600)
 
 
 def lowDim(method, mat):
@@ -60,15 +59,16 @@ def lowDim(method, mat):
         encMat = pca.PCA(mat, hyperparams.clusteringPCADim)
         mat = pca.encodeMat(mat, encMat)
         return mat.cpu().numpy()
-    assert method == 'tsne'
-    return TSNE(n_components=2).fit_transform(mat)
+    # assert method == 'tsne'
+    # return TSNE(n_components=2).fit_transform(mat)
+    assert False
 
 
 def main():
     lowDimMat, buckets, representatives = load(settings.pcaPath, settings.clusteringPath, settings.representativesPath)
 
     if lowDimMat.shape[1] > 2:
-        lowDimMat = lowDim('tsne', lowDimMat)
+        lowDimMat = lowDim('pca', lowDimMat)
 
     vis(lowDimMat, buckets, representatives)
 

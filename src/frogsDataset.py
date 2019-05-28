@@ -1,4 +1,5 @@
 import os
+
 import skimage.io
 import torch
 from skimage.color import rgba2rgb

@@ -25,24 +25,28 @@ gloLatentPath = localModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
+gloTrainingTimePath = localModels / 'glo/training_time.txt'
 
-encModelPath = matureModels / 'arch/enc6.pt'
+encModelPath = localModels / 'enc/enc.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
+encTrainingTimePath = localModels / 'enc/training_time.txt'
 
 archEncPath = localModels / 'arch/enc.pt'
 archGenPath = localModels / 'arch/gen.pt'
 archVisPath = localModels / 'arch/arch.jpg'
 archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
+archTrainingTimePath = localModels / 'arch/training_time.txt'
 
 interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
-clusteringPath = p / 'clustering/dim50-128/128.pkl'
-representativesPath = p / 'clustering/dim50-128/128repr.pkl'
-pcaPath = p / 'clustering/pca-dim2.pkl'
+clusteringPath = p / 'clustering/dim-100-clst-128/clusters.pkl'
+representativesPath = p / 'clustering/dim-100-clst-128/repr-4.pkl'
+pcaPath = p / 'clustering/pca-dim100.pkl'
+clusteringVisPath = p / 'clustering/dim-100-clst-128/vis.jpg'
 
 
 def sysAsserts():
@@ -62,6 +66,7 @@ def gloFilesAsserts():
     assert not gloLatentPath.is_file()
     assert not gloVisPath.is_file()
     assert not gloHyperPath.is_file()
+    assert not gloTrainingTimePath.is_file()
     assert len(os.listdir(gloProgressPath)) == 0
 
 
@@ -73,6 +78,7 @@ def encFilesAsserts():
     assert not encModelPath.is_file()
     assert not encVisPath.is_file()
     assert not encHyperPath.is_file()
+    assert not encTrainingTimePath.is_file()
     assert gloLatentPath.is_file()
 
 
@@ -87,6 +93,7 @@ def archFilesAsserts():
     assert not archGenPath.is_file()
     assert not archVisPath.is_file()
     assert not archHyperPath.is_file()
+    assert not archTrainingTimePath.is_file()
     assert len(os.listdir(archProgressPath)) == 0
     assert gloGenPath.is_file()
     assert gloLatentPath.is_file()

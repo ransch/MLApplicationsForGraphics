@@ -25,13 +25,21 @@ def evalEveryCallback():
     print(f'Starting model evaluation')
 
 
-def endCallback(figpath, epochs, evalEvery, elapsed_time):
+def endCallback(figpath, elapsed_time_path, epochs, evalEvery, elapsed_time):
     elapsed_time = time.gmtime(elapsed_time)
-    print(f'Training finished in {elapsed_time.tm_mday - 1} days, '
-          f'{elapsed_time.tm_hour} hours, {elapsed_time.tm_min} minutes')
+    printLogTrainingTime(elapsed_time, elapsed_time_path)
+
     plt.plot(range(1, epochs + 1, evalEvery), _losses, '--o')
     plt.legend(['Training loss'])
     plt.title('Learning Curve')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.savefig(figpath, dpi=600)
+
+
+def printLogTrainingTime(elapsed_time, filepath):
+    elapsed_time_msg = (f'Training finished in {elapsed_time.tm_mday - 1} days, '
+                        f'{elapsed_time.tm_hour} hours, {elapsed_time.tm_min} minutes')
+    print(elapsed_time_msg)
+    with open(filepath, 'w') as f:
+        f.write(elapsed_time_msg)
