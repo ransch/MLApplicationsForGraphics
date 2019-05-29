@@ -16,7 +16,7 @@ _weightLosses = []
 
 
 def archLossCallback(encLoss, genLoss, archLoss, weightedLoss):
-    print(f'Training loss: {round(weightedLoss, 2)}')
+    print(f'Training (weighted) loss: {round(weightedLoss, 2)}')
     _encLosses.append(encLoss)
     _genLosses.append(genLoss)
     _archLosses.append(archLoss)

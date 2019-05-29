@@ -5,11 +5,11 @@ from pathlib import Path
 import torch
 
 
-def loadSubset(reprPath):
+def loadSubset(frogsInds, reprPath):
     with open(reprPath, 'rb') as f:
         pcklr = pickle.Unpickler(f)
         l = pcklr.load()
-    return [item for sublist in l.values() for item in sublist]
+    return [frogsInds[item] for sublist in l.values() for item in sublist]
 
 
 device = torch.device('cuda:0')
@@ -45,10 +45,10 @@ interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
-clusteringPath = p / 'clustering/5491-dim-100-clst-128/clusters.pkl'
-representativesPath = p / 'clustering/5491-dim-100-clst-128/repr-8.pkl'
+clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
+representativesPath = p / 'clustering/5488-dim-100-clst-128/repr-8.pkl'
 pcaPath = p / 'clustering/pca-dim100.pkl'
-clusteringVisPath = p / 'clustering/5491-dim-100-clst-128/vis.jpg'
+clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
 
 frogs = p / 'frogs-64'
 frogs1000 = list(range(1, 1001))
@@ -56,10 +56,12 @@ frogs3000 = list(range(1001, 4001))
 frogs5000 = list(range(1001, 6001))
 frogs6000 = frogs1000 + frogs5000
 testFrogs1000 = list(range(6001, 7001))
-frogsSubset1 = loadSubset(p / 'clustering/6000-dim-100-clst-128/repr-4.pkl')
+frogsSubset1 = loadSubset(frogs6000, p / 'clustering/6000-dim-100-clst-128/repr-4.pkl')
 frogsSubset1C = sorted(set(frogs6000).difference(frogsSubset1))
-frogsSubset2 = loadSubset(p / 'clustering/5491-dim-100-clst-128/repr-8.pkl')
-
+frogsSubset2 = loadSubset(p / 'clustering/5488-dim-100-clst-128/repr-8.pkl')
+frogsMain = sorted(set(frogs6000).difference(frogsSubset1).difference(frogsSubset2))
+assert len(set(frogsSubset1).intersection(set(frogsSubset2))) == 0
+assert len(frogsMain) + len(frogsSubset1) + len(frogsSubset2) == 6000
 
 def sysAsserts():
     assert torch.backends.mkl.is_available()

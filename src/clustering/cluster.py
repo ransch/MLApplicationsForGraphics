@@ -12,6 +12,7 @@ from src.frogsDataset import FrogsDataset as Dataset
 def createBuckets(numClusters, labels):
     '''
     returns: dict of (cluster_ind, [list of indices of pictures in this cluster])
+    each index equals *the position in the dataset's array*, and not the index in filesystem
     '''
 
     samplesLen = len(labels)

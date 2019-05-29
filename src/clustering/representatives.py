@@ -26,7 +26,7 @@ def extractRepresentatives(samples, buckets, centroids, reprNum):
         centerOfBucket = np.expand_dims(centroids[i], axis=0)
         neighInds = np.squeeze(neighAlg.kneighbors(centerOfBucket, return_distance=False),
                                axis=0)  # returns the indices in buckets[i] that correspondes to the k-nearest
-        res[i] = [buckets[i][j] for j in neighInds]  # buckets[i][j] = the index of the sample in "samples"
+        res[i] = [buckets[i][j] for j in neighInds]  # buckets[i][j] = the index of the sample in "samples".
 
     with open(settings.representativesPath, 'wb') as f:
         pcklr = pickle.Pickler(f)

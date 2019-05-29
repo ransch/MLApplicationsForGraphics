@@ -10,6 +10,7 @@ numEach = 5
 
 
 def main():
+    frogsInds = settings.frogsSubset1C
     with open(settings.clusteringPath, 'rb') as f:
         pcklr = pickle.Unpickler(f)
         buckets, _ = pcklr.load()
@@ -24,7 +25,7 @@ def main():
         for i in range(numEach):
             cluster = clusters[cluster_ind]
             ind = buckets[cluster][i]
-            img = mpimg.imread(str(settings.frogs / f'frog-{ind}.png'))
+            img = mpimg.imread(str(settings.frogs / f'frog-{frogsInds[ind]}.png'))
             axs[cluster_ind, i].imshow(img)
 
     plt.show()
