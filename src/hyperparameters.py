@@ -24,11 +24,6 @@ gloLossPowBeta = 1
 
 encLossAlpha = 1
 encLossBeta = 1
-encPertMean = 0
-encPertStd = .3
-encPertAlpha = 1
-encPertBeta = 1
-encPertGamma = 1
 
 archPercLossAlpha = 1
 archPercLossBeta = 1
@@ -39,7 +34,7 @@ archL1L2LossBeta = 1
 archPertMean = 0
 archPertStd = .1
 archPertCoeff = 2
-archPertPow = 1.2
+archPertPow = 1
 archLossAlpha = 1.2
 archSubsetLossBeta = 1
 archSubsetLossGamma = 1
@@ -48,18 +43,18 @@ archSubsetLossPow = 1
 
 gloEpochsNum = 1001
 gloBatchSize = 35
-gloEvalEvery = 250
+gloEvalEvery = 20
 
-encEpochsNum = 500
+encEpochsNum = 501
 encBatchSize = 35
-encEvalEvery = 5
+encEvalEvery = 20
 
-archEpochsNum = 81
+archEpochsNum = 301
 archSubsetBatchSize = 35
 archMainBatchSize = 75
-archEvalEvery = 4
-archRatio = (0, 1)
+archEvalEvery = 20
+archRatio = (5, 5)
 
 clusteringPCADim = 100
 clusteringNum = 128
-clusteringReprNum = 4
+clusteringReprNum = 8

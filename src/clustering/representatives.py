@@ -2,9 +2,12 @@ import pickle
 
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
+from torch.utils.data import DataLoader
 
 from src import hyperparameters as hyperparams
 from src import settings
+from src.clustering.pca import reduceDim
+from src.frogsDataset import FrogsDataset as Dataset
 
 
 def extractRepresentatives(samples, buckets, centroids, reprNum):
@@ -34,9 +37,9 @@ def main():
     settings.sysAsserts()
     settings.representativesAsserts()
 
-    with open(settings.pcaPath, 'rb') as f:
-        pcklr = pickle.Unpickler(f)
-        lowDimMat = pcklr.load()
+    dataset = Dataset(settings.frogs, settings.frogsSubset1C)
+    dloader = DataLoader(dataset, batch_size=hyperparams.archMainBatchSize, shuffle=False)
+    lowDimMat = reduceDim(dloader, settings.pcaPath)
 
     with open(settings.clusteringPath, 'rb') as f:
         pcklr = pickle.Unpickler(f)

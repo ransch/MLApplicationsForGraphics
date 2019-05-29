@@ -34,14 +34,16 @@ def betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset):
             next(batchiter)
             batch = next(batchiter)
             inds = batch['ind'].to(settings.device).view(-1)
+            fileinds = batch['fileind'].to(settings.device).view(-1)
             images = batch['image'].to(settings.device).type(torch.float32)
             assert len(inds) >= settings.samplesLen
 
             for i in range(settings.samplesLen):
                 ind = inds[i]
+                fileind = fileinds[i]
                 image = images[i].unsqueeze_(0)
                 fake = gen(enc(image).view(1, hyperparams.latentDim, 1, 1))
-                filename = f'epoch-{epoch}-{dlname}-ind-{ind.item()}.png'
+                filename = f'epoch-{epoch}-{dlname}-ind-{fileind.item()}.png'
                 filepath = os.path.join(settings.archProgressPath, filename)
                 save_image(fake[0], filepath)
 

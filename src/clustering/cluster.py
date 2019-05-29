@@ -1,9 +1,12 @@
 import pickle
 
 from sklearn.cluster import KMeans
+from torch.utils.data import DataLoader
 
 from src import hyperparameters as hyperparams
 from src import settings
+from src.clustering.pca import reduceDim
+from src.frogsDataset import FrogsDataset as Dataset
 
 
 def createBuckets(numClusters, labels):
@@ -24,9 +27,9 @@ def main():
     settings.sysAsserts()
     settings.clusteringAsserts()
 
-    with open(settings.pcaPath, 'rb') as f:
-        pcklr = pickle.Unpickler(f)
-        lowDimMat = pcklr.load()
+    dataset = Dataset(settings.frogs, settings.frogsSubset1C)
+    dloader = DataLoader(dataset, batch_size=hyperparams.archMainBatchSize, shuffle=False)
+    lowDimMat = reduceDim(dloader, settings.pcaPath)
 
     kmeans = KMeans(n_clusters=hyperparams.clusteringNum, init='k-means++', n_init=10, max_iter=300, tol=1e-4,
                     precompute_distances=True, algorithm='elkan').fit(lowDimMat)

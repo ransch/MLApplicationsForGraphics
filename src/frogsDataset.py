@@ -21,5 +21,6 @@ class FrogsDataset(Dataset):
         filepath = os.path.join(self.root, filename)
         img = rgba2rgb(skimage.io.imread(filepath))
         img = self.trans(img)
-        sample = {'ind': torch.tensor([idx], dtype=torch.int64), 'image': img}
+        sample = {'ind': torch.tensor([idx], dtype=torch.int64),
+                  'fileind': torch.tensor([self.indices[idx]], dtype=torch.int64), 'image': img}
         return sample

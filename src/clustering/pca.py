@@ -49,6 +49,14 @@ def encodeMat(mat, encMat):
     return mat @ encMat.t()  # checked!
 
 
+def reduceDim(dloader, pcaPath):
+    X = dataMatrix(dloader)
+    with open(pcaPath, 'rb') as f:
+        pcklr = pickle.Unpickler(f)
+        encMat = pcklr.load()
+    return encodeMat(X, encMat).cpu().numpy()
+
+
 def main():
     settings.sysAsserts()
     settings.pcaAsserts()
@@ -57,12 +65,10 @@ def main():
 
     X = dataMatrix(dloader)
     encMat = PCA(X, hyperparams.clusteringPCADim)
-    lowDimMat = encodeMat(X, encMat)
-    lowDimMat = lowDimMat.cpu().numpy()
 
     with open(settings.pcaPath, 'wb') as f:
         pcklr = pickle.Pickler(f)
-        pcklr.dump(lowDimMat)
+        pcklr.dump(encMat)
 
 
 if __name__ == '__main__':

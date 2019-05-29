@@ -2,16 +2,17 @@ import pickle
 
 import matplotlib.pyplot as plt
 import torch
+from torch.utils.data import DataLoader
 
 from src import hyperparameters as hyperparams
 from src import settings
 from src.clustering import pca
+from src.clustering.pca import reduceDim
+from src.frogsDataset import FrogsDataset as Dataset
 
 
-def load(pcaPath, clusteringPath, representativesPath):
-    with open(pcaPath, 'rb') as f:
-        pcklr = pickle.Unpickler(f)
-        lowDimMat = pcklr.load()
+def load(pcaPath, clusteringPath, representativesPath, dloader):
+    lowDimMat = reduceDim(dloader, settings.pcaPath)
 
     with open(clusteringPath, 'rb') as f:
         pcklr = pickle.Unpickler(f)
@@ -65,7 +66,10 @@ def lowDim(method, mat):
 
 
 def main():
-    lowDimMat, buckets, representatives = load(settings.pcaPath, settings.clusteringPath, settings.representativesPath)
+    dataset = Dataset(settings.frogs, settings.frogsSubset1C)
+    dloader = DataLoader(dataset, batch_size=hyperparams.archMainBatchSize, shuffle=False)
+    lowDimMat, buckets, representatives = load(settings.pcaPath, settings.clusteringPath, settings.representativesPath,
+                                               dloader)
 
     if lowDimMat.shape[1] > 2:
         lowDimMat = lowDim('pca', lowDimMat)

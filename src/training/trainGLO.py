@@ -1,4 +1,5 @@
 import datetime
+import winsound
 
 import math
 import torch.nn as nn
@@ -57,12 +58,6 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
 
         printevery = sofar
     endCallback(str(settings.gloVisPath), settings.gloTrainingTimePath, epochsNum, evalEvery, time.time() - start_time)
-    ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
-    # p = sp.Popen(args=["cp -R", settings.localModels, "../../../../../../cloudstorage/yuvalHelman/"],
-    #              # COPY SOURCE DEST
-    #             )
-    # p.wait()
-    ################################# YUVAL SERVER STUFF FOR THE NOOB ##########
 
 
 def totalLoss(gen, embed, dloader, dsize, criterion):
@@ -84,7 +79,7 @@ def totalLoss(gen, embed, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
-    dataset = Dataset(settings.frogs, settings.frogs6000)
+    dataset = Dataset(settings.frogs, settings.frogsSubset1)
     dsize = len(dataset)
 
     gen = Generator().to(settings.device)
@@ -109,13 +104,13 @@ def main():
               hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback,
               betterCallback,
               endCallback)
-        # winsound.Beep(640, 1000) # Yuval Edit
+        winsound.Beep(640, 1000)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        # winsound.Beep(420, 1000) # Yuval Edit
+        winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,16 @@
 import os
+import pickle
 from pathlib import Path
 
 import torch
+
+
+def loadSubset(reprPath):
+    with open(reprPath, 'rb') as f:
+        pcklr = pickle.Unpickler(f)
+        l = pcklr.load()
+    return [item for sublist in l.values() for item in sublist]
+
 
 device = torch.device('cuda:0')
 
@@ -9,13 +18,6 @@ p = Path(__file__).resolve().parent.parent
 
 localModels = p / 'no_git/models'
 matureModels = p / 'models'
-
-frogs = p / 'frogs-64'
-frogs1000 = list(range(1, 1001))
-frogs3000 = list(range(1001, 4001))
-frogs5000 = list(range(1001, 6001))
-frogs6000 = frogs1000 + frogs5000
-testFrogs1000 = list(range(6001, 7001))
 
 printevery = 1000
 samplesLen = 5
@@ -32,21 +34,31 @@ encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
 
-archEncPath = localModels / 'arch/enc.pt'
-archGenPath = localModels / 'arch/gen.pt'
-archVisPath = localModels / 'arch/arch.jpg'
-archProgressPath = localModels / 'arch/progress'
-archHyperPath = localModels / 'arch/hyperparams.py'
-archTrainingTimePath = localModels / 'arch/training_time.txt'
+archEncPath = localModels / 'arch1/enc.pt'
+archGenPath = localModels / 'arch1/gen.pt'
+archVisPath = localModels / 'arch1/arch.jpg'
+archProgressPath = localModels / 'arch1/progress'
+archHyperPath = localModels / 'arch1/hyperparams.py'
+archTrainingTimePath = localModels / 'arch1/training_time.txt'
 
 interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
-clusteringPath = p / 'clustering/dim-100-clst-128/clusters.pkl'
-representativesPath = p / 'clustering/dim-100-clst-128/repr-4.pkl'
+clusteringPath = p / 'clustering/5491-dim-100-clst-128/clusters.pkl'
+representativesPath = p / 'clustering/5491-dim-100-clst-128/repr-8.pkl'
 pcaPath = p / 'clustering/pca-dim100.pkl'
-clusteringVisPath = p / 'clustering/dim-100-clst-128/vis.jpg'
+clusteringVisPath = p / 'clustering/5491-dim-100-clst-128/vis.jpg'
+
+frogs = p / 'frogs-64'
+frogs1000 = list(range(1, 1001))
+frogs3000 = list(range(1001, 4001))
+frogs5000 = list(range(1001, 6001))
+frogs6000 = frogs1000 + frogs5000
+testFrogs1000 = list(range(6001, 7001))
+frogsSubset1 = loadSubset(p / 'clustering/6000-dim-100-clst-128/repr-4.pkl')
+frogsSubset1C = sorted(set(frogs6000).difference(frogsSubset1))
+frogsSubset2 = loadSubset(p / 'clustering/5491-dim-100-clst-128/repr-8.pkl')
 
 
 def sysAsserts():
@@ -60,7 +72,7 @@ def gloFilesAsserts():
     if not gloGenPath.parent.is_dir():
         os.makedirs(gloGenPath.parent)
     if not gloProgressPath.is_dir():
-        os.makedirs(gloProgressPath.parent)
+        os.makedirs(gloProgressPath)
 
     assert not gloGenPath.is_file()
     assert not gloLatentPath.is_file()
@@ -87,7 +99,7 @@ def archFilesAsserts():
     if not archEncPath.parent.is_dir():
         os.makedirs(archEncPath.parent)
     if not archProgressPath.is_dir():
-        os.makedirs(archProgressPath.parent)
+        os.makedirs(archProgressPath)
 
     assert not archEncPath.is_file()
     assert not archGenPath.is_file()
