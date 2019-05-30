@@ -34,12 +34,12 @@ encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
 
-archEncPath = localModels / 'arch1/enc.pt'
-archGenPath = localModels / 'arch1/gen.pt'
-archVisPath = localModels / 'arch1/arch.jpg'
-archProgressPath = localModels / 'arch1/progress'
-archHyperPath = localModels / 'arch1/hyperparams.py'
-archTrainingTimePath = localModels / 'arch1/training_time.txt'
+archEncPath = localModels / 'arch2/enc.pt'
+archGenPath = localModels / 'arch2/gen.pt'
+archVisPath = localModels / 'arch2/arch.jpg'
+archProgressPath = localModels / 'arch2/progress'
+archHyperPath = localModels / 'arch2/hyperparams.py'
+archTrainingTimePath = localModels / 'arch2/training_time.txt'
 
 interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
@@ -58,7 +58,7 @@ frogs6000 = frogs1000 + frogs5000
 testFrogs1000 = list(range(6001, 7001))
 frogsSubset1 = loadSubset(frogs6000, p / 'clustering/6000-dim-100-clst-128/repr-4.pkl')
 frogsSubset1C = sorted(set(frogs6000).difference(frogsSubset1))
-frogsSubset2 = loadSubset(p / 'clustering/5488-dim-100-clst-128/repr-8.pkl')
+frogsSubset2 = loadSubset(frogsSubset1C, p / 'clustering/5488-dim-100-clst-128/repr-8.pkl')
 frogsMain = sorted(set(frogs6000).difference(frogsSubset1).difference(frogsSubset2))
 assert len(set(frogsSubset1).intersection(set(frogsSubset2))) == 0
 assert len(frogsMain) + len(frogsSubset1) + len(frogsSubset2) == 6000

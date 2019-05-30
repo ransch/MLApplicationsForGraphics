@@ -31,7 +31,6 @@ def betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset):
     with torch.no_grad():
         for dlname, dloader in zip(('main', 'subset'), (dloaderMain, dloaderSubset)):
             batchiter = iter(dloader)
-            next(batchiter)
             batch = next(batchiter)
             inds = batch['ind'].to(settings.device).view(-1)
             fileinds = batch['fileind'].to(settings.device).view(-1)

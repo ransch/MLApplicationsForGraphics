@@ -27,6 +27,12 @@ def setMode(epoch, ratio, enc, gen):
     return mode
 
 
+def remaining_time(start_time, sofar, dsizeMain, dsizeSubset, mainBatchSize, subsetBatchSize, epochsNum, evalEvery):
+    return (time.time() - start_time) / sofar * (
+            (dsizeMain + dsizeSubset + int(dsizeMain / mainBatchSize * subsetBatchSize))
+            * epochsNum + (dsizeMain + dsizeSubset) * int((epochsNum + 1) / evalEvery) - sofar)
+
+
 def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, encCriterion, genCriterion,
           archCriterion, encOptim, genOptim, epochsNum, ratio, evalEvery, epochCallback, progressCallback,
           evalEveryCallback, lossCallback, betterCallback, endCallback):
@@ -82,9 +88,9 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
 
             sofar += len(images) + len(subsetImages)
             if sofar >= printevery:
-                progressCallback(sofar, (time.time() - start_time) / sofar * (
-                        (dsizeMain + int(dsizeMain / hyperparams.archMainBatchSize * hyperparams.archSubsetBatchSize))
-                        * epochsNum + (dsizeMain + dsizeSubset) * int((epochsNum + 1) / evalEvery) - sofar))
+                progressCallback(sofar, remaining_time(start_time, sofar, dsizeMain, dsizeSubset,
+                                                       hyperparams.archMainBatchSize, hyperparams.archSubsetBatchSize,
+                                                       epochsNum, evalEvery))
                 printevery += settings.printevery
 
         if (epoch - 1) % evalEvery == 0:
