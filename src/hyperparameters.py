@@ -27,26 +27,26 @@ encLossBeta = 1
 ###################################################################
 #                             Arch Config
 ###################################################################
-archPercLossAlpha = 1 # Perceptual loss  multiplier l1 norm
+archPercLossAlpha = 1  # Perceptual loss  multiplier l1 norm
 archLossPowAlpha = 1  # Perceptual loss  pow l1 norm
 
-archPercLossBeta = 1 # Perceptual loss  multiplier features
+archPercLossBeta = 1  # Perceptual loss  multiplier features
 archLossPowBeta = 1  # Perceptual loss  pow features
 
-archL1L2LossAlpha = 1 # loss1[Zx, E(x)] l1norm
-archL1L2LossBeta = 1 # loss1[Zx, E(x)] l2norm
+archL1L2LossAlpha = 1  # loss1[Zx, E(x)] l1norm
+archL1L2LossBeta = 1  # loss1[Zx, E(x)] l2norm
 
-archPertMean = 0 # Noise Sampling
-archPertStd = .1 # Noise Sampling
-archPertCoeff = 2 # Noise term multiplier
-archPertPow = 1 # Noise term pow
+archPertMean = 0  # Noise Sampling
+archPertStd = .1  # Noise Sampling
+archPertCoeff = 2  # Noise term multiplier
+archPertPow = 1  # Noise term pow
 
-archLossAlpha = 1.2 # Loss3 coeff (main) - without noise
-archSubsetLossBeta = 1 # Loss1 coeff (subset)
-archSubsetLossGamma = 1 # Loss2 coeff (subset)
+archLossAlpha = 1.2  # Loss3 coeff (main) - without noise
+archSubsetLossBeta = 1  # Loss1 coeff (subset)
+archSubsetLossGamma = 1  # Loss2 coeff (subset)
 
-archMainLossPow = 1.2 # Loss3 pow (main) - without noise
-archSubsetLossPow = 1 # Loss1 and Loss2 pow (subset)
+archMainLossPow = 1.2  # Loss3 pow (main) - without noise
+archSubsetLossPow = 1  # Loss1 and Loss2 pow (subset)
 ###################################################################
 gloEpochsNum = 1001
 gloBatchSize = 35

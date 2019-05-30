@@ -63,6 +63,7 @@ frogsMain = sorted(set(frogs6000).difference(frogsSubset1).difference(frogsSubse
 assert len(set(frogsSubset1).intersection(set(frogsSubset2))) == 0
 assert len(frogsMain) + len(frogsSubset1) + len(frogsSubset2) == 6000
 
+
 def sysAsserts():
     assert torch.backends.mkl.is_available()
     assert torch.cuda.is_available()
