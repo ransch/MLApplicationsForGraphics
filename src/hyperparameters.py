@@ -24,23 +24,30 @@ gloLossPowBeta = 1
 
 encLossAlpha = 1
 encLossBeta = 1
+###################################################################
+#                             Arch Config
+###################################################################
+archPercLossAlpha = 1 # Perceptual loss  multiplier l1 norm
+archLossPowAlpha = 1  # Perceptual loss  pow l1 norm
 
-archPercLossAlpha = 1.7
-archPercLossBeta = 1
-archLossPowAlpha = 1.7
-archLossPowBeta = 1.1
-archL1L2LossAlpha = 1
-archL1L2LossBeta = 1
-archPertMean = 0
-archPertStd = .1
-archPertCoeff = 2
-archPertPow = 1
-archLossAlpha = 1.5
-archSubsetLossBeta = 1
-archSubsetLossGamma = 1
-archMainLossPow = 1.1
-archSubsetLossPow = 1
+archPercLossBeta = 1 # Perceptual loss  multiplier features
+archLossPowBeta = 1  # Perceptual loss  pow features
 
+archL1L2LossAlpha = 1 # loss1[Zx, E(x)] l1norm
+archL1L2LossBeta = 1 # loss1[Zx, E(x)] l2norm
+
+archPertMean = 0 # Noise Sampling
+archPertStd = .1 # Noise Sampling
+archPertCoeff = 2 # Noise term multiplier
+archPertPow = 1 # Noise term pow
+
+archLossAlpha = 1.2 # Loss3 coeff (main) - without noise
+archSubsetLossBeta = 1 # Loss1 coeff (subset)
+archSubsetLossGamma = 1 # Loss2 coeff (subset)
+
+archMainLossPow = 1.2 # Loss3 pow (main) - without noise
+archSubsetLossPow = 1 # Loss1 and Loss2 pow (subset)
+###################################################################
 gloEpochsNum = 1001
 gloBatchSize = 35
 gloEvalEvery = 20
