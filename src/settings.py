@@ -22,24 +22,24 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo/gen.pt'
-gloLatentPath = localModels / 'glo/latent.pt'
+gloGenPath = localModels / 'arch4/gen.pt'
+gloLatentPath = matureModels / 'latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
 gloTrainingTimePath = localModels / 'glo/training_time.txt'
 
-encModelPath = localModels / 'enc/enc.pt'
+encModelPath = localModels / 'arch4/enc.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
 
-archEncPath = localModels / 'arch2/enc.pt'
-archGenPath = localModels / 'arch2/gen.pt'
-archVisPath = localModels / 'arch2/arch.jpg'
-archProgressPath = localModels / 'arch2/progress'
-archHyperPath = localModels / 'arch2/hyperparams.py'
-archTrainingTimePath = localModels / 'arch2/training_time.txt'
+archEncPath = localModels / 'arch5/enc.pt'
+archGenPath = localModels / 'arch5/gen.pt'
+archVisPath = localModels / 'arch5/arch.jpg'
+archProgressPath = localModels / 'arch5/progress'
+archHyperPath = localModels / 'arch5/hyperparams.py'
+archTrainingTimePath = localModels / 'arch5/training_time.txt'
 
 interPath = localModels / 'arch/arch-inter'
 featuresPath = localModels / 'arch/arch-features'
@@ -59,7 +59,8 @@ testFrogs1000 = list(range(6001, 7001))
 frogsSubset1 = loadSubset(frogs6000, p / 'clustering/6000-dim-100-clst-128/repr-4.pkl')
 frogsSubset1C = sorted(set(frogs6000).difference(frogsSubset1))
 frogsSubset2 = loadSubset(frogsSubset1C, p / 'clustering/5488-dim-100-clst-128/repr-8.pkl')
-frogsMain = sorted(set(frogs6000).difference(frogsSubset1).difference(frogsSubset2))
+frogsSubset = sorted(set(frogsSubset1).union(frogsSubset2))
+frogsMain = sorted(set(frogs6000).difference(frogsSubset))
 assert len(set(frogsSubset1).intersection(set(frogsSubset2))) == 0
 assert len(frogsMain) + len(frogsSubset1) + len(frogsSubset2) == 6000
 

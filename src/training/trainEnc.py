@@ -1,5 +1,5 @@
 import datetime
-import winsound
+# import winsound
 
 import math
 import torch.nn as nn
@@ -91,7 +91,7 @@ def main():
     try:
         train(embed, enc, dloader, dsize, criterion, optimizer, hyperparams.encEpochsNum, hyperparams.encEvalEvery,
               epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
-        winsound.Beep(640, 1000)
+        # winsound.Beep(640, 1000)
 
         saveHyperParams(settings.encHyperPath)
 
@@ -99,7 +99,7 @@ def main():
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        winsound.Beep(420, 1000)
+        # winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':

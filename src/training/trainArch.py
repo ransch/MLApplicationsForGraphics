@@ -1,5 +1,5 @@
 import datetime
-import winsound
+# import winsound
 
 import math
 import torch.nn as nn
@@ -29,7 +29,7 @@ def setMode(epoch, ratio, enc, gen):
 
 def remaining_time(start_time, sofar, dsizeMain, dsizeSubset, mainBatchSize, subsetBatchSize, epochsNum, evalEvery):
     return (time.time() - start_time) / sofar * (
-            (dsizeMain + dsizeSubset + int(dsizeMain / mainBatchSize * subsetBatchSize))
+            (dsizeMain + (int(dsizeMain / mainBatchSize) + 1) * subsetBatchSize)
             * epochsNum + (dsizeMain + dsizeSubset) * int((epochsNum + 1) / evalEvery) - sofar)
 
 
@@ -151,14 +151,14 @@ def totalLossSubset(enc, gen, embed, dloader, dsize, encCriterion, genCriterion)
 def main():
     settings.sysAsserts()
     settings.archFilesAsserts()
-    datasetSubset = Dataset(settings.frogs, settings.frogsSubset1)
-    datasetMain = Dataset(settings.frogs, settings.frogsSubset2)
+    datasetSubset = Dataset(settings.frogs, settings.frogsSubset)
+    datasetMain = Dataset(settings.frogs, settings.frogsMain)
     dsizeSubset = len(datasetSubset)
     dsizeMain = len(datasetMain)
 
     enc = Encoder().to(settings.device)
     gen = Generator().to(settings.device)
-    embed = nn.Embedding(len(datasetSubset), hyperparams.latentDim).to(settings.device)
+    embed = nn.Embedding(dsizeSubset, hyperparams.latentDim).to(settings.device)
 
     enc.load_state_dict(torch.load(settings.encModelPath))
     gen.load_state_dict(torch.load(settings.gloGenPath))
@@ -181,13 +181,13 @@ def main():
         train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, l1l2Loss, percLoss, percLoss,
               encOptim, genOptim, hyperparams.archEpochsNum, hyperparams.archRatio, hyperparams.archEvalEvery,
               epochCallback, progressCallback, evalEveryCallback, archLossCallback, betterCallback, archEndCallback)
-        winsound.Beep(640, 1000)
+        # winsound.Beep(640, 1000)
         saveHyperParams(settings.archHyperPath)
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        winsound.Beep(420, 1000)
+        # winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':
