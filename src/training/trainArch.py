@@ -1,5 +1,5 @@
 import datetime
-import winsound
+# import winsound
 
 import math
 import torch.nn as nn
@@ -181,13 +181,13 @@ def main():
         train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, l1l2Loss, percLoss, percLoss,
               encOptim, genOptim, hyperparams.archEpochsNum, hyperparams.archRatio, hyperparams.archEvalEvery,
               epochCallback, progressCallback, evalEveryCallback, archLossCallback, betterCallback, archEndCallback)
-        winsound.Beep(640, 1000)
+        # winsound.Beep(640, 1000)
         saveHyperParams(settings.archHyperPath)
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        winsound.Beep(420, 1000)
+        # winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':
