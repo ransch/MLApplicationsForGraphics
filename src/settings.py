@@ -22,14 +22,14 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo/gen.pt'
-gloLatentPath = localModels / 'glo/latent.pt'
-gloVisPath = localModels / 'glo/glo.jpg'
+gloGenPath = matureModels / 'glo/gen.pt'
+gloLatentPath = matureModels / 'glo/latent.pt'
+gloVisPath = matureModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
 gloTrainingTimePath = localModels / 'glo/training_time.txt'
 
-encModelPath = localModels / 'enc/enc.pt'
+encModelPath = matureModels / 'enc/enc.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
