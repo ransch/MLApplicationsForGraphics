@@ -107,8 +107,8 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
             sofar += processed1 + processed2
 
             lossCallback(total_loss_enc, total_loss_gen, total_loss_arch, weighted_loss)
-            if total_loss_arch < best_loss:
-                best_loss = total_loss_arch
+            if weighted_loss < best_loss: # debug: total_loss_arch -> weighted_loss
+                best_loss = weighted_loss # debug: total_loss_arch -> weighted_loss
                 betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset)
 
         printevery = sofar
