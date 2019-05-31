@@ -60,7 +60,7 @@ archEpochsNum = 176
 archSubsetBatchSize = 35
 archMainBatchSize = 75
 archEvalEvery = 25
-archRatio = (0, 1)
+archRatio = (5, 5)
 
 clusteringPCADim = 100
 clusteringNum = 128
