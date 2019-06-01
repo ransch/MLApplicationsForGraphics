@@ -1,5 +1,4 @@
 import datetime
-# import winsound
 
 import math
 import torch.nn as nn
@@ -13,6 +12,9 @@ from src.perceptual_loss import VGGDistance
 from src.training.trainArchAux import *
 from src.training.trainAux import *
 from src.utils import L1L2Criterion, saveHyperParams, addNoise
+
+
+# import winsound
 
 
 def setMode(epoch, ratio, enc, gen):
@@ -107,8 +109,8 @@ def train(enc, gen, embed, dloaderSubset, dloaderMain, dsizeSubset, dsizeMain, e
             sofar += processed1 + processed2
 
             lossCallback(total_loss_enc, total_loss_gen, total_loss_arch, weighted_loss)
-            if weighted_loss < best_loss: # debug: total_loss_arch -> weighted_loss
-                best_loss = weighted_loss # debug: total_loss_arch -> weighted_loss
+            if total_loss_arch < best_loss:  # debug: total_loss_arch -> weighted_loss
+                best_loss = total_loss_arch  # debug: total_loss_arch -> weighted_loss
                 betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset)
 
         printevery = sofar

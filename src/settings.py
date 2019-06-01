@@ -22,26 +22,26 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'arch4/gen.pt'
-gloLatentPath = matureModels / 'latent.pt'
+gloGenPath = localModels / 'arch6/gen.pt'
+gloLatentPath = localModels / 'latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
 gloTrainingTimePath = localModels / 'glo/training_time.txt'
 
-encModelPath = localModels / 'arch4/enc.pt'
+encModelPath = localModels / 'arch6/enc.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
 
-archEncPath = localModels / 'arch5/enc.pt'
-archGenPath = localModels / 'arch5/gen.pt'
-archVisPath = localModels / 'arch5/arch.jpg'
-archProgressPath = localModels / 'arch5/progress'
-archHyperPath = localModels / 'arch5/hyperparams.py'
-archTrainingTimePath = localModels / 'arch5/training_time.txt'
+archEncPath = localModels / 'arch7/enc.pt'
+archGenPath = localModels / 'arch7/gen.pt'
+archVisPath = localModels / 'arch7/arch.jpg'
+archProgressPath = localModels / 'arch7/progress'
+archHyperPath = localModels / 'arch7/hyperparams.py'
+archTrainingTimePath = localModels / 'arch7/training_time.txt'
 
-interPath = localModels / 'arch/arch-inter'
+interPath = matureModels / 'arch/arch6-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
