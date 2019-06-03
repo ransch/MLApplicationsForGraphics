@@ -1,4 +1,4 @@
-latentDim = 100  # The dimension of the latent space
+latentDim = 50  # The dimension of the latent space
 
 genFeatureMapsSize = 64  # The size of the feature maps in the generator
 
@@ -50,13 +50,13 @@ archMainLossPow = 1.3  # Loss3 pow (main) - without noise
 archSubsetLossPow = 1.3  # Loss1 and Loss2 pow (subset)
 ###################################################################
 
-gloEpochsNum = 1001
+gloEpochsNum = 100
 gloBatchSize = 35
-gloEvalEvery = 20
+gloEvalEvery = 5
 
-encEpochsNum = 501
+encEpochsNum = 100
 encBatchSize = 35
-encEvalEvery = 20
+encEvalEvery = 5
 
 archEpochsNum = 11
 archSubsetBatchSize = 50

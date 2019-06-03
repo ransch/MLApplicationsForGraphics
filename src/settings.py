@@ -22,14 +22,14 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = matureModels / 'arch/arch6/gen.pt'
-gloLatentPath = matureModels / 'latent.pt'
+gloGenPath = localModels / 'glo/gen.pt'
+gloLatentPath = localModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
 gloTrainingTimePath = localModels / 'glo/training_time.txt'
 
-encModelPath = matureModels / 'arch/arch6/enc.pt'
+encModelPath = localModels / 'enc/enc.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
@@ -49,6 +49,7 @@ clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
 representativesPath = p / 'clustering/5488-dim-100-clst-128/repr-8.pkl'
 pcaPath = p / 'clustering/pca-dim100.pkl'
 clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
+spaceVisPath = p / 'latSpace.jpg'
 
 frogs = p / 'frogs-64'
 frogs1000 = list(range(1, 1001))

@@ -26,3 +26,5 @@ def betterCallback(epoch, gen, embed, dloader):
             filename = f'epoch-{epoch}-ind-{fileind.item()}.png'
             filepath = os.path.join(settings.gloProgressPath, filename)
             save_image(fake[0], filepath)
+
+def generate(glo, image):
