@@ -1,5 +1,4 @@
 import datetime
-# import winsound
 
 import math
 import torch.nn as nn
@@ -12,6 +11,9 @@ from src.networks.encoder import Encoder
 from src.training.trainAux import *
 from src.training.trainEncAux import *
 from src.utils import L1L2Criterion, saveHyperParams
+
+
+# import winsound
 
 
 def train(embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,

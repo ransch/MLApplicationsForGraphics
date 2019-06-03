@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from tqdm import tqdm
+
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset

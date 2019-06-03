@@ -49,7 +49,6 @@ clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
 representativesPath = p / 'clustering/5488-dim-100-clst-128/repr-8.pkl'
 pcaPath = p / 'clustering/pca-dim100.pkl'
 clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
-spaceVisPath = p / 'latSpace.jpg'
 
 frogs = p / 'frogs-64'
 frogs1000 = list(range(1, 1001))

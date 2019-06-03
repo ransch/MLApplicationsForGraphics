@@ -1,4 +1,4 @@
-latentDim = 50  # The dimension of the latent space
+latentDim = 100  # The dimension of the latent space
 
 genFeatureMapsSize = 64  # The size of the feature maps in the generator
 

@@ -1,5 +1,4 @@
 import datetime
-# import winsound
 
 import math
 import torch.nn as nn
@@ -12,6 +11,9 @@ from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
 from src.utils import saveHyperParams
+
+
+# import winsound
 
 
 def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum, evalEvery, epochCallback,
