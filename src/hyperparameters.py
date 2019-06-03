@@ -28,7 +28,7 @@ encLossBeta = 1
 ###################################################################
 #                             Arch Config
 ###################################################################
-archPercLossAlpha = 1.3  # Perceptual loss  multiplier l1 norm
+archPercLossAlpha = 1  # Perceptual loss  multiplier l1 norm
 archLossPowAlpha = 1  # Perceptual loss  pow l1 norm
 
 archPercLossBeta = 1  # Perceptual loss  multiplier features
@@ -38,16 +38,16 @@ archL1L2LossAlpha = 1  # loss1[Zx, E(x)] l1norm
 archL1L2LossBeta = 1  # loss1[Zx, E(x)] l2norm
 
 archPertMean = 0  # Noise Sampling
-archPertStd = .5  # Noise Sampling
-archPertCoeff = .5  # Noise term multiplier
-archPertPow = 1  # Noise term pow
+archPertStd = 0  # Noise Sampling
+archPertCoeff = 0  # Noise term multiplier
+archPertPow = 0  # Noise term pow
 
 archLossAlpha = 1.3  # Loss3 coeff (main) - without noise
 archSubsetLossBeta = .3  # Loss1 coeff (subset)
-archSubsetLossGamma = 1  # Loss2 coeff (subset)
+archSubsetLossGamma = 1.3  # Loss2 coeff (subset)
 
-archMainLossPow = 1  # Loss3 pow (main) - without noise
-archSubsetLossPow = 1  # Loss1 and Loss2 pow (subset)
+archMainLossPow = 1.3  # Loss3 pow (main) - without noise
+archSubsetLossPow = 1.3  # Loss1 and Loss2 pow (subset)
 ###################################################################
 
 gloEpochsNum = 1001
@@ -58,10 +58,10 @@ encEpochsNum = 501
 encBatchSize = 35
 encEvalEvery = 20
 
-archEpochsNum = 71
-archSubsetBatchSize = 35
-archMainBatchSize = 75
-archEvalEvery = 5
+archEpochsNum = 11
+archSubsetBatchSize = 50
+archMainBatchSize = 150
+archEvalEvery = 2
 archRatio = (0, 1)
 
 clusteringPCADim = 100
