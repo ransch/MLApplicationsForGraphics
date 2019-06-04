@@ -9,6 +9,9 @@ genAdamBetas = (0.9, 0.999)
 embedAdamLr = .001
 embedAdamBetas = (0.9, 0.999)
 
+gloEvalAdamLr = .001
+gloEvalAdamBetas = (0.9, 0.999)
+
 encAdamLr = .001
 encAdamBetas = (0.9, 0.999)
 
@@ -53,6 +56,8 @@ archSubsetLossPow = 1.3  # Loss1 and Loss2 pow (subset)
 gloEpochsNum = 100
 gloBatchSize = 35
 gloEvalEvery = 5
+
+gloEvalEpochsNum = 500
 
 encEpochsNum = 100
 encBatchSize = 35

@@ -22,7 +22,7 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo/gen.pt'
+gloGenPath = matureModels / 'glo/gen.pt'
 gloLatentPath = localModels / 'glo/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'

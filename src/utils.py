@@ -1,9 +1,10 @@
 import shutil
 
 import torch
-import torch.nn as nn
+from torch import nn as nn, optim as optim
 
-from src import settings
+from src import settings, hyperparameters as hyperparams
+from src.perceptual_loss import VGGDistance
 
 
 def weights_init(m):
@@ -50,3 +51,18 @@ def saveHyperParams(dest_path):
 
 def addNoise(x, mean, std):
     return x.add(torch.empty_like(x).normal_(mean=mean, std=std))
+
+
+def findOptimalLatentVector(glo, image):
+    res = torch.rand(hyperparams.latentDim, device=settings.device, requires_grad=True)
+    criterion = VGGDistance(hyperparams.gloLossAlpha, hyperparams.gloLossBeta, hyperparams.gloLossPowAlpha,
+                            hyperparams.gloLossPowBeta).to(settings.device)
+    optimizer = optim.Adam([res], lr=hyperparams.gloEvalAdamLr, betas=hyperparams.gloEvalAdamBetas)
+
+    for epoch in range(1, hyperparams.gloEvalEpochsNum):
+        optimizer.zero_grad()
+        loss = criterion(image.unsqueeze(0), glo(res.view(1, hyperparams.latentDim, 1, 1)))
+        loss.backward()
+        optimizer.step()
+
+    return torch.empty(hyperparams.latentDim).to(settings.device).copy_(res)
