@@ -7,9 +7,10 @@ from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
 from src.networks.generator import Generator
+from src.utils import findOptimalLatentVector
 
 num = 20
-inds = [(1113, 1114), (1207, 1234), (1246, 1247), (1403, 1405), (1578, 1579), (1779, 1780), (2087, 2096), (2802, 2803)]
+inds = [(7779, 7785), (7749, 7758), (7734, 7751), (7722, 7720), (7730, 7731), (7678, 7687), (7652, 7663), (7595, 7603)]
 
 
 def genImages(images, inda, indb):
@@ -24,28 +25,26 @@ def genImages(images, inda, indb):
 def main():
     settings.sysAsserts()
     settings.interFilesAsserts()
-    dataset = Dataset(settings.frogs, settings.frogs3000)
+    frogsInds = settings.testFrogs
+    dataset = Dataset(settings.frogs, frogsInds)
 
     gen = Generator().to(settings.device)
     enc = Encoder().to(settings.device)
-    # embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
     gen.load_state_dict(torch.load(settings.archGenPath))
-    enc.load_state_dict(torch.load(settings.archEncPath))
-    # embed.load_state_dict(torch.load(settings.gloLatentPath))
+    # enc.load_state_dict(torch.load(settings.archEncPath))
     gen.eval()
-    enc.eval()
-    # embed.eval()
+    # enc.eval()
 
-    with torch.no_grad():
-        for inda, indb in inds:
-            imga = dataset[inda - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-            imgb = dataset[indb - settings.frogs3000[0]]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-            latenta = enc(imga)[0]
-            latentb = enc(imgb)[0]
-            # latenta = embed(torch.tensor([inda - settings.frogs3000Start]).to(settings.device))[0]
-            # latentb = embed(torch.tensor([indb - settings.frogs3000Start]).to(settings.device))[0]
-            delta = (latentb - latenta) / (num + 1)
+    for inda, indb in inds:
+        imga = dataset[frogsInds.index(inda)]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+        imgb = dataset[frogsInds.index(indb)]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+        # latenta = enc(imga)[0]
+        # latentb = enc(imgb)[0]
+        latenta = findOptimalLatentVector(gen, imga.squeeze(0))
+        latentb = findOptimalLatentVector(gen, imgb.squeeze(0))
+        delta = (latentb - latenta) / (num + 1)
 
+        with torch.no_grad():
             vectors = [latenta]
 
             for i in range(num + 1):

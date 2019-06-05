@@ -57,7 +57,7 @@ gloEpochsNum = 100
 gloBatchSize = 35
 gloEvalEvery = 5
 
-gloEvalEpochsNum = 500
+gloEvalEpochsNum = 10 ** 5
 
 encEpochsNum = 100
 encBatchSize = 35

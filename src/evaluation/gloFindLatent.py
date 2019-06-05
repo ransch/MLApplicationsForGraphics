@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import torch
+import torch.nn as nn
 import torchvision.utils as vutils
 
 from src import hyperparameters as hyperparams
@@ -14,15 +15,20 @@ def main():
 
     dataset = Dataset(settings.frogs, settings.frogs6000)
     gen = Generator().to(settings.device)
-    gen.load_state_dict(torch.load(settings.gloGenPath))
+    embed = nn.Embedding(len(settings.frogs6000), hyperparams.latentDim).to(settings.device)
+    gen.load_state_dict(torch.load(settings.matureModels / 'glototal-1000-epochs/gen.pt'))
+    embed.load_state_dict(torch.load(settings.matureModels / 'glototal-1000-epochs/latent.pt'))
     gen.eval()
+    embed.eval()
 
     image = dataset[index - 1]['image'].to(settings.device).type(torch.float32)
     latVec = findOptimalLatentVector(gen, image)
-    fake = gen(latVec.view(1, hyperparams.latentDim, 1, 1)).squeeze(0)
+    optimalfake = gen(
+        embed(torch.tensor([index - 1]).to(settings.device)).view(1, hyperparams.latentDim, 1, 1)).squeeze_(0)
+    fake = gen(latVec.view(1, hyperparams.latentDim, 1, 1)).squeeze_(0)
 
     with torch.no_grad():
-        images = torch.stack([image, fake], 0)
+        images = torch.stack([image, optimalfake, fake], 0)
         grid = vutils.make_grid(images.cpu())
         plt.imshow(grid.numpy().transpose((1, 2, 0)))
         plt.show()

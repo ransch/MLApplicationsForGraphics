@@ -1,7 +1,9 @@
 import shutil
 
 import torch
-from torch import nn as nn, optim as optim
+import torch.nn as nn
+from torch import optim as optim
+from tqdm import tqdm
 
 from src import settings, hyperparameters as hyperparams
 from src.perceptual_loss import VGGDistance
@@ -54,14 +56,17 @@ def addNoise(x, mean, std):
 
 
 def findOptimalLatentVector(glo, image):
-    res = torch.rand(hyperparams.latentDim, device=settings.device, requires_grad=True)
+    res = torch.empty(hyperparams.latentDim, device=settings.device, requires_grad=True)
+    nn.init.normal_(res)
     criterion = VGGDistance(hyperparams.gloLossAlpha, hyperparams.gloLossBeta, hyperparams.gloLossPowAlpha,
                             hyperparams.gloLossPowBeta).to(settings.device)
     optimizer = optim.Adam([res], lr=hyperparams.gloEvalAdamLr, betas=hyperparams.gloEvalAdamBetas)
 
-    for epoch in range(1, hyperparams.gloEvalEpochsNum):
+    for epoch in tqdm(range(1, hyperparams.gloEvalEpochsNum)):
         optimizer.zero_grad()
         loss = criterion(image.unsqueeze(0), glo(res.view(1, hyperparams.latentDim, 1, 1)))
+        if epoch >= hyperparams.gloEvalEpochsNum - 30:
+            print(loss.item())
         loss.backward()
         optimizer.step()
 

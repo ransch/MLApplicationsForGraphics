@@ -34,14 +34,14 @@ encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
 
-archEncPath = localModels / 'arch/enc.pt'
-archGenPath = localModels / 'arch/gen.pt'
+archEncPath = matureModels / 'arch/arch6/enc.pt'
+archGenPath = matureModels / 'glototal-1000-epochs/gen.pt'
 archVisPath = localModels / 'arch/arch.jpg'
 archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 archTrainingTimePath = localModels / 'arch/training_time.txt'
 
-interPath = matureModels / 'arch/arch6-inter'
+interPath = matureModels / 'glototal-1000-epochs/testset-inter'
 featuresPath = localModels / 'arch/arch-features'
 
 clusteringBatchSize = 2000
@@ -55,7 +55,7 @@ frogs1000 = list(range(1, 1001))
 frogs3000 = list(range(1001, 4001))
 frogs5000 = list(range(1001, 6001))
 frogs6000 = frogs1000 + frogs5000
-testFrogs1000 = list(range(6001, 7001))
+testFrogs = list(range(6001, 7796 + 1))
 frogsSubset1 = loadSubset(frogs6000, p / 'clustering/6000-dim-100-clst-128/repr-4.pkl')
 frogsSubset1C = sorted(set(frogs6000).difference(frogsSubset1))
 frogsSubset2 = loadSubset(frogsSubset1C, p / 'clustering/5488-dim-100-clst-128/repr-8.pkl')
@@ -118,7 +118,7 @@ def archFilesAsserts():
 
 def interFilesAsserts():
     if not interPath.is_dir():
-        os.makedirs(interPath.parent)
+        os.makedirs(interPath)
 
     assert archEncPath.is_file()
     assert archGenPath.is_file()
@@ -126,7 +126,7 @@ def interFilesAsserts():
 
 def featuresFilesAsserts():
     if not featuresPath.is_dir():
-        os.makedirs(featuresPath.parent)
+        os.makedirs(featuresPath)
 
     assert archEncPath.is_file()
     assert archGenPath.is_file()
