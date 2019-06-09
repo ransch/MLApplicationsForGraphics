@@ -22,8 +22,8 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = matureModels / 'glo/gen.pt'
-gloLatentPath = localModels / 'glo/latent.pt'
+gloGenPath = matureModels / 'glototal-1000-epochs/gen.pt'
+gloLatentPath = matureModels / 'glototal-1000-epochs/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
@@ -41,8 +41,9 @@ archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 archTrainingTimePath = localModels / 'arch/training_time.txt'
 
-interPath = matureModels / 'glototal-1000-epochs/testset-inter'
+interPath = matureModels / 'glototal-1000-epochs/inter'
 featuresPath = localModels / 'arch/arch-features'
+reconsPath = matureModels / 'glototal-1000-epochs/reconstruction'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
@@ -120,8 +121,8 @@ def interFilesAsserts():
     if not interPath.is_dir():
         os.makedirs(interPath)
 
-    assert archEncPath.is_file()
-    assert archGenPath.is_file()
+    assert gloLatentPath.is_file()
+    assert gloGenPath.is_file()
 
 
 def featuresFilesAsserts():
@@ -130,6 +131,13 @@ def featuresFilesAsserts():
 
     assert archEncPath.is_file()
     assert archGenPath.is_file()
+
+def reconstructFilesAsserts():
+    if not reconsPath.is_dir():
+        os.makedirs(reconsPath)
+
+    assert gloLatentPath.is_file()
+    assert gloGenPath.is_file()
 
 
 def pcaAsserts():
