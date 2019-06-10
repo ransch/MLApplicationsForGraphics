@@ -22,14 +22,14 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = matureModels / 'glototal-1000-epochs/gen.pt'
+gloGenPath = matureModels / 'glo/gen.pt'
 gloLatentPath = matureModels / 'glototal-1000-epochs/latent.pt'
 gloVisPath = localModels / 'glo/glo.jpg'
 gloProgressPath = localModels / 'glo/progress'
 gloHyperPath = localModels / 'glo/hyperparams.py'
 gloTrainingTimePath = localModels / 'glo/training_time.txt'
 
-encModelPath = localModels / 'enc/enc.pt'
+encModelPath = matureModels / 'enc/enc.pt'
 encVisPath = localModels / 'enc/enc.jpg'
 encHyperPath = localModels / 'enc/hyperparams.py'
 encTrainingTimePath = localModels / 'enc/training_time.txt'
@@ -43,7 +43,7 @@ archTrainingTimePath = localModels / 'arch/training_time.txt'
 
 interPath = matureModels / 'glototal-1000-epochs/inter'
 featuresPath = localModels / 'arch/arch-features'
-reconsPath = matureModels / 'glototal-1000-epochs/reconstruction'
+reconsPath = matureModels / 'enc/reconstruction'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
