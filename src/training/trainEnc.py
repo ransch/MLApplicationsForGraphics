@@ -5,9 +5,9 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from src import hyperparameters as hyperparams
 from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
+from src.networks.generator import Generator
 from src.training.trainAux import *
 from src.training.trainEncAux import *
 from src.utils import L1L2Criterion, saveHyperParams
@@ -15,14 +15,14 @@ from src.utils import L1L2Criterion, saveHyperParams
 
 # import winsound
 
-
-def train(embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,
+def train(gen, embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,
           evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
     best_loss = math.inf
     sofar = 0
     printevery = settings.printevery
 
+    gen.eval()
     embed.eval()
     enc.train()
     for epoch in range(1, epochsNum + 1):
@@ -51,7 +51,7 @@ def train(embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, ep
             lossCallback(total_loss)
             if total_loss < best_loss:
                 best_loss = total_loss
-                betterCallback(enc)
+                betterCallback(epoch, gen, enc, dloader)
             enc.train()
 
         printevery = sofar
@@ -79,9 +79,12 @@ def main():
     dataset = Dataset(settings.frogs, settings.frogsSubset1)
     dsize = len(dataset)
 
+    gen = Generator().to(settings.device)
     enc = Encoder().to(settings.device)
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
+    gen.load_state_dict(torch.load(settings.gloGenPath))
     embed.load_state_dict(torch.load(settings.gloLatentPath))
+    # enc.load_state_dict(torch.load(settings.localModels / 'enc1/enc.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.encBatchSize, shuffle=False)
     optimizer = optim.Adam(enc.parameters(), lr=hyperparams.encAdamLr, betas=hyperparams.encAdamBetas)
@@ -91,7 +94,7 @@ def main():
     print(f'Training {sum(p.numel() for p in embed.parameters() if p.requires_grad)} parameters')
 
     try:
-        train(embed, enc, dloader, dsize, criterion, optimizer, hyperparams.encEpochsNum, hyperparams.encEvalEvery,
+        train(gen, embed, enc, dloader, dsize, criterion, optimizer, hyperparams.encEpochsNum, hyperparams.encEvalEvery,
               epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
         # winsound.Beep(640, 1000)
 

@@ -32,13 +32,11 @@ def betterCallback(epoch, enc, gen, dloaderMain, dloaderSubset):
         for dlname, dloader in zip(('main', 'subset'), (dloaderMain, dloaderSubset)):
             batchiter = iter(dloader)
             batch = next(batchiter)
-            inds = batch['ind'].to(settings.device).view(-1)
             fileinds = batch['fileind'].to(settings.device).view(-1)
             images = batch['image'].to(settings.device).type(torch.float32)
-            assert len(inds) >= settings.samplesLen
+            assert len(fileinds) >= settings.samplesLen
 
             for i in range(settings.samplesLen):
-                ind = inds[i]
                 fileind = fileinds[i]
                 image = images[i].unsqueeze_(0)
                 fake = gen(enc(image).view(1, hyperparams.latentDim, 1, 1))

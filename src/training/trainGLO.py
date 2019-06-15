@@ -10,7 +10,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
-from src.utils import saveHyperParams
+from src.utils import saveHyperParams, addNoise
 
 
 # import winsound
@@ -31,10 +31,16 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
         for batch in dloader:
             inds = batch['ind'].to(settings.device).view(-1)
             images = batch['image'].to(settings.device).type(torch.float32)
-
             genOptim.zero_grad()
             embedOptim.zero_grad()
-            loss = criterion(images, gen(embed(inds).view(len(images), hyperparams.latentDim, 1, 1)))
+
+            lat = embed(inds).view(len(images), hyperparams.latentDim, 1, 1)
+            loss = criterion(images, gen(lat))
+
+            # latNoised = addNoise(lat, hyperparams.gloPertMean, hyperparams.gloPertStd)
+            # fakeNoised = gen(latNoised)
+            # loss.add_(criterion(images, fakeNoised).mul_(hyperparams.gloPertCoeff))
+
             loss.backward()
             genOptim.step()
             embedOptim.step()
@@ -87,8 +93,8 @@ def main():
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
 
-    # gen.load_state_dict(torch.load(settings.p / 'models/glo-total/gen.pt'))
-    # embed.load_state_dict(torch.load(settings.p / 'models/glo-total/latent.pt'))
+    # gen.load_state_dict(torch.load(settings.localModels / 'glo1/gen.pt'))
+    # embed.load_state_dict(torch.load(settings.localModels / 'glo1/gen.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=False)
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.genAdamLr, betas=hyperparams.genAdamBetas)

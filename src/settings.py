@@ -22,28 +22,29 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = matureModels / 'glo/gen.pt'
-gloLatentPath = matureModels / 'glototal-1000-epochs/latent.pt'
-gloVisPath = localModels / 'glo/glo.jpg'
-gloProgressPath = localModels / 'glo/progress'
-gloHyperPath = localModels / 'glo/hyperparams.py'
-gloTrainingTimePath = localModels / 'glo/training_time.txt'
+gloGenPath = localModels / 'glo2/gen.pt'
+gloLatentPath = localModels / 'glo2/latent.pt'
+gloVisPath = localModels / 'glo2/glo.jpg'
+gloProgressPath = localModels / 'glo2/progress'
+gloHyperPath = localModels / 'glo2/hyperparams.py'
+gloTrainingTimePath = localModels / 'glo2/training_time.txt'
 
-encModelPath = matureModels / 'enc/enc.pt'
-encVisPath = localModels / 'enc/enc.jpg'
-encHyperPath = localModels / 'enc/hyperparams.py'
-encTrainingTimePath = localModels / 'enc/training_time.txt'
+encModelPath = localModels / 'enc1/enc.pt'
+encVisPath = localModels / 'enc1/enc.jpg'
+encProgressPath = localModels / 'enc1/progress'
+encHyperPath = localModels / 'enc1/hyperparams.py'
+encTrainingTimePath = localModels / 'enc1/training_time.txt'
 
-archEncPath = matureModels / 'arch/arch6/enc.pt'
-archGenPath = matureModels / 'glototal-1000-epochs/gen.pt'
+archEncPath = localModels / 'arch/arch/enc.pt'
+archGenPath = localModels / 'arch/gen.pt'
 archVisPath = localModels / 'arch/arch.jpg'
 archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 archTrainingTimePath = localModels / 'arch/training_time.txt'
 
-interPath = matureModels / 'glototal-1000-epochs/inter'
+interPath = localModels / 'glototal-1000-epochs/inter'
 featuresPath = localModels / 'arch/arch-features'
-reconsPath = matureModels / 'enc/reconstruction'
+reconsPath = localModels / 'enc1/reconstruction'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
@@ -91,12 +92,15 @@ def encFilesAsserts():
     assert len({encModelPath.parent, encVisPath.parent, encHyperPath.parent}) == 1
     if not encModelPath.parent.is_dir():
         os.makedirs(encModelPath.parent)
+    if not encProgressPath.is_dir():
+        os.makedirs(encProgressPath)
 
     assert not encModelPath.is_file()
     assert not encVisPath.is_file()
     assert not encHyperPath.is_file()
     assert not encTrainingTimePath.is_file()
     assert gloLatentPath.is_file()
+    assert len(os.listdir(encProgressPath)) == 0
 
 
 def archFilesAsserts():
@@ -131,6 +135,7 @@ def featuresFilesAsserts():
 
     assert archEncPath.is_file()
     assert archGenPath.is_file()
+
 
 def reconstructFilesAsserts():
     if not reconsPath.is_dir():
