@@ -10,7 +10,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
-from src.utils import saveHyperParams, addNoise
+from src.utils import saveHyperParams
 
 
 # import winsound

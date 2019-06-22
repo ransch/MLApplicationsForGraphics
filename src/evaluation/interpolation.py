@@ -6,8 +6,8 @@ import torchvision.utils as vutils
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
-from src.networks.encoder import Encoder
 from src.networks.generator import Generator
+from src.networks.encoder import Encoder
 
 num = 20
 inds = [(1113, 1114), (1207, 1234), (1246, 1247), (1403, 1405), (1578, 1579), (1779, 1780), (2087, 2096), (2802, 2803)]
@@ -29,14 +29,14 @@ def main():
     dataset = Dataset(settings.frogs, frogsInds)
 
     gen = Generator().to(settings.device)
-    # enc = Encoder().to(settings.device)
+    enc = Encoder().to(settings.device)
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
-    gen.load_state_dict(torch.load(settings.archGenPath))
+    gen.load_state_dict(torch.load(settings.gloGenPath))
     embed.load_state_dict(torch.load(settings.gloLatentPath))
-    # enc.load_state_dict(torch.load(settings.archEncPath))
+    # enc.load_state_dict(torch.load(settings.encModelPath))
     gen.eval()
     embed.eval()
-    # enc.eval()
+    enc.eval()
 
     for inda, indb in inds:
         imga = dataset[frogsInds.index(inda - 1)]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)

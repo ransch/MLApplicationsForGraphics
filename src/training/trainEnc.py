@@ -76,7 +76,7 @@ def totalLoss(embed, enc, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.encFilesAsserts()
-    dataset = Dataset(settings.frogs, settings.frogsSubset1)
+    dataset = Dataset(settings.frogs, settings.frogs6000)
     dsize = len(dataset)
 
     gen = Generator().to(settings.device)
@@ -84,7 +84,7 @@ def main():
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
     gen.load_state_dict(torch.load(settings.gloGenPath))
     embed.load_state_dict(torch.load(settings.gloLatentPath))
-    # enc.load_state_dict(torch.load(settings.localModels / 'enc1/enc.pt'))
+    enc.load_state_dict(torch.load(settings.localModels / 'enc2/enc.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.encBatchSize, shuffle=False)
     optimizer = optim.Adam(enc.parameters(), lr=hyperparams.encAdamLr, betas=hyperparams.encAdamBetas)

@@ -22,18 +22,18 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo2/gen.pt'
-gloLatentPath = localModels / 'glo2/latent.pt'
-gloVisPath = localModels / 'glo2/glo.jpg'
-gloProgressPath = localModels / 'glo2/progress'
-gloHyperPath = localModels / 'glo2/hyperparams.py'
-gloTrainingTimePath = localModels / 'glo2/training_time.txt'
+gloGenPath = localModels / 'glo3/gen.pt'
+gloLatentPath = localModels / 'enc3/latent.pt'
+gloVisPath = localModels / 'glo3/glo.jpg'
+gloProgressPath = localModels / 'glo3/progress'
+gloHyperPath = localModels / 'glo3/hyperparams.py'
+gloTrainingTimePath = localModels / 'glo3/training_time.txt'
 
-encModelPath = localModels / 'enc1/enc.pt'
-encVisPath = localModels / 'enc1/enc.jpg'
-encProgressPath = localModels / 'enc1/progress'
-encHyperPath = localModels / 'enc1/hyperparams.py'
-encTrainingTimePath = localModels / 'enc1/training_time.txt'
+encModelPath = localModels / 'enc3/enc.pt'
+encVisPath = localModels / 'enc3/enc.jpg'
+encProgressPath = localModels / 'enc3/progress'
+encHyperPath = localModels / 'enc3/hyperparams.py'
+encTrainingTimePath = localModels / 'enc3/training_time.txt'
 
 archEncPath = localModels / 'arch/arch/enc.pt'
 archGenPath = localModels / 'arch/gen.pt'
@@ -42,7 +42,7 @@ archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 archTrainingTimePath = localModels / 'arch/training_time.txt'
 
-interPath = localModels / 'glototal-1000-epochs/inter'
+interPath = localModels / 'glo3 inter'
 featuresPath = localModels / 'arch/arch-features'
 reconsPath = localModels / 'enc1/reconstruction'
 
@@ -125,7 +125,6 @@ def interFilesAsserts():
     if not interPath.is_dir():
         os.makedirs(interPath)
 
-    assert gloLatentPath.is_file()
     assert gloGenPath.is_file()
 
 

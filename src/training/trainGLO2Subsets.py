@@ -106,8 +106,8 @@ def totalLoss(gen, embed, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
-    datasetSubset = Dataset(settings.frogs, settings.frogsSubset1)
-    datasetMain = Dataset(settings.frogs, settings.frogsSubset2)
+    datasetSubset = Dataset(settings.frogs, settings.frogsSubset)
+    datasetMain = Dataset(settings.frogs, settings.frogsMain)
     dsizeSubset = len(datasetSubset)
     dsizeMain = len(datasetMain)
 
@@ -115,8 +115,8 @@ def main():
     embedSubset = nn.Embedding(dsizeSubset, hyperparams.latentDim).to(settings.device)
     embed = nn.Embedding(dsizeMain, hyperparams.latentDim).to(settings.device)
 
-    gen.load_state_dict(torch.load(settings.localModels / 'glo1/gen.pt'))
-    embedSubset.load_state_dict(torch.load(settings.localModels / 'glo1/latent.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'glo2/gen.pt'))
+    embedSubset.load_state_dict(torch.load(settings.localModels / 'enc2/latent.pt'))
 
     dloaderSubset = DataLoader(datasetSubset, batch_size=hyperparams.glo2SubsetBatchSize, shuffle=False)
     dloaderMain = DataLoader(datasetMain, batch_size=hyperparams.glo2MainBatchSize, shuffle=False)
