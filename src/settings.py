@@ -22,12 +22,12 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo3/gen.pt'
-gloLatentPath = localModels / 'enc3/latent.pt'
-gloVisPath = localModels / 'glo3/glo.jpg'
-gloProgressPath = localModels / 'glo3/progress'
-gloHyperPath = localModels / 'glo3/hyperparams.py'
-gloTrainingTimePath = localModels / 'glo3/training_time.txt'
+gloGenPath = localModels / 'glo4 with noise/gen.pt'
+gloLatentPath = localModels / 'glo4 with noise/latent.pt'
+gloVisPath = localModels / 'glo4 with noise/glo.jpg'
+gloProgressPath = localModels / 'glo4 with noise/progress'
+gloHyperPath = localModels / 'glo4 with noise/hyperparams.py'
+gloTrainingTimePath = localModels / 'glo4 with noise/training_time.txt'
 
 encModelPath = localModels / 'enc3/enc.pt'
 encVisPath = localModels / 'enc3/enc.jpg'
@@ -42,7 +42,7 @@ archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 archTrainingTimePath = localModels / 'arch/training_time.txt'
 
-interPath = localModels / 'glo3 inter'
+interPath = localModels / 'glo4 with noise/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
 reconsPath = localModels / 'enc1/reconstruction'
 

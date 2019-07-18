@@ -44,8 +44,8 @@ if __name__ == '__main__':
     dataset1 = Dataset(settings.frogs, settings.frogsSubset)
     dataset2 = Dataset(settings.frogs, settings.frogsMain)
     dataset = Dataset(settings.frogs, settings.frogs6000)
-    embed1Path = settings.localModels / 'enc2/latent.pt'
+    embed1Path = settings.localModels / 'glo3/previousLatent.pt'
     embed2Path = settings.localModels / 'glo3/latent.pt'
-    resPath = settings.localModels / 'enc3/latent.pt'
+    resPath = settings.localModels / 'glo4/previousLatent.pt'
     assert not resPath.is_file()
     mergeEmbeddings(dataset1, dataset2, dataset, embed1Path, embed2Path, resPath)

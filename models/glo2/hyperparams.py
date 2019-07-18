@@ -26,7 +26,7 @@ gloPertMean = 0  # Noise Sampling
 gloPertStd = 1  # Noise Sampling
 gloPertCoeff = .5  # Noise term multiplier
 
-gloEpochsNum = 701
+gloEpochsNum = 1501
 gloBatchSize = 35
 gloEvalEvery = 100
 
@@ -45,8 +45,8 @@ encAdamBetas = (0.9, 0.999)
 encLossAlpha = 1
 encLossBeta = 1
 
-encEpochsNum = 1501
-encBatchSize = 35
+encEpochsNum = 1001
+encBatchSize = 75
 encEvalEvery = 20
 
 ###################################################################

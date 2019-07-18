@@ -115,8 +115,9 @@ def main():
     embedSubset = nn.Embedding(dsizeSubset, hyperparams.latentDim).to(settings.device)
     embed = nn.Embedding(dsizeMain, hyperparams.latentDim).to(settings.device)
 
-    gen.load_state_dict(torch.load(settings.localModels / 'glo2/gen.pt'))
-    embedSubset.load_state_dict(torch.load(settings.localModels / 'enc2/latent.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
+    embedSubset.load_state_dict(torch.load(settings.localModels / 'glo3/previousLatent.pt'))
+    embed.load_state_dict(torch.load(settings.localModels / 'glo3/latent.pt'))
 
     dloaderSubset = DataLoader(datasetSubset, batch_size=hyperparams.glo2SubsetBatchSize, shuffle=False)
     dloaderMain = DataLoader(datasetMain, batch_size=hyperparams.glo2MainBatchSize, shuffle=False)
