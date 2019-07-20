@@ -42,9 +42,9 @@ archProgressPath = localModels / 'arch/progress'
 archHyperPath = localModels / 'arch/hyperparams.py'
 archTrainingTimePath = localModels / 'arch/training_time.txt'
 
-interPath = localModels / 'glo4 with noise/eval/inter'
+interPath = matureModels / 'glo4 with noise/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
-reconsPath = localModels / 'enc1/reconstruction'
+reconsPath = matureModels / 'glo4 with noise/eval/reconstruction'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
@@ -125,8 +125,6 @@ def interFilesAsserts():
     if not interPath.is_dir():
         os.makedirs(interPath)
 
-    assert gloGenPath.is_file()
-
 
 def featuresFilesAsserts():
     if not featuresPath.is_dir():
@@ -139,9 +137,6 @@ def featuresFilesAsserts():
 def reconstructFilesAsserts():
     if not reconsPath.is_dir():
         os.makedirs(reconsPath)
-
-    assert gloLatentPath.is_file()
-    assert gloGenPath.is_file()
 
 
 def pcaAsserts():
