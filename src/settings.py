@@ -29,11 +29,11 @@ gloProgressPath = localModels / 'glo4 with noise/progress'
 gloHyperPath = localModels / 'glo4 with noise/hyperparams.py'
 gloTrainingTimePath = localModels / 'glo4 with noise/training_time.txt'
 
-encModelPath = localModels / 'enc3/enc.pt'
-encVisPath = localModels / 'enc3/enc.jpg'
-encProgressPath = localModels / 'enc3/progress'
-encHyperPath = localModels / 'enc3/hyperparams.py'
-encTrainingTimePath = localModels / 'enc3/training_time.txt'
+encModelPath = matureModels / 'enc/enc.pt'
+encVisPath = matureModels / 'enc/enc.jpg'
+encProgressPath = matureModels / 'enc/progress'
+encHyperPath = matureModels / 'enc/hyperparams.py'
+encTrainingTimePath = matureModels / 'enc/training_time.txt'
 
 archEncPath = localModels / 'arch/arch/enc.pt'
 archGenPath = localModels / 'arch/gen.pt'
@@ -99,7 +99,6 @@ def encFilesAsserts():
     assert not encVisPath.is_file()
     assert not encHyperPath.is_file()
     assert not encTrainingTimePath.is_file()
-    assert gloLatentPath.is_file()
     assert len(os.listdir(encProgressPath)) == 0
 
 

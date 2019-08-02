@@ -1,1 +1,1 @@
-export PYTHONPATH='$PYTHONPATH:/home/yuvalh/code/MLApplicationsForGraphics/src/training:/home/yuvalh/code/MLApplicationsForGraphics/src/:/home/yuvalh/code/MLApplicationsForGraphics'
+export PYTHONPATH='$PYTHONPATH:/home/rans/code/MLApplicationsForGraphics/src/training:/home/rans/code/MLApplicationsForGraphics/src/:/home/rans/code/MLApplicationsForGraphics'
