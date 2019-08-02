@@ -28,8 +28,8 @@ def main():
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
 
     gen.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/gen.pt'))
-    # enc.load_state_dict(torch.load(settings.encModelPath))
-    embed.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/latent.pt'))
+    enc.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/gen.pt'))
+    # embed.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/latent.pt'))
     gen.eval()
     enc.eval()
     embed.eval()

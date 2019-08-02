@@ -35,13 +35,6 @@ encProgressPath = matureModels / 'enc/progress'
 encHyperPath = matureModels / 'enc/hyperparams.py'
 encTrainingTimePath = matureModels / 'enc/training_time.txt'
 
-archEncPath = localModels / 'arch/arch/enc.pt'
-archGenPath = localModels / 'arch/gen.pt'
-archVisPath = localModels / 'arch/arch.jpg'
-archProgressPath = localModels / 'arch/progress'
-archHyperPath = localModels / 'arch/hyperparams.py'
-archTrainingTimePath = localModels / 'arch/training_time.txt'
-
 interPath = matureModels / 'glo4 with noise/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
 reconsPath = matureModels / 'glo4 with noise/eval/reconstruction'
@@ -101,25 +94,6 @@ def encFilesAsserts():
     assert not encTrainingTimePath.is_file()
     assert len(os.listdir(encProgressPath)) == 0
 
-
-def archFilesAsserts():
-    assert len({archEncPath.parent, archGenPath.parent, archVisPath.parent, archHyperPath.parent}) == 1
-    if not archEncPath.parent.is_dir():
-        os.makedirs(archEncPath.parent)
-    if not archProgressPath.is_dir():
-        os.makedirs(archProgressPath)
-
-    assert not archEncPath.is_file()
-    assert not archGenPath.is_file()
-    assert not archVisPath.is_file()
-    assert not archHyperPath.is_file()
-    assert not archTrainingTimePath.is_file()
-    assert len(os.listdir(archProgressPath)) == 0
-    assert gloGenPath.is_file()
-    assert gloLatentPath.is_file()
-    assert encModelPath.is_file()
-
-
 def interFilesAsserts():
     if not interPath.is_dir():
         os.makedirs(interPath)
@@ -128,9 +102,6 @@ def interFilesAsserts():
 def featuresFilesAsserts():
     if not featuresPath.is_dir():
         os.makedirs(featuresPath)
-
-    assert archEncPath.is_file()
-    assert archGenPath.is_file()
 
 
 def reconstructFilesAsserts():
