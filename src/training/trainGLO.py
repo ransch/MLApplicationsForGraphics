@@ -37,9 +37,9 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
             lat = embed(inds).view(len(images), hyperparams.latentDim, 1, 1)
             loss = criterion(images, gen(lat))
 
-            latNoised = addNoise(lat, hyperparams.gloPertMean, hyperparams.gloPertStd)
-            fakeNoised = gen(latNoised)
-            loss.add_(criterion(images, fakeNoised).mul_(hyperparams.gloPertCoeff))
+            # latNoised = addNoise(lat, hyperparams.gloPertMean, hyperparams.gloPertStd)
+            # fakeNoised = gen(latNoised)
+            # loss.add_(criterion(images, fakeNoised).mul_(hyperparams.gloPertCoeff))
 
             loss.backward()
             genOptim.step()
@@ -93,8 +93,8 @@ def main():
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
 
-    gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
-    embed.load_state_dict(torch.load(settings.localModels / 'glo4 with noise/previousLatent.pt'))
+    # gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
+    # embed.load_state_dict(torch.load(settings.localModels / 'glo4 with noise/previousLatent.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=False)
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.genAdamLr, betas=hyperparams.genAdamBetas)

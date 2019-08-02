@@ -26,9 +26,9 @@ gloPertMean = 0  # Noise Sampling
 gloPertStd = .4  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 201
-gloBatchSize = 50
-gloEvalEvery = 25
+gloEpochsNum = 4001
+gloBatchSize = 75
+gloEvalEvery = 250
 
 glo2SubsetBatchSize = 35
 glo2MainBatchSize = 50
@@ -48,42 +48,6 @@ encLossBeta = 1
 encEpochsNum = 5001
 encBatchSize = 75
 encEvalEvery = 20
-
-###################################################################
-#                             Arch Config
-###################################################################
-
-archGenAdamLr = .001
-archGenAdamBetas = (0.9, 0.999)
-archEncAdamLr = .001
-archEncAdamBetas = (0.9, 0.999)
-
-archPercLossAlpha = 1  # Perceptual loss  multiplier l1 norm
-archLossPowAlpha = 1  # Perceptual loss  pow l1 norm
-
-archPercLossBeta = 1  # Perceptual loss  multiplier features
-archLossPowBeta = 1  # Perceptual loss  pow features
-
-archL1L2LossAlpha = 1  # loss1[Zx, E(x)] l1norm
-archL1L2LossBeta = 1  # loss1[Zx, E(x)] l2norm
-
-archPertMean = 0  # Noise Sampling
-archPertStd = 0  # Noise Sampling
-archPertCoeff = 0  # Noise term multiplier
-archPertPow = 0  # Noise term pow
-
-archLossAlpha = 1.3  # Loss3 coeff (main) - without noise
-archSubsetLossBeta = .3  # Loss1 coeff (subset)
-archSubsetLossGamma = 1.3  # Loss2 coeff (subset)
-
-archMainLossPow = 1.3  # Loss3 pow (main) - without noise
-archSubsetLossPow = 1.3  # Loss1 and Loss2 pow (subset)
-
-archEpochsNum = 11
-archSubsetBatchSize = 50
-archMainBatchSize = 150
-archEvalEvery = 2
-archRatio = (0, 1)
 
 ###################################################################
 #                          Clustering Config
