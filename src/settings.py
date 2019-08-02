@@ -29,15 +29,15 @@ gloProgressPath = matureModels / 'glototal/progress'
 gloHyperPath = matureModels / 'glototal/hyperparams.py'
 gloTrainingTimePath = matureModels / 'glototal/training_time.txt'
 
-encModelPath = matureModels / 'enc/enc.pt'
-encVisPath = matureModels / 'enc/enc.jpg'
-encProgressPath = matureModels / 'enc/progress'
-encHyperPath = matureModels / 'enc/hyperparams.py'
-encTrainingTimePath = matureModels / 'enc/training_time.txt'
+encModelPath = localModels / 'enc2/enc.pt'
+encVisPath = localModels / 'enc2/enc.jpg'
+encProgressPath = localModels / 'enc2/progress'
+encHyperPath = localModels / 'enc2/hyperparams.py'
+encTrainingTimePath = localModels / 'enc2/training_time.txt'
 
 interPath = matureModels / 'glo4 with noise/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
-reconsPath = matureModels / 'glo4 with noise/eval/reconstruction'
+reconsPath = matureModels / 'enc for glo4 with noise/eval/reconstruction'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'

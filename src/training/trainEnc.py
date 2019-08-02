@@ -84,7 +84,7 @@ def main():
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
     gen.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/gen.pt'))
     embed.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/latent.pt'))
-    # enc.load_state_dict(torch.load(settings.localModels / 'enc2/enc.pt'))
+    enc.load_state_dict(torch.load(settings.matureModels / 'enc for glo4 with noise/enc.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.encBatchSize, shuffle=False)
     optimizer = optim.Adam(enc.parameters(), lr=hyperparams.encAdamLr, betas=hyperparams.encAdamBetas)

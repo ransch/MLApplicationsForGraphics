@@ -43,7 +43,7 @@ encAdamLr = .001
 encAdamBetas = (0.9, 0.999)
 
 encLossAlpha = 1
-encLossBeta = 1
+encLossBeta = 0
 
 encEpochsNum = 5001
 encBatchSize = 75
