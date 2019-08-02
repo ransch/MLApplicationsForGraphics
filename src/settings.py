@@ -22,12 +22,12 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = localModels / 'glo4 with noise/gen.pt'
-gloLatentPath = localModels / 'glo4 with noise/latent.pt'
-gloVisPath = localModels / 'glo4 with noise/glo.jpg'
-gloProgressPath = localModels / 'glo4 with noise/progress'
-gloHyperPath = localModels / 'glo4 with noise/hyperparams.py'
-gloTrainingTimePath = localModels / 'glo4 with noise/training_time.txt'
+gloGenPath = matureModels / 'glototal/gen.pt'
+gloLatentPath = matureModels / 'glototal/latent.pt'
+gloVisPath = matureModels / 'glototal/glo.jpg'
+gloProgressPath = matureModels / 'glototal/progress'
+gloHyperPath = matureModels / 'glototal/hyperparams.py'
+gloTrainingTimePath = matureModels / 'glototal/training_time.txt'
 
 encModelPath = matureModels / 'enc/enc.pt'
 encVisPath = matureModels / 'enc/enc.jpg'
