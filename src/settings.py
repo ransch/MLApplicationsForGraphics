@@ -35,9 +35,9 @@ encProgressPath = localModels / 'enc2/progress'
 encHyperPath = localModels / 'enc2/hyperparams.py'
 encTrainingTimePath = localModels / 'enc2/training_time.txt'
 
-interPath = matureModels / 'glo4 with noise/eval/inter'
+interPath = matureModels / 'glototal/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
-reconsPath = matureModels / 'enc for glo4 with noise/eval/reconstruction'
+reconsPath = matureModels / 'glototal/eval/reconstruction'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
@@ -46,6 +46,7 @@ pcaPath = p / 'clustering/pca-dim100.pkl'
 clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
 
 frogs = p / 'frogs-64'
+frogsAll = list(range(1, 7797))
 frogs1000 = list(range(1, 1001))
 frogs3000 = list(range(1001, 4001))
 frogs5000 = list(range(1001, 6001))
@@ -58,6 +59,8 @@ frogsSubset = sorted(set(frogsSubset1).union(frogsSubset2))
 frogsMain = sorted(set(frogs6000).difference(frogsSubset))
 assert len(set(frogsSubset1).intersection(set(frogsSubset2))) == 0
 assert len(frogsMain) + len(frogsSubset1) + len(frogsSubset2) == 6000
+assert len(set(frogs6000).intersection(set(testFrogs))) == 0
+assert len(frogs6000) + len(testFrogs) == len(frogsAll)
 
 
 def sysAsserts():

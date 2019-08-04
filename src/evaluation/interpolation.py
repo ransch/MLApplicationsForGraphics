@@ -10,7 +10,7 @@ from src.networks.generator import Generator
 from src.networks.encoder import Encoder
 
 num = 20
-inds = [(1568, 1574)]  # [(2448, 2732)]  # [(1113, 1114), (1207, 1234), (1246, 1247), (1403, 1405), (1578, 1579), (1779, 1780), (2087, 2096), (2802, 2803)]
+inds = [(1113, 1114), (1207, 1234), (1246, 1247), (1568, 1574), (1779, 1780)]
 
 def genImages(images, inda, indb):
     figpath = settings.interPath / f'{inda}-{indb}.jpg'
@@ -30,8 +30,8 @@ def main():
     gen = Generator().to(settings.device)
     enc = Encoder().to(settings.device)
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
-    gen.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/gen.pt'))
-    embed.load_state_dict(torch.load(settings.matureModels / 'glo4 with noise/latent.pt'))
+    gen.load_state_dict(torch.load(settings.matureModels / 'glototal/gen.pt'))
+    embed.load_state_dict(torch.load(settings.matureModels / 'glototal/latent.pt'))
     # enc.load_state_dict(torch.load(settings.encModelPath))
     gen.eval()
     embed.eval()
