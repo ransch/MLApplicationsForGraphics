@@ -38,6 +38,7 @@ encTrainingTimePath = localModels / 'enc2/training_time.txt'
 interPath = matureModels / 'glototal/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
 reconsPath = matureModels / 'glototal/eval/reconstruction'
+synthPath = matureModels / 'glo4 with noise/eval/synth'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
@@ -110,6 +111,10 @@ def featuresFilesAsserts():
 def reconstructFilesAsserts():
     if not reconsPath.is_dir():
         os.makedirs(reconsPath)
+
+def synthesizeFilesAsserts():
+    if not synthPath.is_dir():
+        os.makedirs(synthPath)
 
 
 def pcaAsserts():
