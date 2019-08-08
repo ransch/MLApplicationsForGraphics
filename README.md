@@ -14,6 +14,7 @@ This repository contains the final project of the workshop
     * */src/settings.py* is a file which contains environment-related asserts and definitions
 * */scripts* contains bash scripts for settings up the environment
 * */clustering* and */models* contains different trained models, their hyperparameters and the results of the experiments conducted
+* */report* contains a detailed report of the project
 
 ## Training a Model
 
