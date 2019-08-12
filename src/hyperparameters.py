@@ -26,9 +26,9 @@ gloPertMean = 0  # Noise Sampling
 gloPertStd = .4  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 4001
+gloEpochsNum = 5
 gloBatchSize = 75
-gloEvalEvery = 250
+gloEvalEvery = 1
 
 glo2SubsetBatchSize = 35
 glo2MainBatchSize = 50

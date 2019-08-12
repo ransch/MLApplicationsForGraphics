@@ -22,12 +22,12 @@ matureModels = p / 'models'
 printevery = 1000
 samplesLen = 5
 
-gloGenPath = matureModels / 'glototal/gen.pt'
-gloLatentPath = matureModels / 'glototal/latent.pt'
-gloVisPath = matureModels / 'glototal/glo.jpg'
-gloProgressPath = matureModels / 'glototal/progress'
-gloHyperPath = matureModels / 'glototal/hyperparams.py'
-gloTrainingTimePath = matureModels / 'glototal/training_time.txt'
+gloGenPath = localModels / 'glototal/gen.pt'
+gloLatentPath = localModels / 'glototal/latent.pt'
+gloVisPath = localModels / 'glototal/glo.jpg'
+gloProgressPath = localModels / 'glototal/progress'
+gloHyperPath = localModels / 'glototal/hyperparams.py'
+gloTrainingTimePath = localModels / 'glototal/training_time.txt'
 
 encModelPath = localModels / 'enc2/enc.pt'
 encVisPath = localModels / 'enc2/enc.jpg'
@@ -35,10 +35,10 @@ encProgressPath = localModels / 'enc2/progress'
 encHyperPath = localModels / 'enc2/hyperparams.py'
 encTrainingTimePath = localModels / 'enc2/training_time.txt'
 
-interPath = matureModels / 'glototal/eval/inter'
+interPath = localModels / 'glototal/eval/inter'
 featuresPath = localModels / 'arch/arch-features'
-reconsPath = matureModels / 'glototal/eval/reconstruction'
-synthPath = matureModels / 'glo4 with noise/eval/synth'
+reconsPath = localModels / 'glototal/eval/reconstruction'
+synthPath = localModels / 'glo4 with noise/eval/synth'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'

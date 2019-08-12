@@ -18,6 +18,7 @@ from src.utils import L1L2Criterion, saveHyperParams
 def train(gen, embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,
           evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
+    last_updated = start_time
     best_loss = math.inf
     sofar = 0
     printevery = settings.printevery
@@ -51,11 +52,12 @@ def train(gen, embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEver
             lossCallback(total_loss)
             if total_loss < best_loss:
                 best_loss = total_loss
+                last_updated = time.time()
                 betterCallback(epoch, gen, enc, dloader)
             enc.train()
 
         printevery = sofar
-    endCallback(str(settings.encVisPath), settings.encTrainingTimePath, epochsNum, evalEvery, time.time() - start_time)
+    endCallback(str(settings.encVisPath), settings.encTrainingTimePath, epochsNum, evalEvery, last_updated - start_time)
 
 
 def totalLoss(embed, enc, dloader, dsize, criterion):

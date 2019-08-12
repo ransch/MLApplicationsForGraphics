@@ -1,3 +1,4 @@
+import math
 import shutil
 
 import torch
@@ -71,3 +72,10 @@ def findOptimalLatentVector(glo, image):
         optimizer.step()
 
     return torch.empty(hyperparams.latentDim).to(settings.device).copy_(res)
+
+
+def projectRowsToLpBall(mat, p=2):
+    assert len(mat.shape) == 2
+    norms = mat.norm(p=p, dim=1, keepdim=True)
+    norms.clamp_(1, math.inf)
+    mat.div_(norms)

@@ -1,6 +1,6 @@
 import datetime
-
 import math
+
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -10,7 +10,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLOAux import *
-from src.utils import saveHyperParams, addNoise
+from src.utils import saveHyperParams, projectRowsToLpBall
 
 
 # import winsound
@@ -19,6 +19,7 @@ from src.utils import saveHyperParams, addNoise
 def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum, evalEvery, epochCallback,
           progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
+    last_updated = start_time
     best_loss = math.inf
     sofar = 0
     printevery = settings.printevery
@@ -44,6 +45,8 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
             loss.backward()
             genOptim.step()
             embedOptim.step()
+            with torch.no_grad():
+                projectRowsToLpBall(embed.weight.data)
 
             sofar += len(images)
             if sofar >= printevery:
@@ -60,12 +63,13 @@ def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum
             lossCallback(total_loss)
             if total_loss < best_loss:
                 best_loss = total_loss
+                last_updated = time.time()
                 betterCallback(epoch, gen, embed, dloader)
             gen.train()
             embed.train()
 
         printevery = sofar
-    endCallback(str(settings.gloVisPath), settings.gloTrainingTimePath, epochsNum, evalEvery, time.time() - start_time)
+    endCallback(str(settings.gloVisPath), settings.gloTrainingTimePath, epochsNum, evalEvery, last_updated - start_time)
 
 
 def totalLoss(gen, embed, dloader, dsize, criterion):
@@ -92,6 +96,7 @@ def main():
 
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
+    projectRowsToLpBall(embed.weight.data)
 
     # gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
     # embed.load_state_dict(torch.load(settings.localModels / 'glo4 with noise/previousLatent.pt'))
@@ -110,8 +115,7 @@ def main():
     try:
         train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, hyperparams.gloEpochsNum,
               hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback,
-              betterCallback,
-              endCallback)
+              betterCallback, endCallback)
         # winsound.Beep(640, 1000)
         saveHyperParams(settings.gloHyperPath)
 

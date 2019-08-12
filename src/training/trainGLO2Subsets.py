@@ -1,6 +1,6 @@
 import datetime
-
 import math
+
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -10,7 +10,7 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import *
 from src.training.trainGLO2SubsetsAux import *
-from src.utils import saveHyperParams
+from src.utils import saveHyperParams, projectRowsToLpBall
 
 
 # import winsound
@@ -25,6 +25,7 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
           epochsNum, evalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback,
           endCallback):
     start_time = time.time()
+    last_updated = start_time
     best_loss = math.inf
     sofar = 0
     printevery = settings.printevery
@@ -59,6 +60,8 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
             loss.backward()
             genOptim.step()
             embedOptim.step()
+            with torch.no_grad():
+                projectRowsToLpBall(embed.weight.data)
 
             sofar += len(images) + len(subsetImages)
             if sofar >= printevery:
@@ -78,13 +81,14 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
             glo2LossCallback(total_loss_subset, total_loss_main, weightedLoss)
             if weightedLoss < best_loss:
                 best_loss = weightedLoss
+                last_updated = time.time()
                 betterCallback(epoch, gen, embed, embedSubset, dloaderMain, dloaderSubset)
             gen.train()
             embed.train()
 
         printevery = sofar
     glo2EndCallback(str(settings.gloVisPath), str(settings.gloTrainingTimePath), epochsNum, evalEvery,
-                    time.time() - start_time)
+                    last_updated - start_time)
 
 
 def totalLoss(gen, embed, dloader, dsize, criterion):
@@ -114,10 +118,11 @@ def main():
     gen = Generator().to(settings.device)
     embedSubset = nn.Embedding(dsizeSubset, hyperparams.latentDim).to(settings.device)
     embed = nn.Embedding(dsizeMain, hyperparams.latentDim).to(settings.device)
+    projectRowsToLpBall(embed.weight.data)
 
-    gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
-    embedSubset.load_state_dict(torch.load(settings.localModels / 'glo3/previousLatent.pt'))
-    embed.load_state_dict(torch.load(settings.localModels / 'glo3/latent.pt'))
+    # gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
+    # embedSubset.load_state_dict(torch.load(settings.localModels / 'glo3/previousLatent.pt'))
+    # embed.load_state_dict(torch.load(settings.localModels / 'glo3/latent.pt'))
 
     dloaderSubset = DataLoader(datasetSubset, batch_size=hyperparams.glo2SubsetBatchSize, shuffle=False)
     dloaderMain = DataLoader(datasetMain, batch_size=hyperparams.glo2MainBatchSize, shuffle=False)
