@@ -58,12 +58,12 @@ noiseDim = 100
 imleAdamLr = .001
 imleAdamBetas = (0.9, 0.999)
 
-imleEpochsNum = 1501
+imleEpochsNum = 51
 imleItersNum = 250
-imleSubsetSize = 75
-imleBatchSize = 75
-imleMiniBatchSize = 50
-imleEvalEvery = 3
+imleSubsetSize = 5000
+imleBatchSize = 5000
+imleMiniBatchSize = 3000
+imleEvalEvery = 5
 
 ###################################################################
 #                          Clustering Config

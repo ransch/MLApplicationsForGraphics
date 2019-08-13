@@ -13,9 +13,7 @@ from src.utils import saveHyperParams, L2Criterion, findNearest
 
 
 def train(mapping, gen, embed, subsetSize, batchSize, miniBatchSize, criterion, optimizer, epochsNum, itersNum,
-          evalEvery,
-          epochCallback,
-          progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
+          evalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
     last_updated = start_time
     best_loss = math.inf
