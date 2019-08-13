@@ -21,7 +21,7 @@ def betterCallback(epoch, mapping, gen):
 
     with torch.no_grad():
         for i in range(settings.samplesLen):
-            noise = torch.empty(hyperparams.noiseDim).normal_(mean=0, std=1)
+            noise = torch.empty(1, hyperparams.noiseDim, device=settings.device).normal_(mean=0, std=1)
             lat = mapping(noise)
             fake = gen(lat.view(1, hyperparams.latentDim, 1, 1))
             filename = f'epoch-{epoch}-ind-{i}.png'

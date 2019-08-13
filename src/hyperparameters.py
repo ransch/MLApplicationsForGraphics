@@ -26,7 +26,7 @@ gloPertMean = 0  # Noise Sampling
 gloPertStd = .4  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 2001
+gloEpochsNum = 1501
 gloBatchSize = 75
 gloEvalEvery = 250
 
@@ -58,8 +58,8 @@ noiseDim = 100
 imleAdamLr = .001
 imleAdamBetas = (0.9, 0.999)
 
-imleEpochsNum = 15
-imleItersNum = 15
+imleEpochsNum = 1501
+imleItersNum = 250
 imleSubsetSize = 75
 imleBatchSize = 75
 imleMiniBatchSize = 50

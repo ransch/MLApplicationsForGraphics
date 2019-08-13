@@ -27,23 +27,23 @@ def train(mapping, gen, embed, subsetSize, batchSize, miniBatchSize, criterion, 
     for epoch in range(1, epochsNum + 1):
         epochCallback(epochsNum, epoch)
 
-        noise = torch.empty(subsetSize, hyperparams.noiseDim).normal_(mean=0, std=1)
+        noise = torch.empty(subsetSize, hyperparams.noiseDim, device=settings.device).normal_(mean=0, std=1)
         mappedNoise = mapping(noise)
-        inds = torch.from_numpy(np.random.choice(embed.num_embeddings, batchSize, replace=False)).type(torch.int64) \
-            .to(settings.device)
+        inds = torch.from_numpy(np.random.choice(embed.num_embeddings, batchSize, replace=False)) \
+            .to(device=settings.device, dtype=torch.int64)
         lats = embed(inds)
         nearest = findNearest(mappedNoise, lats)
 
         for iteration in range(1, itersNum + 1):
             minibatch_inds_loc = torch.from_numpy(np.random.choice(batchSize, miniBatchSize, replace=False)) \
-                .type(torch.int64).to(settings.device)
+                .to(device=settings.device, dtype=torch.int64)
             minibatch_lats = torch.index_select(lats, 0, minibatch_inds_loc)
             minibatch_nearest = torch.index_select(nearest, 0, minibatch_inds_loc)
             minibatch_nearest_noise = torch.index_select(noise, 0, minibatch_nearest)
 
             optimizer.zero_grad()
             loss = criterion(minibatch_lats, minibatch_nearest_noise)
-            loss.backward()
+            loss.backward(retain_graph=True)
             optimizer.step()
 
         if (epoch - 1) % settings.imleprintevery == 0:
@@ -57,7 +57,7 @@ def train(mapping, gen, embed, subsetSize, batchSize, miniBatchSize, criterion, 
             if total_loss < best_loss:
                 best_loss = total_loss
                 last_updated = time.time()
-                betterCallback(epoch, mapping)
+                betterCallback(epoch, mapping, gen)
             mapping.train()
 
     endCallback(str(settings.imleVisPath), settings.imleTrainingTimePath, epochsNum, evalEvery,
@@ -68,13 +68,14 @@ def totalLoss(mapping, embed, subsetSize, criterion):
     loss = .0
 
     with torch.no_grad():
-        noise = torch.empty(subsetSize, hyperparams.noiseDim).normal_(mean=0, std=1)
+        noise = torch.empty(subsetSize, hyperparams.noiseDim, device=settings.device).normal_(mean=0, std=1)
         mappedNoise = mapping(noise)
         lats = embed.weight.data
         nearest = findNearest(mappedNoise, lats)
+        nearest_noise = torch.index_select(noise, 0, nearest)
 
-        loss = criterion(lats, nearest)
-    return loss
+        loss = criterion(lats, nearest_noise)
+    return loss.item()
 
 
 def main():

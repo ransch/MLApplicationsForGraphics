@@ -34,7 +34,7 @@ class L2Criterion(nn.Module):
         sub = x - y
         sub.pow_(2)
         l = torch.sum(sub, 1)  # .sqrt_()
-        return l
+        return l.mean()
 
     def forward(self, x, y):
         l = self.l2(x, y)
@@ -87,7 +87,7 @@ def findOptimalLatentVector(glo, image):
         loss.backward()
         optimizer.step()
 
-    return torch.empty(hyperparams.latentDim).to(settings.device).copy_(res)
+    return torch.empty(hyperparams.latentDim, device=settings.device).copy_(res)
 
 
 def projectRowsToLpBall(mat, p=2):
@@ -98,12 +98,12 @@ def projectRowsToLpBall(mat, p=2):
 
 
 def findNearest(A, B):
-    assert A.shape.length == 2 and B.shape.length == 2 and A.shape[1] == B.shape[2]
+    assert len(A.shape) == 2 and len(B.shape) == 2 and A.shape[1] == B.shape[1]
     l = B.shape[0]
-    ret = torch.empty(l, type=torch.int64).to(settings.device)
+    ret = torch.empty(l, dtype=torch.int64, device=settings.device)
     for i in range(l):
         distancesSquared = A - B[i]
-        distancesSquared.pow_(2).sum(1)
+        distancesSquared = distancesSquared.pow_(2).sum(1)
         ret[i] = distancesSquared.argmin()
 
     return ret

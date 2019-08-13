@@ -13,7 +13,7 @@ from src.training.trainEncAux import *
 from src.utils import L1L2Criterion, saveHyperParams
 
 
-def train(gen, embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,
+def train(gen, embed, enc, dloader, dsize, criterion, optimizer, epochsNum, evalEvery, epochCallback, progressCallback,
           evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
     last_updated = start_time
@@ -31,10 +31,10 @@ def train(gen, embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEver
             inds = batch['ind'].to(settings.device).view(-1)
             images = batch['image'].to(settings.device).type(torch.float32)
 
-            optim.zero_grad()
+            optimizer.zero_grad()
             loss = criterion(embed(inds), enc(images))
             loss.backward()
-            optim.step()
+            optimizer.step()
 
             sofar += len(inds)
             if sofar >= printevery:
