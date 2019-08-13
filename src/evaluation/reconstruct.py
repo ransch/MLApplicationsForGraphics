@@ -5,10 +5,11 @@ from torchvision.utils import save_image
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
-from src.networks.encoder import Encoder
 from src.networks.generator import Generator
 
 inds = [7, 8, 166, 167, 169, 225, 249, 272]  # [settings.frogsMain[i] for i in range(10)]
+
+
 # inds = [7202, 7214, 7666, 7700, 7771, 7786]
 
 def genImage(image, fileind):

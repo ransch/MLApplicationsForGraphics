@@ -13,9 +13,6 @@ from src.training.trainGLOAux import *
 from src.utils import saveHyperParams, projectRowsToLpBall
 
 
-# import winsound
-
-
 def train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, epochsNum, evalEvery, epochCallback,
           progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
@@ -116,13 +113,11 @@ def main():
         train(gen, embed, dloader, dsize, criterion, genOptim, embedOptim, hyperparams.gloEpochsNum,
               hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback,
               betterCallback, endCallback)
-        # winsound.Beep(640, 1000)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        # winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':

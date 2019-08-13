@@ -26,9 +26,9 @@ gloPertMean = 0  # Noise Sampling
 gloPertStd = .4  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 5
+gloEpochsNum = 2001
 gloBatchSize = 75
-gloEvalEvery = 1
+gloEvalEvery = 250
 
 glo2SubsetBatchSize = 35
 glo2MainBatchSize = 50
@@ -48,6 +48,22 @@ encLossBeta = 0
 encEpochsNum = 5001
 encBatchSize = 75
 encEvalEvery = 20
+
+###################################################################
+#                           IMLE Config
+###################################################################
+
+noiseDim = 100
+
+imleAdamLr = .001
+imleAdamBetas = (0.9, 0.999)
+
+imleEpochsNum = 15
+imleItersNum = 15
+imleSubsetSize = 75
+imleBatchSize = 75
+imleMiniBatchSize = 50
+imleEvalEvery = 3
 
 ###################################################################
 #                          Clustering Config

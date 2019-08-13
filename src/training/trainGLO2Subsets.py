@@ -13,8 +13,6 @@ from src.training.trainGLO2SubsetsAux import *
 from src.utils import saveHyperParams, projectRowsToLpBall
 
 
-# import winsound
-
 def remaining_time(start_time, sofar, dsizeMain, dsizeSubset, mainBatchSize, subsetBatchSize, epochsNum, evalEvery):
     return (time.time() - start_time) / sofar * (
             (dsizeMain + (int(dsizeMain / mainBatchSize) + 1) * subsetBatchSize) * epochsNum
@@ -142,13 +140,11 @@ def main():
               hyperparams.gloEpochsNum, hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback,
               lossCallback, betterCallback,
               endCallback)
-        # winsound.Beep(640, 1000)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        # winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':

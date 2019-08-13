@@ -1,6 +1,6 @@
 import datetime
-
 import math
+
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -12,8 +12,6 @@ from src.training.trainAux import *
 from src.training.trainEncAux import *
 from src.utils import L1L2Criterion, saveHyperParams
 
-
-# import winsound
 
 def train(gen, embed, enc, dloader, dsize, criterion, optim, epochsNum, evalEvery, epochCallback, progressCallback,
           evalEveryCallback, lossCallback, betterCallback, endCallback):
@@ -98,15 +96,11 @@ def main():
     try:
         train(gen, embed, enc, dloader, dsize, criterion, optimizer, hyperparams.encEpochsNum, hyperparams.encEvalEvery,
               epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
-        # winsound.Beep(640, 1000)
-
         saveHyperParams(settings.encHyperPath)
-
 
     except Exception as e:
         print('An error occurred :(')
         print(e)
-        # winsound.Beep(420, 1000)
 
 
 if __name__ == '__main__':

@@ -6,11 +6,12 @@ import torchvision.utils as vutils
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
-from src.networks.generator import Generator
 from src.networks.encoder import Encoder
+from src.networks.generator import Generator
 
 num = 20
 inds = [(1113, 1114), (1207, 1234), (1246, 1247), (1568, 1574), (1779, 1780)]
+
 
 def genImages(images, inda, indb):
     figpath = settings.interPath / f'{inda}-{indb}.jpg'

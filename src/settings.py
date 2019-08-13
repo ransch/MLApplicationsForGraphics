@@ -20,25 +20,31 @@ localModels = p / 'no_git/models'
 matureModels = p / 'models'
 
 printevery = 1000
+imleprintevery = 5
 samplesLen = 5
 
 gloGenPath = localModels / 'glototal/gen.pt'
 gloLatentPath = localModels / 'glototal/latent.pt'
-gloVisPath = localModels / 'glototal/glo.jpg'
+gloVisPath = localModels / 'glototal/vis.jpg'
 gloProgressPath = localModels / 'glototal/progress'
 gloHyperPath = localModels / 'glototal/hyperparams.py'
 gloTrainingTimePath = localModels / 'glototal/training_time.txt'
 
 encModelPath = localModels / 'enc2/enc.pt'
-encVisPath = localModels / 'enc2/enc.jpg'
+encVisPath = localModels / 'enc2/vis.jpg'
 encProgressPath = localModels / 'enc2/progress'
 encHyperPath = localModels / 'enc2/hyperparams.py'
 encTrainingTimePath = localModels / 'enc2/training_time.txt'
 
+imleMappingPath = localModels / 'totalimle/mapping.pt'
+imleVisPath = localModels / 'totalimle/vis.jpg'
+imleProgressPath = localModels / 'totalimle/progress'
+imleHyperPath = localModels / 'totalimle/hyperparams.py'
+imleTrainingTimePath = localModels / 'totalimle/training_time.txt'
+
 interPath = localModels / 'glototal/eval/inter'
-featuresPath = localModels / 'arch/arch-features'
 reconsPath = localModels / 'glototal/eval/reconstruction'
-synthPath = localModels / 'glo4 with noise/eval/synth'
+synthPath = localModels / 'totalimle/eval/synth'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
@@ -71,7 +77,8 @@ def sysAsserts():
 
 
 def gloFilesAsserts():
-    assert len({gloGenPath.parent, gloLatentPath.parent, gloVisPath.parent, gloHyperPath.parent}) == 1
+    assert len({gloGenPath.parent, gloLatentPath.parent, gloVisPath.parent, gloHyperPath.parent,
+                gloTrainingTimePath.parent}) == 1
     if not gloGenPath.parent.is_dir():
         os.makedirs(gloGenPath.parent)
     if not gloProgressPath.is_dir():
@@ -86,7 +93,7 @@ def gloFilesAsserts():
 
 
 def encFilesAsserts():
-    assert len({encModelPath.parent, encVisPath.parent, encHyperPath.parent}) == 1
+    assert len({encModelPath.parent, encVisPath.parent, encHyperPath.parent, encTrainingTimePath.parent}) == 1
     if not encModelPath.parent.is_dir():
         os.makedirs(encModelPath.parent)
     if not encProgressPath.is_dir():
@@ -98,19 +105,30 @@ def encFilesAsserts():
     assert not encTrainingTimePath.is_file()
     assert len(os.listdir(encProgressPath)) == 0
 
+
+def imleFilesAsserts():
+    assert len({imleMappingPath.parent, imleVisPath.parent, imleHyperPath.parent, imleTrainingTimePath.parent}) == 1
+    if not imleMappingPath.parent.is_dir():
+        os.makedirs(imleMappingPath.parent)
+    if not imleProgressPath.is_dir():
+        os.makedirs(imleProgressPath)
+
+    assert not imleMappingPath.is_file()
+    assert not imleVisPath.is_file()
+    assert not imleHyperPath.is_file()
+    assert not imleTrainingTimePath.is_file()
+    assert len(os.listdir(imleProgressPath)) == 0
+
+
 def interFilesAsserts():
     if not interPath.is_dir():
         os.makedirs(interPath)
 
 
-def featuresFilesAsserts():
-    if not featuresPath.is_dir():
-        os.makedirs(featuresPath)
-
-
 def reconstructFilesAsserts():
     if not reconsPath.is_dir():
         os.makedirs(reconsPath)
+
 
 def synthesizeFilesAsserts():
     if not synthPath.is_dir():

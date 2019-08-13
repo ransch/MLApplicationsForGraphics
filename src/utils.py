@@ -24,6 +24,23 @@ class Flatten(nn.Module):
         return x.view(x.size(0), -1)
 
 
+class L2Criterion(nn.Module):
+    def __init__(self):
+        super(L2Criterion, self).__init__()
+
+    @staticmethod
+    def l2(x, y):
+        assert len(x.shape) == 2 and x.shape == y.shape
+        sub = x - y
+        sub.pow_(2)
+        l = torch.sum(sub, 1)  # .sqrt_()
+        return l
+
+    def forward(self, x, y):
+        l = self.l2(x, y)
+        return l
+
+
 class L1L2Criterion(nn.Module):
     def __init__(self, alpha, beta):
         super(L1L2Criterion, self).__init__()
@@ -44,7 +61,6 @@ class L1L2Criterion(nn.Module):
 
     def forward(self, x, y):
         l = self.l1l2(x, y, self.alpha, self.beta)
-
         return l
 
 
@@ -79,3 +95,15 @@ def projectRowsToLpBall(mat, p=2):
     norms = mat.norm(p=p, dim=1, keepdim=True)
     norms.clamp_(1, math.inf)
     mat.div_(norms)
+
+
+def findNearest(A, B):
+    assert A.shape.length == 2 and B.shape.length == 2 and A.shape[1] == B.shape[2]
+    l = B.shape[0]
+    ret = torch.empty(l, type=torch.int64).to(settings.device)
+    for i in range(l):
+        distancesSquared = A - B[i]
+        distancesSquared.pow_(2).sum(1)
+        ret[i] = distancesSquared.argmin()
+
+    return ret
