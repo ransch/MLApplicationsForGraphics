@@ -20,15 +20,15 @@ gloLossPowAlpha = 1
 gloLossPowBeta = 1
 
 glo2SubsetCoeff = 1
-glo2MainCoeff = 2
+glo2MainCoeff = 1
 
 gloPertMean = 0  # Noise Sampling
 gloPertStd = .4  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 1501
-gloBatchSize = 75
-gloEvalEvery = 250
+gloEpochsNum = 601
+gloBatchSize = 35
+gloEvalEvery = 100
 
 glo2SubsetBatchSize = 35
 glo2MainBatchSize = 50

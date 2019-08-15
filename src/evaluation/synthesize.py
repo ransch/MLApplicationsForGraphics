@@ -1,11 +1,12 @@
+import pickle
+
 import torch
+from torch.distributions.multivariate_normal import MultivariateNormal
 from torchvision.utils import save_image
 
 from src import hyperparameters as hyperparams
 from src import settings
-from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.generator import Generator
-from src.networks.imleMapping import Mapping
 
 mean = 0
 std = 1
@@ -18,25 +19,29 @@ def genImage(image, fileind):
     save_image(image, figpath)
 
 
+def loadSampler(filepath):
+    with open(filepath, 'rb') as f:
+        pcklr = pickle.Unpickler(f)
+        fit = pcklr.load()
+    mean = torch.from_numpy(fit['mean']).to(device=settings.device)
+    cov = torch.from_numpy(fit['cov']).to(device=settings.device)
+    sampler = MultivariateNormal(mean, cov)
+    return sampler
+
+
 def main():
     settings.sysAsserts()
     settings.synthesizeFilesAsserts()
-    dataset = Dataset(settings.frogs, settings.frogs6000)
-    dsize = len(dataset)
 
-    mapping = Mapping().to(settings.device)
     gen = Generator().to(settings.device)
-
-    mapping.load_state_dict(torch.load(settings.matureModels / 'totalimle/mapping.pt'))
-    gen.load_state_dict(torch.load(settings.matureModels / 'glototal/gen.pt'))
-    mapping.eval()
+    gen.load_state_dict(torch.load(settings.localModels / 'glototal/gen.pt'))
     gen.eval()
 
+    sampler = loadSampler(settings.localModels / 'glototal/gaussianFit.pkl')
     with torch.no_grad():
         for i in range(cnt):
-            noise = torch.empty(hyperparams.noiseDim).normal_(mean=0, std=1)
-            lat = mapping(noise)
-            fake = gen(lat.view(1, hyperparams.latentDim, 1, 1))
+            lat = sampler.sample()
+            fake = gen(lat.view(1, hyperparams.latentDim, 1, 1).type(torch.float32))
             genImage(fake, i + 1)
 
 

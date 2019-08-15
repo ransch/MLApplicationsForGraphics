@@ -40,12 +40,17 @@ def mergeEmbeddings(dataset1, dataset2, dataset, embed1Path, embed2Path, resPath
     torch.save(res.state_dict(), resPath)
 
 
-if __name__ == '__main__':
-    dataset1 = Dataset(settings.frogs, settings.frogsSubset)
-    dataset2 = Dataset(settings.frogs, settings.frogsMain)
-    dataset = Dataset(settings.frogs, settings.frogs6000)
-    embed1Path = settings.localModels / 'glo3/previousLatent.pt'
-    embed2Path = settings.localModels / 'glo3/latent.pt'
-    resPath = settings.localModels / 'glo4/previousLatent.pt'
+def main():
+    settings.sysAsserts()
+    dataset1 = Dataset(settings.frogs, settings.frogsSubset1)
+    dataset2 = Dataset(settings.frogs, settings.frogsSubset2)
+    dataset = Dataset(settings.frogs, settings.frogsSubset)
+    embed1Path = settings.localModels / 'glo1/latent.pt'
+    embed2Path = settings.localModels / 'glo2/latent.pt'
+    resPath = settings.localModels / 'glo3/previousLatent.pt'
     assert not resPath.is_file()
     mergeEmbeddings(dataset1, dataset2, dataset, embed1Path, embed2Path, resPath)
+
+
+if __name__ == '__main__':
+    main()

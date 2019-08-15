@@ -88,7 +88,7 @@ def totalLoss(gen, embed, dloader, dsize, criterion):
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
-    dataset = Dataset(settings.frogs, settings.frogs6000)
+    dataset = Dataset(settings.frogs, settings.frogsSubset1)
     dsize = len(dataset)
 
     gen = Generator().to(settings.device)

@@ -76,7 +76,7 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
             total_loss_main, processed2 = totalLoss(gen, embed, dloaderMain, dsizeMain, criterion)
             sofar += processed1 + processed2
             weightedLoss = total_loss_subset * hyperparams.glo2SubsetCoeff + total_loss_main * hyperparams.glo2MainCoeff
-            glo2LossCallback(total_loss_subset, total_loss_main, weightedLoss)
+            lossCallback(total_loss_subset, total_loss_main, weightedLoss)
             if weightedLoss < best_loss:
                 best_loss = weightedLoss
                 last_updated = time.time()
@@ -85,8 +85,8 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
             embed.train()
 
         printevery = sofar
-    glo2EndCallback(str(settings.gloVisPath), str(settings.gloTrainingTimePath), epochsNum, evalEvery,
-                    last_updated - start_time)
+    endCallback(str(settings.gloVisPath), str(settings.gloTrainingTimePath), epochsNum, evalEvery,
+                last_updated - start_time)
 
 
 def totalLoss(gen, embed, dloader, dsize, criterion):
@@ -118,9 +118,8 @@ def main():
     embed = nn.Embedding(dsizeMain, hyperparams.latentDim).to(settings.device)
     projectRowsToLpBall(embed.weight.data)
 
-    # gen.load_state_dict(torch.load(settings.localModels / 'glo3/gen.pt'))
-    # embedSubset.load_state_dict(torch.load(settings.localModels / 'glo3/previousLatent.pt'))
-    # embed.load_state_dict(torch.load(settings.localModels / 'glo3/latent.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'glo2/gen.pt'))
+    embedSubset.load_state_dict(torch.load(settings.localModels / 'glo3/previousLatent.pt'))
 
     dloaderSubset = DataLoader(datasetSubset, batch_size=hyperparams.glo2SubsetBatchSize, shuffle=False)
     dloaderMain = DataLoader(datasetMain, batch_size=hyperparams.glo2MainBatchSize, shuffle=False)
@@ -138,8 +137,7 @@ def main():
         train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeSubset, criterion, genOptim,
               embedOptim,
               hyperparams.gloEpochsNum, hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback,
-              lossCallback, betterCallback,
-              endCallback)
+              glo2LossCallback, betterCallback, glo2EndCallback)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:

@@ -23,12 +23,12 @@ printevery = 1000
 imleprintevery = 5
 samplesLen = 5
 
-gloGenPath = localModels / 'glototal/gen.pt'
-gloLatentPath = localModels / 'glototal/latent.pt'
-gloVisPath = localModels / 'glototal/vis.jpg'
-gloProgressPath = localModels / 'glototal/progress'
-gloHyperPath = localModels / 'glototal/hyperparams.py'
-gloTrainingTimePath = localModels / 'glototal/training_time.txt'
+gloGenPath = localModels / 'glo3/gen.pt'
+gloLatentPath = localModels / 'glo3/latent.pt'
+gloVisPath = localModels / 'glo3/vis.jpg'
+gloProgressPath = localModels / 'glo3/progress'
+gloHyperPath = localModels / 'glo3/hyperparams.py'
+gloTrainingTimePath = localModels / 'glo3/training_time.txt'
 
 encModelPath = localModels / 'enc2/enc.pt'
 encVisPath = localModels / 'enc2/vis.jpg'
@@ -44,13 +44,14 @@ imleTrainingTimePath = localModels / 'totalimle/training_time.txt'
 
 interPath = localModels / 'glototal/eval/inter'
 reconsPath = localModels / 'glototal/eval/reconstruction'
-synthPath = localModels / 'totalimle/eval/synth'
+synthPath = localModels / 'glototal/eval/synth'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
 representativesPath = p / 'clustering/5488-dim-100-clst-128/repr-8.pkl'
 pcaPath = p / 'clustering/pca-dim100.pkl'
 clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
+gaussianFitPath = localModels / 'glototal/gaussianFit.pkl'
 
 frogs = p / 'frogs-64'
 frogsAll = list(range(1, 7797))
