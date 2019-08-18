@@ -28,9 +28,9 @@ def main():
     # enc = Encoder().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
 
-    gen.load_state_dict(torch.load(settings.matureModels / 'glototal/gen.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'glo5/gen.pt'))
     # enc.load_state_dict(torch.load(settings.matureModels / 'enc for glo4 with noise/enc.pt'))
-    embed.load_state_dict(torch.load(settings.matureModels / 'glototal/latent.pt'))
+    embed.load_state_dict(torch.load(settings.localModels / 'glo5/latent.pt'))
     gen.eval()
     # enc.eval()
     embed.eval()

@@ -1,8 +1,8 @@
 import pickle
 
-from sklearn.mixture import GaussianMixture
 import torch
 import torch.nn as nn
+from sklearn.mixture import GaussianMixture
 
 from src import hyperparameters as hyperparams
 from src import settings
@@ -15,11 +15,11 @@ def main():
     dsize = len(dataset)
 
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
-    embed.load_state_dict(torch.load(settings.localModels / 'glototal/latent.pt'))
+    embed.load_state_dict(torch.load(settings.localModels / 'glo5/latent.pt'))
     dataMat = embed.weight.data.cpu().numpy()
     assert len(dataMat.shape) == 2 and dataMat.shape[0] == 6000 and dataMat.shape[1] == hyperparams.latentDim
 
-    gmm = GaussianMixture(n_components=1, covariance_type='full')
+    gmm = GaussianMixture(n_components=1, covariance_type='full', tol=1e-7, max_iter=100000, n_init=100)
     gmm.fit(dataMat)
 
     mean = gmm.means_

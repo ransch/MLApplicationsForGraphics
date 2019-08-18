@@ -10,7 +10,7 @@ from src.networks.generator import Generator
 
 mean = 0
 std = 1
-cnt = 20
+cnt = 6000
 
 
 def genImage(image, fileind):
@@ -34,10 +34,10 @@ def main():
     settings.synthesizeFilesAsserts()
 
     gen = Generator().to(settings.device)
-    gen.load_state_dict(torch.load(settings.localModels / 'glototal/gen.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'glo5/gen.pt'))
     gen.eval()
 
-    sampler = loadSampler(settings.localModels / 'glototal/gaussianFit.pkl')
+    sampler = loadSampler(settings.localModels / 'glo5/gaussianFit.pkl')
     with torch.no_grad():
         for i in range(cnt):
             lat = sampler.sample()

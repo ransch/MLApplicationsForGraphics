@@ -23,12 +23,12 @@ glo2SubsetCoeff = 1
 glo2MainCoeff = 1
 
 gloPertMean = 0  # Noise Sampling
-gloPertStd = .4  # Noise Sampling
+gloPertStd = .3  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 601
-gloBatchSize = 35
-gloEvalEvery = 100
+gloEpochsNum = 751
+gloBatchSize = 75
+gloEvalEvery = 250
 
 glo2SubsetBatchSize = 35
 glo2MainBatchSize = 50

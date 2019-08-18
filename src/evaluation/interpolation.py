@@ -10,7 +10,8 @@ from src.networks.encoder import Encoder
 from src.networks.generator import Generator
 
 num = 20
-inds = [(1113, 1114), (1207, 1234), (1246, 1247), (1568, 1574), (1779, 1780)]
+inds = [(1113, 1114), (1207, 1234), (1246, 1247), (1403, 1405), (1568, 1574), (1578, 1579), (1779, 1780), (2087, 2096),
+        (2802, 2803)]
 
 
 def genImages(images, inda, indb):
@@ -31,8 +32,8 @@ def main():
     gen = Generator().to(settings.device)
     enc = Encoder().to(settings.device)
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
-    gen.load_state_dict(torch.load(settings.matureModels / 'glototal/gen.pt'))
-    embed.load_state_dict(torch.load(settings.matureModels / 'glototal/latent.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'glo5/gen.pt'))
+    embed.load_state_dict(torch.load(settings.localModels / 'glo5/latent.pt'))
     # enc.load_state_dict(torch.load(settings.encModelPath))
     gen.eval()
     embed.eval()
