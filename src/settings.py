@@ -44,14 +44,14 @@ imleTrainingTimePath = localModels / 'totalimle/training_time.txt'
 
 interPath = localModels / 'glo5/eval/inter'
 reconsPath = localModels / 'glo5/eval/reconstruction'
-synthPath = localModels / 'glo5/eval/synth'
+synthPath = matureModels / 'Z=Rd/glo4 with noise/eval/synth'
 
 clusteringBatchSize = 2000
 clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
 representativesPath = p / 'clustering/5488-dim-100-clst-128/repr-8.pkl'
 pcaPath = p / 'clustering/pca-dim100.pkl'
 clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
-gaussianFitPath = localModels / 'glo5/gaussianFit.pkl'
+gaussianFitPath = matureModels / 'Z=Rd/glo4 with noise/gaussianFit.pkl'
 
 frogs = p / 'frogs-64'
 frogsAll = list(range(1, 7797))

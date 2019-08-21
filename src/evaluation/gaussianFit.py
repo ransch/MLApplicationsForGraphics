@@ -15,7 +15,7 @@ def main():
     dsize = len(dataset)
 
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
-    embed.load_state_dict(torch.load(settings.localModels / 'glo5/latent.pt'))
+    embed.load_state_dict(torch.load(settings.matureModels / 'Z=Rd/glo4 with noise/latent.pt'))
     dataMat = embed.weight.data.cpu().numpy()
     assert len(dataMat.shape) == 2 and dataMat.shape[0] == 6000 and dataMat.shape[1] == hyperparams.latentDim
 

@@ -34,10 +34,10 @@ def main():
     settings.synthesizeFilesAsserts()
 
     gen = Generator().to(settings.device)
-    gen.load_state_dict(torch.load(settings.localModels / 'glo5/gen.pt'))
+    gen.load_state_dict(torch.load(settings.matureModels / 'Z=Rd/glo4 with noise/gen.pt'))
     gen.eval()
 
-    sampler = loadSampler(settings.localModels / 'glo5/gaussianFit.pkl')
+    sampler = loadSampler(settings.matureModels / 'Z=Rd/glo4 with noise/gaussianFit.pkl')
     with torch.no_grad():
         for i in range(cnt):
             lat = sampler.sample()
