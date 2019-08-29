@@ -15,7 +15,7 @@ def betterCallback(epoch, gen, enc, dloader):
         batchiter = iter(dloader)
         batch = next(batchiter)
         fileinds = batch['fileind'].to(settings.device).view(-1)
-        images = batch['image'].to(settings.device).type(torch.float32)
+        images = batch['image'].to(device=settings.device, dtype=torch.float32)
         assert len(fileinds) >= settings.samplesLen
 
         for i in range(settings.samplesLen):
@@ -25,3 +25,18 @@ def betterCallback(epoch, gen, enc, dloader):
             filename = f'epoch-{epoch}-ind-{fileind.item()}.png'
             filepath = os.path.join(settings.encProgressPath, filename)
             save_image(fake[0], filepath)
+
+
+def totalLoss(embed, enc, dloader, dsize, criterion):
+    loss = .0
+    processed = 0
+
+    with torch.no_grad():
+        for batch in dloader:
+            inds = batch['ind'].to(settings.device).view(-1)
+            images = batch['image'].to(device=settings.device, dtype=torch.float32)
+
+            processed += len(images)
+            loss += criterion(embed(inds), enc(images)).item() * images.size(0)
+        loss /= dsize
+    return loss, processed

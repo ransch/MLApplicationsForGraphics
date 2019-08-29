@@ -6,9 +6,10 @@ from torchvision.utils import save_image
 
 from src import hyperparameters as hyperparams
 from src import settings
+from src.utils import findNearest
 
 
-def imleProgressCallback(remaining_time):
+def progressCallback(remaining_time):
     remaining_time = time.gmtime(remaining_time)
     print(
         f'Remaining time: {remaining_time.tm_mday - 1} days, '
@@ -27,3 +28,17 @@ def betterCallback(epoch, mapping, gen):
             filename = f'epoch-{epoch}-ind-{i}.png'
             filepath = os.path.join(settings.imleProgressPath, filename)
             save_image(fake[0], filepath)
+
+
+def totalLoss(mapping, embed, subsetSize, criterion):
+    loss = .0
+
+    with torch.no_grad():
+        noise = torch.empty(subsetSize, hyperparams.noiseDim, device=settings.device).normal_(mean=0, std=1)
+        mappedNoise = mapping(noise)
+        lats = embed.weight.data
+        nearest = findNearest(mappedNoise, lats)
+        nearest_noise = torch.index_select(noise, 0, nearest)
+
+        loss = criterion(lats, nearest_noise)
+    return loss.item()

@@ -14,7 +14,7 @@ _mainLosses = []
 _weightedLosses = []
 
 
-def glo2LossCallback(subsetLoss, mainLoss, weightedLoss):
+def lossCallback(subsetLoss, mainLoss, weightedLoss):
     print(f'Training (weighted) loss: {round(weightedLoss, 2)}')
     _subsetLosses.append(subsetLoss)
     _mainLosses.append(mainLoss)
@@ -43,7 +43,7 @@ def betterCallback(epoch, gen, embedMain, embedSubset, dloaderMain, dloaderSubse
                 save_image(fake[0], filepath)
 
 
-def glo2EndCallback(figpath, gloTrainingTimePath, epochs, evalEvery, elapsed_time):
+def endCallback(figpath, gloTrainingTimePath, epochs, evalEvery, elapsed_time):
     elapsed_time = time.gmtime(elapsed_time)
     printLogTrainingTime(elapsed_time, gloTrainingTimePath)
 
@@ -55,3 +55,25 @@ def glo2EndCallback(figpath, gloTrainingTimePath, epochs, evalEvery, elapsed_tim
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.savefig(figpath, dpi=600)
+
+
+def totalLoss(gen, embed, dloader, dsize, criterion):
+    loss = .0
+    processed = 0
+
+    with torch.no_grad():
+        for batch in dloader:
+            inds = batch['ind'].to(settings.device).view(-1)
+            images = batch['image'].to(device=settings.device, dtype=torch.float32)
+
+            processed += len(images)
+            loss += criterion(images,
+                              gen(embed(inds).view(len(images), hyperparams.latentDim, 1, 1))).item() * images.size(0)
+        loss /= dsize
+    return loss, processed
+
+
+def remaining_time(start_time, sofar, dsizeMain, dsizeSubset, mainBatchSize, subsetBatchSize, epochsNum, evalEvery):
+    return (time.time() - start_time) / sofar * (
+            (dsizeMain + (int(dsizeMain / mainBatchSize) + 1) * subsetBatchSize) * epochsNum
+            + (dsizeMain + dsizeSubset) * int((epochsNum + 1) / evalEvery) - sofar)

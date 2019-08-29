@@ -1,5 +1,3 @@
-import pickle
-
 import torch
 from torch.distributions.multivariate_normal import MultivariateNormal
 from torchvision.utils import save_image
@@ -7,6 +5,7 @@ from torchvision.utils import save_image
 from src import hyperparameters as hyperparams
 from src import settings
 from src.networks.generator import Generator
+from src.utils import loadPickle
 
 mean = 0
 std = 1
@@ -20,9 +19,7 @@ def genImage(image, fileind):
 
 
 def loadSampler(filepath):
-    with open(filepath, 'rb') as f:
-        pcklr = pickle.Unpickler(f)
-        fit = pcklr.load()
+    fit = loadPickle(filepath)
     mean = torch.from_numpy(fit['mean']).to(device=settings.device)
     cov = torch.from_numpy(fit['cov']).to(device=settings.device)
     sampler = MultivariateNormal(mean, cov)

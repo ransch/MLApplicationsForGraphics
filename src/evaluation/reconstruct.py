@@ -38,9 +38,9 @@ def main():
     with torch.no_grad():
         for ind in inds:
             sample = dataset[ind]
-            image = sample['image'].to(settings.device).unsqueeze_(0).type(torch.float32)
+            image = sample['image'].to(device=settings.device, dtype=torch.float32).unsqueeze_(0)
             fileind = sample['fileind'].item()
-            latent = embed(torch.tensor([ind]).to(settings.device)).view(1, hyperparams.latentDim, 1, 1)
+            latent = embed(torch.tensor([ind], device=settings.device)).view(1, hyperparams.latentDim, 1, 1)
             # latent = enc(image).view(1, hyperparams.latentDim, 1, 1)
             fake = gen(latent)
             genImage(fake, fileind)

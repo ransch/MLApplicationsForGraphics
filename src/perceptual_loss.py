@@ -30,8 +30,8 @@ class _netVGGFeatures(nn.Module):
         return output
 
 
-_mean = torch.tensor([0.485, 0.456, 0.406], dtype=torch.float32).to(settings.device)
-_std = torch.tensor([0.229, 0.224, 0.225], dtype=torch.float32).to(settings.device)
+_mean = torch.tensor([0.485, 0.456, 0.406], dtype=torch.float32, device=settings.device)
+_std = torch.tensor([0.229, 0.224, 0.225], dtype=torch.float32, device=settings.device)
 
 
 class VGGDistance(nn.Module):
@@ -59,7 +59,7 @@ class VGGDistance(nn.Module):
         y = self.norm(y)
         f1 = self.vgg(x, self.levels)
         f2 = self.vgg(y, self.levels)
-        featuresloss = torch.zeros(1, dtype=torch.float32).to(settings.device)
+        featuresloss = torch.zeros(1, dtype=torch.float32, device=settings.device)
         for i in range(self.levels):
             layer_loss = torch.abs(f1[i] - f2[i]).mean()
             featuresloss.add_(layer_loss)

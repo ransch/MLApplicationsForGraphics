@@ -1,5 +1,3 @@
-import pickle
-
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from torch.utils.data import DataLoader
@@ -8,6 +6,7 @@ from src import hyperparameters as hyperparams
 from src import settings
 from src.clustering.pca import reduceDim
 from src.frogsDataset import FrogsDataset as Dataset
+from src.utils import loadPickle, storePickle
 
 
 def extractRepresentatives(samples, buckets, centroids, reprNum):
@@ -28,9 +27,7 @@ def extractRepresentatives(samples, buckets, centroids, reprNum):
                                axis=0)  # returns the indices in buckets[i] that correspondes to the k-nearest
         res[i] = [buckets[i][j] for j in neighInds]  # buckets[i][j] = the index of the sample in "samples".
 
-    with open(settings.representativesPath, 'wb') as f:
-        pcklr = pickle.Pickler(f)
-        pcklr.dump(res)
+    storePickle(settings.representativesPath, res)
 
 
 def main():
@@ -38,12 +35,9 @@ def main():
     settings.representativesAsserts()
 
     dataset = Dataset(settings.frogs, settings.frogsSubset1C)
-    dloader = DataLoader(dataset, batch_size=hyperparams.archMainBatchSize, shuffle=False)
-    lowDimMat = reduceDim(dloader, settings.pcaPath)
-
-    with open(settings.clusteringPath, 'rb') as f:
-        pcklr = pickle.Unpickler(f)
-        buckets, centroids = pcklr.load()
+    dloader = DataLoader(dataset, batch_size=settings.bigBatchSize, shuffle=False)
+    lowDimMat = reduceDim(dloader, settings.p / 'clustering/6000-pca-dim100.pkl')
+    buckets, centroids = loadPickle(settings.p / 'clustering/6000-dim-100-clst-128/clusters.pkl')
 
     extractRepresentatives(lowDimMat, buckets, centroids, hyperparams.clusteringReprNum)
 

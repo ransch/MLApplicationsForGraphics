@@ -1,28 +1,28 @@
-import pickle
-
 import torch
+import torch.nn as nn
 import torchvision.models as torchModels
 from torch.utils.data import DataLoader
 
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
+from src.utils import loadPickle, storePickle
 
 
 def dataMatrix(dloader):
     features = []
     resnet = torchModels.resnet50(pretrained=True).to(settings.device)
-    # resnet.fc = nn.Identity()
+    resnet.fc = nn.Identity()
     resnet.eval()
     last_ind = 0
 
     for batch in dloader:
         with torch.no_grad():
-            indices = batch['ind'].to(settings.device).type(torch.float32).squeeze_(1)
+            indices = batch['ind'].to(device=settings.device, dtype=torch.float32).squeeze_(1)
             for ind in indices:
                 assert ind == last_ind
                 last_ind += 1
-            images = batch['image'].to(settings.device).type(torch.float32)
+            images = batch['image'].to(device=settings.device, dtype=torch.float32)
             features.append(resnet(images))
     return torch.cat(features)
 
@@ -51,9 +51,7 @@ def encodeMat(mat, encMat):
 
 def reduceDim(dloader, pcaPath):
     X = dataMatrix(dloader)
-    with open(pcaPath, 'rb') as f:
-        pcklr = pickle.Unpickler(f)
-        encMat = pcklr.load()
+    encMat = loadPickle(pcaPath)
     return encodeMat(X, encMat).cpu().numpy()
 
 
@@ -61,14 +59,11 @@ def main():
     settings.sysAsserts()
     settings.pcaAsserts()
     dataset = Dataset(settings.frogs, settings.frogs6000)
-    dloader = DataLoader(dataset, batch_size=settings.clusteringBatchSize, shuffle=False)
+    dloader = DataLoader(dataset, batch_size=settings.bigBatchSize, shuffle=False)
 
     X = dataMatrix(dloader)
     encMat = PCA(X, hyperparams.clusteringPCADim)
-
-    with open(settings.pcaPath, 'wb') as f:
-        pcklr = pickle.Pickler(f)
-        pcklr.dump(encMat)
+    storePickle(settings.pcaPath, encMat)
 
 
 if __name__ == '__main__':

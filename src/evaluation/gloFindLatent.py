@@ -21,10 +21,10 @@ def main():
     gen.eval()
     embed.eval()
 
-    image = dataset[index - 1]['image'].to(settings.device).type(torch.float32)
+    image = dataset[index - 1]['image'].to(device=settings.device, dtype=torch.float32)
     latVec = findOptimalLatentVector(gen, image)
     optimalfake = gen(
-        embed(torch.tensor([index - 1]).to(settings.device)).view(1, hyperparams.latentDim, 1, 1)).squeeze_(0)
+        embed(torch.tensor([index - 1], device=settings.device)).view(1, hyperparams.latentDim, 1, 1)).squeeze_(0)
     fake = gen(latVec.view(1, hyperparams.latentDim, 1, 1)).squeeze_(0)
 
     with torch.no_grad():

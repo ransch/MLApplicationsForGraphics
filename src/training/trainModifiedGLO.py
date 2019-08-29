@@ -14,21 +14,26 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import lossCallback, epochCallback, progressCallback, evalEveryCallback, endCallback
 from src.training.trainGLOAux import betterCallback, totalLoss
-from src.utils import saveHyperParams, projectRowsToLpBall, addNoise
+from src.training.trainModifiedGLOAux import updatePosneg, collect
+from src.utils import saveHyperParams, projectRowsToLpBall, loadPickle
 
 
-def train(gen, embed, dloader, dsize, noise, criterion, genOptim, embedOptim, epochsNum, evalEvery, epochCallback,
-          progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
+def train(gen, embed, dataset, dloader, dsize, buckets, lookup, criterion, genOptim, embedOptim, epochsNum, evalEvery,
+          computeEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
     last_updated = start_time
     best_loss = math.inf
     sofar = 0
     printevery = settings.printevery
+    posneg = {i: () for i in dataset.indices}  # {ind:(pos, neg)}
 
     gen.train()
     embed.train()
     for epoch in range(1, epochsNum + 1):
         epochCallback(epochsNum, epoch)
+
+        if (epoch - 1) % computeEvery == 0:
+            updatePosneg(posneg, buckets, lookup, embed)
 
         for batch in dloader:
             inds = batch['ind'].to(settings.device).view(-1)
@@ -37,12 +42,12 @@ def train(gen, embed, dloader, dsize, noise, criterion, genOptim, embedOptim, ep
             embedOptim.zero_grad()
 
             lat = embed(inds).view(len(images), hyperparams.latentDim, 1, 1)
+            pos, neg = collect(posneg, inds)
             loss = criterion(images, gen(lat))
 
-            if noise:
-                latNoised = addNoise(lat, hyperparams.gloPertMean, hyperparams.gloPertStd)
-                fakeNoised = gen(latNoised)
-                loss.add_(criterion(images, fakeNoised).mul_(hyperparams.gloPertCoeff))
+            term = inds.sub(pos).pow(2).sum(dim=1).mean().sub_(inds.sub_(neg).pow(2).sum(dim=1).mean()) \
+                .add_(hyperparams.modifiedGLOThreshold).clamp_(min=0)
+            loss.add_(term.mul_(hyperparams.modifiedGLOTermCoeff))
 
             loss.backward()
             genOptim.step()
@@ -79,16 +84,15 @@ def main():
     settings.gloFilesAsserts()
     dataset = Dataset(settings.frogs, settings.frogs6000)
     dsize = len(dataset)
-    noise = False
+    clusteringPath = settings.p / 'clustering/6000-dim-100-clst-128'
+    buckets, _ = loadPickle(clusteringPath / 'clusters.pkl')
+    lookup = loadPickle(clusteringPath / 'lookup.pkl')
 
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
     projectRowsToLpBall(embed.weight.data)
 
-    # gen.load_state_dict(torch.load(settings.localModels / 'glo4/gen.pt'))
-    # embed.load_state_dict(torch.load(settings.localModels / 'glo4/latent.pt'))
-
-    dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=False)
+    dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=True)
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.genAdamLr, betas=hyperparams.genAdamBetas)
     embedOptim = optim.Adam(embed.parameters(), lr=hyperparams.embedAdamLr, betas=hyperparams.embedAdamBetas)
     criterion = VGGDistance(hyperparams.gloLossAlpha, hyperparams.gloLossBeta, hyperparams.gloLossPowAlpha,
@@ -100,9 +104,9 @@ def main():
     print(f'Training {totalParams} parameters')
 
     try:
-        train(gen, embed, dloader, dsize, noise, criterion, genOptim, embedOptim, hyperparams.gloEpochsNum,
-              hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback,
-              betterCallback, endCallback)
+        train(gen, embed, dataset, dloader, dsize, buckets, lookup, criterion, genOptim, embedOptim,
+              hyperparams.gloEpochsNum, hyperparams.gloEvalEvery, hyperparams.modifiedGLOComputeEvery, epochCallback,
+              progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:

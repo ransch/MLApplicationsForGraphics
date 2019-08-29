@@ -1,22 +1,20 @@
 import datetime
 import math
+import time
 
+import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
+from src import hyperparameters as hyperparams
+from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
-from src.training.trainAux import *
-from src.training.trainGLO2SubsetsAux import *
+from src.training.trainAux import epochCallback, progressCallback, evalEveryCallback
+from src.training.trainGLO2SubsetsAux import lossCallback, betterCallback, endCallback, totalLoss, remaining_time
 from src.utils import saveHyperParams, projectRowsToLpBall
-
-
-def remaining_time(start_time, sofar, dsizeMain, dsizeSubset, mainBatchSize, subsetBatchSize, epochsNum, evalEvery):
-    return (time.time() - start_time) / sofar * (
-            (dsizeMain + (int(dsizeMain / mainBatchSize) + 1) * subsetBatchSize) * epochsNum
-            + (dsizeMain + dsizeSubset) * int((epochsNum + 1) / evalEvery) - sofar)
 
 
 def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeSubset, criterion, genOptim, embedOptim,
@@ -37,14 +35,14 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
 
         for batch in dloaderMain:
             inds = batch['ind'].to(settings.device).view(-1)
-            images = batch['image'].to(settings.device).type(torch.float32)
+            images = batch['image'].to(device=settings.device, dtype=torch.float32)
             try:
                 subsetBatch = next(subsetIter)
             except StopIteration:
                 subsetIter = iter(dloaderSubset)
                 subsetBatch = next(subsetIter)
             subsetInds = subsetBatch['ind'].to(settings.device).view(-1)
-            subsetImages = subsetBatch['image'].to(settings.device).type(torch.float32)
+            subsetImages = subsetBatch['image'].to(device=settings.device, dtype=torch.float32)
 
             genOptim.zero_grad()
             embedOptim.zero_grad()
@@ -89,22 +87,6 @@ def train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeS
                 last_updated - start_time)
 
 
-def totalLoss(gen, embed, dloader, dsize, criterion):
-    loss = .0
-    processed = 0
-
-    with torch.no_grad():
-        for batch in dloader:
-            inds = batch['ind'].to(settings.device).view(-1)
-            images = batch['image'].to(settings.device).type(torch.float32)
-
-            processed += len(images)
-            loss += criterion(images,
-                              gen(embed(inds).view(len(images), hyperparams.latentDim, 1, 1))).item() * images.size(0)
-        loss /= dsize
-    return loss, processed
-
-
 def main():
     settings.sysAsserts()
     settings.gloFilesAsserts()
@@ -137,7 +119,7 @@ def main():
         train(gen, embed, embedSubset, dloaderMain, dloaderSubset, dsizeMain, dsizeSubset, criterion, genOptim,
               embedOptim,
               hyperparams.gloEpochsNum, hyperparams.gloEvalEvery, epochCallback, progressCallback, evalEveryCallback,
-              glo2LossCallback, betterCallback, glo2EndCallback)
+              lossCallback, betterCallback, endCallback)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:

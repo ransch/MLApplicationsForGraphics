@@ -13,9 +13,7 @@ def loadSubset(frogsInds, reprPath):
 
 
 device = torch.device('cuda:0')
-
 p = Path(__file__).resolve().parent.parent
-
 localModels = p / 'no_git/models'
 matureModels = p / 'models'
 
@@ -23,12 +21,12 @@ printevery = 1000
 imleprintevery = 5
 samplesLen = 5
 
-gloGenPath = localModels / 'glototal with noise/gen.pt'
-gloLatentPath = localModels / 'glototal with noise/latent.pt'
-gloVisPath = localModels / 'glototal with noise/vis.jpg'
-gloProgressPath = localModels / 'glototal with noise/progress'
-gloHyperPath = localModels / 'glototal with noise/hyperparams.py'
-gloTrainingTimePath = localModels / 'glototal with noise/training_time.txt'
+gloGenPath = localModels / 'modifiedglo/gen.pt'
+gloLatentPath = localModels / 'modifiedglo/latent.pt'
+gloVisPath = localModels / 'modifiedglo/vis.jpg'
+gloProgressPath = localModels / 'modifiedglo/progress'
+gloHyperPath = localModels / 'modifiedglo/hyperparams.py'
+gloTrainingTimePath = localModels / 'modifiedglo/training_time.txt'
 
 encModelPath = localModels / 'enc2/enc.pt'
 encVisPath = localModels / 'enc2/vis.jpg'
@@ -44,13 +42,13 @@ imleTrainingTimePath = localModels / 'totalimle/training_time.txt'
 
 interPath = localModels / 'glo5/eval/inter'
 reconsPath = localModels / 'glo5/eval/reconstruction'
-synthPath = matureModels / 'Z=Rd/glo4 with noise/eval/synth'
+synthPath = localModels / 'Z=Rd/glo4 with noise/eval/synth'
 
-clusteringBatchSize = 2000
-clusteringPath = p / 'clustering/5488-dim-100-clst-128/clusters.pkl'
-representativesPath = p / 'clustering/5488-dim-100-clst-128/repr-8.pkl'
-pcaPath = p / 'clustering/pca-dim100.pkl'
-clusteringVisPath = p / 'clustering/5488-dim-100-clst-128/vis.jpg'
+bigBatchSize = 2000
+clusteringPath = p / 'clustering/6000-dim-100-clst-128/clusters.pkl'
+representativesPath = p / 'clustering/6000-dim-100-clst-128/repr-8.pkl'
+lookupPath = p / 'clustering/6000-dim-100-clst-128/lookup.pkl'
+pcaPath = p / 'clustering/6000-pca-dim100.pkl'
 gaussianFitPath = matureModels / 'Z=Rd/glo4 with noise/gaussianFit.pkl'
 
 frogs = p / 'frogs-64'
@@ -153,5 +151,9 @@ def representativesAsserts():
     if not representativesPath.parent.is_dir():
         os.makedirs(representativesPath.parent)
     assert not representativesPath.is_file()
-    assert clusteringPath.is_file()
-    assert pcaPath.is_file()
+
+
+def lookupAsserts():
+    if not lookupPath.parent.is_dir():
+        os.makedirs(lookupPath.parent)
+    assert not lookupPath.is_file()

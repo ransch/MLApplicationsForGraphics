@@ -1,5 +1,3 @@
-import pickle
-
 import torch
 import torch.nn as nn
 from sklearn.mixture import GaussianMixture
@@ -7,6 +5,7 @@ from sklearn.mixture import GaussianMixture
 from src import hyperparameters as hyperparams
 from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
+from src.utils import storePickle
 
 
 def main():
@@ -28,9 +27,7 @@ def main():
     assert len(cov.shape) == 3 and cov.shape[0] == 1 and cov.shape[1] == hyperparams.latentDim and cov.shape[
         2] == hyperparams.latentDim
 
-    with open(settings.gaussianFitPath, 'wb') as f:
-        pcklr = pickle.Pickler(f)
-        pcklr.dump({'mean': mean, 'cov': cov})
+    storePickle(settings.gaussianFitPath, {'mean': mean, 'cov': cov})
 
 
 if __name__ == '__main__':

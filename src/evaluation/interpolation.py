@@ -40,12 +40,12 @@ def main():
     enc.eval()
 
     for inda, indb in inds:
-        imga = dataset[frogsInds.index(inda - 1)]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
-        imgb = dataset[frogsInds.index(indb - 1)]['image'].to(settings.device).type(torch.float32).unsqueeze_(0)
+        imga = dataset[frogsInds.index(inda - 1)]['image'].to(device=settings.device, dtype=torch.float32).unsqueeze_(0)
+        imgb = dataset[frogsInds.index(indb - 1)]['image'].to(device=settings.device, dtype=torch.float32).unsqueeze_(0)
         # latenta = enc(imga)[0]
         # latentb = enc(imgb)[0]
-        latenta = embed(torch.tensor([inda - 1]).to(settings.device)).view(hyperparams.latentDim, 1)
-        latentb = embed(torch.tensor([indb - 1]).to(settings.device)).view(hyperparams.latentDim, 1)
+        latenta = embed(torch.tensor([inda - 1], device=settings.device)).view(hyperparams.latentDim, 1)
+        latentb = embed(torch.tensor([indb - 1], device=settings.device)).view(hyperparams.latentDim, 1)
         # latenta = findOptimalLatentVector(gen, imga.squeeze(0))
         # latentb = findOptimalLatentVector(gen, imgb.squeeze(0))
         delta = (latentb - latenta) / (num + 1)

@@ -1,4 +1,5 @@
 import math
+import pickle
 import shutil
 
 import torch
@@ -107,3 +108,16 @@ def findNearest(A, B):
         ret[i] = distancesSquared.argmin()
 
     return ret
+
+
+def loadPickle(path, mode='rb'):
+    with open(path, mode) as f:
+        pcklr = pickle.Unpickler(f)
+        ret = pcklr.load()
+    return ret
+
+
+def storePickle(path, obj, mode='wb'):
+    with open(path, mode) as f:
+        pcklr = pickle.Pickler(f)
+        pcklr.dump(obj)

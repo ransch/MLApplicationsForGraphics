@@ -33,7 +33,7 @@ def mergeEmbeddings(dataset1, dataset2, dataset, embed1Path, embed2Path, resPath
     with torch.no_grad():
         for d, indMapping, embed in zip((dataset1, dataset2), (ind1_to_ind, ind2_to_ind), (embed1, embed2)):
             for i in range(len(d)):
-                matrix[indMapping[i]] = embed(torch.tensor([i]).to(settings.device)).view(1, hyperparams.latentDim)
+                matrix[indMapping[i]] = embed(torch.tensor([i], device=settings.device)).view(1, hyperparams.latentDim)
 
         res.weight.data.copy_(matrix)
 

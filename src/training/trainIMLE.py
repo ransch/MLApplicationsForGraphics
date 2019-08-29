@@ -7,8 +7,8 @@ import torch.optim as optim
 
 from src.networks.generator import Generator
 from src.networks.imleMapping import Mapping
-from src.training.trainAux import *
-from src.training.trainIMLEAux import *
+from src.training.trainAux import lossCallback, epochCallback, evalEveryCallback, endCallback
+from src.training.trainIMLEAux import progressCallback, betterCallback, totalLoss
 from src.utils import saveHyperParams, L2Criterion, findNearest
 
 
@@ -62,20 +62,6 @@ def train(mapping, gen, embed, subsetSize, batchSize, miniBatchSize, criterion, 
                 last_updated - start_time)
 
 
-def totalLoss(mapping, embed, subsetSize, criterion):
-    loss = .0
-
-    with torch.no_grad():
-        noise = torch.empty(subsetSize, hyperparams.noiseDim, device=settings.device).normal_(mean=0, std=1)
-        mappedNoise = mapping(noise)
-        lats = embed.weight.data
-        nearest = findNearest(mappedNoise, lats)
-        nearest_noise = torch.index_select(noise, 0, nearest)
-
-        loss = criterion(lats, nearest_noise)
-    return loss.item()
-
-
 def main():
     settings.sysAsserts()
     settings.imleFilesAsserts()
@@ -97,7 +83,7 @@ def main():
     try:
         train(mapping, gen, embed, hyperparams.imleSubsetSize, hyperparams.imleBatchSize, hyperparams.imleMiniBatchSize,
               criterion, optimizer, hyperparams.imleEpochsNum, hyperparams.imleItersNum, hyperparams.imleEvalEvery,
-              epochCallback, imleProgressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
+              epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
         saveHyperParams(settings.imleHyperPath)
 
     except Exception as e:

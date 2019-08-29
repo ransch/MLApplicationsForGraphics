@@ -1,15 +1,19 @@
 import datetime
 import math
+import time
 
+import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
+from src import hyperparameters as hyperparams
+from src import settings
 from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.encoder import Encoder
 from src.networks.generator import Generator
-from src.training.trainAux import *
-from src.training.trainEncAux import *
+from src.training.trainAux import lossCallback, epochCallback, progressCallback, evalEveryCallback, endCallback
+from src.training.trainEncAux import betterCallback, totalLoss
 from src.utils import L1L2Criterion, saveHyperParams
 
 
@@ -29,7 +33,7 @@ def train(gen, embed, enc, dloader, dsize, criterion, optimizer, epochsNum, eval
 
         for batch in dloader:
             inds = batch['ind'].to(settings.device).view(-1)
-            images = batch['image'].to(settings.device).type(torch.float32)
+            images = batch['image'].to(device=settings.device, dtype=torch.float32)
 
             optimizer.zero_grad()
             loss = criterion(embed(inds), enc(images))
@@ -56,21 +60,6 @@ def train(gen, embed, enc, dloader, dsize, criterion, optimizer, epochsNum, eval
 
         printevery = sofar
     endCallback(str(settings.encVisPath), settings.encTrainingTimePath, epochsNum, evalEvery, last_updated - start_time)
-
-
-def totalLoss(embed, enc, dloader, dsize, criterion):
-    loss = .0
-    processed = 0
-
-    with torch.no_grad():
-        for batch in dloader:
-            inds = batch['ind'].to(settings.device).view(-1)
-            images = batch['image'].to(settings.device).type(torch.float32)
-
-            processed += len(images)
-            loss += criterion(embed(inds), enc(images)).item() * images.size(0)
-        loss /= dsize
-    return loss, processed
 
 
 def main():

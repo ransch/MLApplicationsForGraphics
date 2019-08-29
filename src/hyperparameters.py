@@ -19,21 +19,33 @@ gloLossBeta = 1
 gloLossPowAlpha = 1
 gloLossPowBeta = 1
 
-glo2SubsetCoeff = 1
-glo2MainCoeff = 1
-
 gloPertMean = 0  # Noise Sampling
 gloPertStd = .3  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 751
+gloEpochsNum = 7
 gloBatchSize = 75
-gloEvalEvery = 250
+gloEvalEvery = 2
+
+gloEvalEpochsNum = 10 ** 5
+
+###################################################################
+#                        Glo 2 Subsets Config
+###################################################################
+
+glo2SubsetCoeff = 1
+glo2MainCoeff = 1
 
 glo2SubsetBatchSize = 35
 glo2MainBatchSize = 50
 
-gloEvalEpochsNum = 10 ** 5
+###################################################################
+#                        Modified Glo Config
+###################################################################
+
+modifiedGLOComputeEvery = 1
+modifiedGLOThreshold = 1
+modifiedGLOTermCoeff = 0.5
 
 ###################################################################
 #                           Encoder Config

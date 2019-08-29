@@ -24,7 +24,7 @@ def genLatent(enc, dloader):
     latentVecs = []
     for batch in dloader:
         with torch.no_grad():
-            images = batch['image'].to(settings.device).type(torch.float32)
+            images = batch['image'].to(device=settings.device, dtype=torch.float32)
             latentVecs.append(enc(images))
     return torch.cat(latentVecs, 0)
 
@@ -36,9 +36,9 @@ def main():
     subset1 = Dataset(settings.frogs, settings.frogsSubset1)
     subset2 = Dataset(settings.frogs, settings.frogsSubset2)
     main = Dataset(settings.frogs, settings.frogsMain)
-    dloader_s1 = DataLoader(subset1, batch_size=settings.clusteringBatchSize, shuffle=False)
-    dloader_s2 = DataLoader(subset2, batch_size=settings.clusteringBatchSize, shuffle=False)
-    dloader_m = DataLoader(main, batch_size=settings.clusteringBatchSize, shuffle=False)
+    dloader_s1 = DataLoader(subset1, batch_size=settings.bigBatchSize, shuffle=False)
+    dloader_s2 = DataLoader(subset2, batch_size=settings.bigBatchSize, shuffle=False)
+    dloader_m = DataLoader(main, batch_size=settings.bigBatchSize, shuffle=False)
     enc = Encoder().to(settings.device)
     enc.load_state_dict(torch.load(encPath))
     enc.eval()
