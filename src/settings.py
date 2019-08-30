@@ -47,7 +47,7 @@ synthPath = localModels / 'Z=Rd/glo4 with noise/eval/synth'
 bigBatchSize = 2000
 clusteringPath = p / 'clustering/6000-dim-100-clst-128/clusters.pkl'
 representativesPath = p / 'clustering/6000-dim-100-clst-128/repr-8.pkl'
-lookupPath = p / 'clustering/6000-dim-100-clst-128/lookup.pkl'
+posnegPath = p / 'clustering/6000-dim-100-clst-128/posneg.pkl'
 pcaPath = p / 'clustering/6000-pca-dim100.pkl'
 gaussianFitPath = matureModels / 'Z=Rd/glo4 with noise/gaussianFit.pkl'
 
@@ -153,7 +153,7 @@ def representativesAsserts():
     assert not representativesPath.is_file()
 
 
-def lookupAsserts():
-    if not lookupPath.parent.is_dir():
-        os.makedirs(lookupPath.parent)
-    assert not lookupPath.is_file()
+def posnegAsserts():
+    if not posnegPath.parent.is_dir():
+        os.makedirs(posnegPath.parent)
+    assert not posnegPath.is_file()

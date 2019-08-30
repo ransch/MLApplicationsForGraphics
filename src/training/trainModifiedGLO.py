@@ -14,18 +14,18 @@ from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import lossCallback, epochCallback, progressCallback, evalEveryCallback, endCallback
 from src.training.trainGLOAux import betterCallback, totalLoss
-from src.training.trainModifiedGLOAux import updatePosneg, collect
+from src.training.trainModifiedGLOAux import updateBestPosneg, collect
 from src.utils import saveHyperParams, projectRowsToLpBall, loadPickle
 
 
-def train(gen, embed, dataset, dloader, dsize, buckets, lookup, criterion, genOptim, embedOptim, epochsNum, evalEvery,
+def train(gen, embed, dloader, dsize, posneg, criterion, genOptim, embedOptim, epochsNum, evalEvery,
           computeEvery, epochCallback, progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback):
     start_time = time.time()
     last_updated = start_time
     best_loss = math.inf
     sofar = 0
     printevery = settings.printevery
-    posneg = {i: () for i in dataset.indices}  # {ind:(pos, neg)}
+    bestPosneg = torch.empty(dsize, 2, device=settings.device, dtype=torch.int64)  # [ind: (best pos, best neg)]
 
     gen.train()
     embed.train()
@@ -33,7 +33,7 @@ def train(gen, embed, dataset, dloader, dsize, buckets, lookup, criterion, genOp
         epochCallback(epochsNum, epoch)
 
         if (epoch - 1) % computeEvery == 0:
-            updatePosneg(posneg, buckets, lookup, embed)
+            updateBestPosneg(bestPosneg, posneg, embed)
 
         for batch in dloader:
             inds = batch['ind'].to(settings.device).view(-1)
@@ -41,11 +41,11 @@ def train(gen, embed, dataset, dloader, dsize, buckets, lookup, criterion, genOp
             genOptim.zero_grad()
             embedOptim.zero_grad()
 
-            lat = embed(inds).view(len(images), hyperparams.latentDim, 1, 1)
-            pos, neg = collect(posneg, inds)
-            loss = criterion(images, gen(lat))
+            lat = embed(inds)
+            pos, neg = collect(embed, bestPosneg, inds)
+            loss = criterion(images, gen(lat.view(len(images), hyperparams.latentDim, 1, 1)))
 
-            term = inds.sub(pos).pow(2).sum(dim=1).mean().sub_(inds.sub_(neg).pow(2).sum(dim=1).mean()) \
+            term = lat.sub(pos).pow(2).sum(dim=1).mean().sub_(lat.sub(neg).pow(2).sum(dim=1).mean()) \
                 .add_(hyperparams.modifiedGLOThreshold).clamp_(min=0)
             loss.add_(term.mul_(hyperparams.modifiedGLOTermCoeff))
 
@@ -84,9 +84,7 @@ def main():
     settings.gloFilesAsserts()
     dataset = Dataset(settings.frogs, settings.frogs6000)
     dsize = len(dataset)
-    clusteringPath = settings.p / 'clustering/6000-dim-100-clst-128'
-    buckets, _ = loadPickle(clusteringPath / 'clusters.pkl')
-    lookup = loadPickle(clusteringPath / 'lookup.pkl')
+    posneg = loadPickle(settings.p / 'clustering/6000-dim-100-clst-128/posneg.pkl')
 
     gen = Generator().to(settings.device)
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
@@ -104,9 +102,9 @@ def main():
     print(f'Training {totalParams} parameters')
 
     try:
-        train(gen, embed, dataset, dloader, dsize, buckets, lookup, criterion, genOptim, embedOptim,
-              hyperparams.gloEpochsNum, hyperparams.gloEvalEvery, hyperparams.modifiedGLOComputeEvery, epochCallback,
-              progressCallback, evalEveryCallback, lossCallback, betterCallback, endCallback)
+        train(gen, embed, dloader, dsize, posneg, criterion, genOptim, embedOptim, hyperparams.gloEpochsNum,
+              hyperparams.gloEvalEvery, hyperparams.modifiedGLOComputeEvery, epochCallback, progressCallback,
+              evalEveryCallback, lossCallback, betterCallback, endCallback)
         saveHyperParams(settings.gloHyperPath)
 
     except Exception as e:

@@ -10,6 +10,7 @@ def main():
     buckets, _ = loadPickle(settings.p / 'clustering/6000-dim-100-clst-128/clusters.pkl')
 
     for k, v in buckets.items():
+        assert len(v) >= 2
         print(f'k={k}: size={len(v)} --------------------------------------')
         print(v)
         print('\n\n')
