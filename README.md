@@ -9,7 +9,8 @@ This repository contains the final project of the workshop
     * */src/clustering* contains source files that should be used for splitting the training set into subsets
     * */src/networks* contains the source code for the neural networks used in our experiments
     * */src/training* contains all the source files used for training the model
-    * */src/evaluation* contains source files used for experiments
+    * */src/evaluation* contains source files used for evaluations
+    * */src/visualization* contains source files used for visualizations
     * */src/hyperparameters.py* is a file which contains all the hyperparameters used in the project
     * */src/settings.py* is a file which contains environment-related asserts and definitions
 * */scripts* contains bash scripts for settings up the environment
