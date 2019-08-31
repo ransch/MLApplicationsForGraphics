@@ -19,10 +19,11 @@ def loadImages(dataset):
 
 def main():
     settings.sysAsserts()
-    writer = SummaryWriter(comment='glototal')
+    baseDir = settings.matureModels / 'Z=l2 unit ball/glototal'
+    writer = SummaryWriter(log_dir=baseDir / 'eval/vis', comment='glototal')
     dataset = Dataset(settings.frogs, settings.frogs6000)
     embed = nn.Embedding(len(dataset), hyperparams.latentDim).to(settings.device)
-    embed.load_state_dict(torch.load(settings.matureModels / 'Z=l2 unit ball/glototal/latent.pt'))
+    embed.load_state_dict(torch.load(baseDir / 'latent.pt'))
     embed.eval()
 
     labels, images = loadImages(dataset)
