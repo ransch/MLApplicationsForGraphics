@@ -85,8 +85,8 @@ def main():
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
     projectRowsToLpBall(embed.weight.data)
 
-    # gen.load_state_dict(torch.load(settings.localModels / 'glo4/gen.pt'))
-    # embed.load_state_dict(torch.load(settings.localModels / 'glo4/latent.pt'))
+    # gen.load_state_dict(torch.load(settings.localModels / 'glototal/gen.pt'))
+    # embed.load_state_dict(torch.load(settings.localModels / 'glototal/latent.pt'))
 
     dloader = DataLoader(dataset, batch_size=hyperparams.gloBatchSize, shuffle=False)
     genOptim = optim.Adam(gen.parameters(), lr=hyperparams.genAdamLr, betas=hyperparams.genAdamBetas)

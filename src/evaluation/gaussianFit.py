@@ -1,6 +1,6 @@
+import numpy as np
 import torch
 import torch.nn as nn
-from sklearn.mixture import GaussianMixture
 
 from src import hyperparameters as hyperparams
 from src import settings
@@ -14,18 +14,15 @@ def main():
     dsize = len(dataset)
 
     embed = nn.Embedding(dsize, hyperparams.latentDim).to(settings.device)
-    embed.load_state_dict(torch.load(settings.matureModels / 'Z=Rd/glo4 with noise/latent.pt'))
+    embed.load_state_dict(torch.load(settings.localModels / 'modifiedglo/latent.pt'))
     dataMat = embed.weight.data.cpu().numpy()
     assert len(dataMat.shape) == 2 and dataMat.shape[0] == 6000 and dataMat.shape[1] == hyperparams.latentDim
 
-    gmm = GaussianMixture(n_components=1, covariance_type='full', tol=1e-7, max_iter=100000, n_init=100)
-    gmm.fit(dataMat)
+    mean = np.mean(dataMat, axis=0)
+    cov = np.cov(dataMat, rowvar=False)
 
-    mean = gmm.means_
-    cov = gmm.covariances_
-    assert len(mean.shape) == 2 and mean.shape[0] == 1 and mean.shape[1] == hyperparams.latentDim
-    assert len(cov.shape) == 3 and cov.shape[0] == 1 and cov.shape[1] == hyperparams.latentDim and cov.shape[
-        2] == hyperparams.latentDim
+    assert len(mean.shape) == 1 and mean.shape[0] == hyperparams.latentDim
+    assert len(cov.shape) == 2 and cov.shape[0] == hyperparams.latentDim and cov.shape[1] == hyperparams.latentDim
 
     storePickle(settings.gaussianFitPath, {'mean': mean, 'cov': cov})
 

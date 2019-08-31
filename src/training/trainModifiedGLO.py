@@ -13,8 +13,8 @@ from src.frogsDataset import FrogsDataset as Dataset
 from src.networks.generator import Generator
 from src.perceptual_loss import VGGDistance
 from src.training.trainAux import lossCallback, epochCallback, progressCallback, evalEveryCallback, endCallback
-from src.training.trainGLOAux import betterCallback, totalLoss
-from src.training.trainModifiedGLOAux import updateBestPosneg, collect
+from src.training.trainGLOAux import betterCallback
+from src.training.trainModifiedGLOAux import updateBestPosneg, collect, totalLoss
 from src.utils import saveHyperParams, projectRowsToLpBall, loadPickle
 
 
@@ -45,8 +45,8 @@ def train(gen, embed, dloader, dsize, posneg, criterion, genOptim, embedOptim, e
             pos, neg = collect(embed, bestPosneg, inds)
             loss = criterion(images, gen(lat.view(len(images), hyperparams.latentDim, 1, 1)))
 
-            term = lat.sub(pos).pow(2).sum(dim=1).mean().sub_(lat.sub(neg).pow(2).sum(dim=1).mean()) \
-                .add_(hyperparams.modifiedGLOThreshold).clamp_(min=0)
+            term = lat.sub(pos).pow(2).sum(dim=1).sub_(lat.sub(neg).pow(2).sum(dim=1)) \
+                .add_(hyperparams.modifiedGLOThreshold).clamp_(min=0).mean()
             loss.add_(term.mul_(hyperparams.modifiedGLOTermCoeff))
 
             loss.backward()
@@ -65,7 +65,7 @@ def train(gen, embed, dloader, dsize, posneg, criterion, genOptim, embedOptim, e
             gen.eval()
             embed.eval()
             evalEveryCallback()
-            total_loss, processed = totalLoss(gen, embed, dloader, dsize, criterion)
+            total_loss, processed = totalLoss(gen, embed, bestPosneg, dloader, dsize, criterion)
             sofar += processed
             lossCallback(total_loss)
             if total_loss < best_loss:

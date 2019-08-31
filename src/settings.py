@@ -40,16 +40,16 @@ imleProgressPath = localModels / 'totalimle/progress'
 imleHyperPath = localModels / 'totalimle/hyperparams.py'
 imleTrainingTimePath = localModels / 'totalimle/training_time.txt'
 
-interPath = localModels / 'glo5/eval/inter'
-reconsPath = localModels / 'glo5/eval/reconstruction'
-synthPath = localModels / 'Z=Rd/glo4 with noise/eval/synth'
+interPath = localModels / 'modifiedglo/eval/inter'
+reconsPath = localModels / 'modifiedglo/eval/reconstruction'
+synthPath = localModels / 'modifiedglo/eval/synth'
 
 bigBatchSize = 2000
 clusteringPath = p / 'clustering/6000-dim-100-clst-128/clusters.pkl'
 representativesPath = p / 'clustering/6000-dim-100-clst-128/repr-8.pkl'
 posnegPath = p / 'clustering/6000-dim-100-clst-128/posneg.pkl'
 pcaPath = p / 'clustering/6000-pca-dim100.pkl'
-gaussianFitPath = matureModels / 'Z=Rd/glo4 with noise/gaussianFit.pkl'
+gaussianFitPath = localModels / 'modifiedglo/gaussianFit.pkl'
 
 frogs = p / 'frogs-64'
 frogsAll = list(range(1, 7797))

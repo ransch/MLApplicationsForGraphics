@@ -20,8 +20,8 @@ def genImage(image, fileind):
 
 def loadSampler(filepath):
     fit = loadPickle(filepath)
-    mean = torch.from_numpy(fit['mean']).to(device=settings.device)
-    cov = torch.from_numpy(fit['cov']).to(device=settings.device)
+    mean = torch.from_numpy(fit['mean']).to(device=settings.device, dtype=torch.float64)
+    cov = torch.from_numpy(fit['cov']).to(device=settings.device, dtype=torch.float64)
     sampler = MultivariateNormal(mean, cov)
     return sampler
 
@@ -31,10 +31,10 @@ def main():
     settings.synthesizeFilesAsserts()
 
     gen = Generator().to(settings.device)
-    gen.load_state_dict(torch.load(settings.matureModels / 'Z=Rd/glo4 with noise/gen.pt'))
+    gen.load_state_dict(torch.load(settings.localModels / 'modifiedglo/gen.pt'))
     gen.eval()
 
-    sampler = loadSampler(settings.matureModels / 'Z=Rd/glo4 with noise/gaussianFit.pkl')
+    sampler = loadSampler(settings.localModels / 'modifiedglo/gaussianFit.pkl')
     with torch.no_grad():
         for i in range(cnt):
             lat = sampler.sample()

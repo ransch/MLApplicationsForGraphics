@@ -23,9 +23,9 @@ gloPertMean = 0  # Noise Sampling
 gloPertStd = .3  # Noise Sampling
 gloPertCoeff = .7  # Noise term multiplier
 
-gloEpochsNum = 7
+gloEpochsNum = 1251
 gloBatchSize = 75
-gloEvalEvery = 2
+gloEvalEvery = 250
 
 gloEvalEpochsNum = 10 ** 5
 
@@ -43,9 +43,9 @@ glo2MainBatchSize = 50
 #                        Modified Glo Config
 ###################################################################
 
-modifiedGLOComputeEvery = 1
-modifiedGLOThreshold = 1
-modifiedGLOTermCoeff = 0.5
+modifiedGLOComputeEvery = 50
+modifiedGLOThreshold = .2
+modifiedGLOTermCoeff = 5
 
 ###################################################################
 #                           Encoder Config
