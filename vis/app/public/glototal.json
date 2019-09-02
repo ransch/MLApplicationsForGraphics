@@ -1,0 +1,20 @@
+{
+  "embeddings": [
+    {
+      "tensorName": "My tensor",
+      "tensorShape": [
+        6000,
+        100
+      ],
+      "tensorPath": "https://ml-apps-for-graphics.herokuapp.com/glototal/00000/default/tensors.tsv",
+      "metadataPath": "https://ml-apps-for-graphics.herokuapp.com/glototal/00000/default/metadata.tsv",
+      "sprite": {
+        "imagePath": "https://ml-apps-for-graphics.herokuapp.com/glototal/00000/default/sprite.png",
+        "singleImageDim": [
+          64,
+          64
+        ]
+      }
+    }
+  ]
+}

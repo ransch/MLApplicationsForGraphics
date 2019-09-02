@@ -1,0 +1,12 @@
+{
+  "name": "ml-apps-for-graphics",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "cors": "^2.8.5"
+  }
+}
